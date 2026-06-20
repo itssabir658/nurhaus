@@ -6,28 +6,28 @@ import { motion, AnimatePresence } from 'framer-motion';
 const SHIPPING_OPTIONS = [
   { name: 'Standard',   time: '5–10 business days', price: 'Complimentary on orders over $500', note: 'Orders under $500 — $12' },
   { name: 'Express',    time: '2–3 business days',  price: '$28',   note: 'Available at checkout' },
-  { name: 'Overnight',  time: 'Next business day',  price: '$48',   note: 'Order before 12pm GMT' },
+  { name: 'Overnight',  time: 'Next business day',  price: '$48',   note: 'Order before 12pm EST' },
 ];
 
 const REGIONS = [
-  { region: 'United Kingdom', time: '2–5 days',   express: 'Next day' },
-  { region: 'Europe',         time: '4–7 days',   express: '2–3 days' },
-  { region: 'United States',  time: '6–10 days',  express: '3–4 days' },
-  { region: 'Middle East',    time: '5–8 days',   express: '3–4 days' },
+  { region: 'Canada',         time: '2–5 days',   express: 'Next day' },
+  { region: 'United States',  time: '3–6 days',   express: '1–2 days' },
+  { region: 'Europe',         time: '6–10 days',  express: '3–4 days' },
+  { region: 'Middle East',    time: '6–10 days',  express: '3–4 days' },
   { region: 'Rest of World',  time: '8–14 days',  express: '4–6 days' },
 ];
 
 const RETURN_STEPS = [
-  { step: '01', title: 'Request',    body: 'Email hello@nurhaus.co within 14 days of receiving your order. Include your order number and reason for return.' },
+  { step: '01', title: 'Request',    body: 'Email sales@nurhaus.ca within 14 days of receiving your order. Include your order number and reason for return.' },
   { step: '02', title: 'Package',    body: 'Place the item in its original packaging with all tags attached. Items must be unworn and in original condition.' },
   { step: '03', title: 'Ship',       body: 'We will send you a pre-paid return label. Drop the package at any approved carrier location.' },
   { step: '04', title: 'Refund',     body: 'Refunds are processed within 5–7 business days of receiving the returned item. You will receive an email confirmation.' },
 ];
 
 const FAQS = [
-  { q: 'Can I exchange an item for a different size?', a: 'Yes. Request an exchange through hello@nurhaus.co within 14 days. Subject to availability, we will ship the replacement at no additional cost.' },
+  { q: 'Can I exchange an item for a different size?', a: 'Yes. Request an exchange through sales@nurhaus.ca within 14 days. Subject to availability, we will ship the replacement at no additional cost.' },
   { q: 'What if my order arrives damaged?', a: 'Please photograph the item and packaging immediately and email us within 48 hours. We will arrange a replacement or full refund.' },
-  { q: 'Are returns free?', a: 'We provide complimentary return labels for UK orders. International return shipping costs are deducted from the refund amount.' },
+  { q: 'Are returns free?', a: 'We provide complimentary return labels for Canadian orders. International return shipping costs are deducted from the refund amount.' },
   { q: 'Can I return a sale item?', a: 'Sale items are eligible for exchange or store credit only, not refund. Final sale items are non-returnable.' },
 ];
 

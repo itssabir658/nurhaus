@@ -218,9 +218,6 @@ export default function HomeClient({ products, configured }: { products: AppProd
             <h2 className="font-display text-[2.4rem] md:text-[3.5rem] leading-[1.1] tracking-tight">
               A wardrobe should be quiet enough to last a lifetime.
             </h2>
-            <p className="font-display italic text-gold text-2xl md:text-3xl mt-8 text-right" dir="rtl" lang="ar">
-              على مهلٍ، وبنور
-            </p>
           </motion.div>
           <motion.div
             variants={fadeUp}

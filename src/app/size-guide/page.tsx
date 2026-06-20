@@ -57,7 +57,7 @@ export default function SizeGuidePage() {
           initial={{ opacity: 0 }} animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.7 }}
         >
-          All measurements are in centimetres. If you are between sizes, we recommend sizing up. Need help? Email us at hello@nurhaus.co
+          All measurements are in centimetres. If you are between sizes, we recommend sizing up. Need help? Email us at sales@nurhaus.ca
         </motion.p>
       </div>
 
@@ -189,7 +189,7 @@ export default function SizeGuidePage() {
                 <p className="text-xs text-smoke leading-relaxed mb-4">
                   Still unsure? Our team is happy to help you find the perfect fit.
                 </p>
-                <a href="mailto:hello@nurhaus.co" className="btn-outline w-full block text-center text-sm py-3">
+                <a href="mailto:sales@nurhaus.ca" className="btn-outline w-full block text-center text-sm py-3">
                   Ask for Advice
                 </a>
               </div>

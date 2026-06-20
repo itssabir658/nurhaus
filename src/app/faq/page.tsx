@@ -10,7 +10,7 @@ const CATEGORIES = [
     label: 'Orders',
     faqs: [
       { q: 'How do I place an order?', a: 'Browse the collection, select your size and add to cart. You can checkout as a guest or create an account for faster future purchases. We accept all major credit cards, PayPal, and Apple Pay.' },
-      { q: 'Can I change or cancel my order after placing it?', a: 'Orders can be amended or cancelled within 1 hour of placement by emailing hello@nurhaus.co with your order number. After this window, the order moves to fulfilment and changes may not be possible.' },
+      { q: 'Can I change or cancel my order after placing it?', a: 'Orders can be amended or cancelled within 1 hour of placement by emailing sales@nurhaus.ca with your order number. After this window, the order moves to fulfilment and changes may not be possible.' },
       { q: 'Do you offer gift wrapping?', a: 'All NÜRHAUS orders arrive in our signature packaging. For gifting, you can add a handwritten note at checkout at no additional cost.' },
       { q: 'Is my payment information secure?', a: 'Yes. We use SSL encryption and never store your card details. All payments are processed through PCI-compliant third-party providers.' },
     ],
@@ -19,7 +19,7 @@ const CATEGORIES = [
     id: 'shipping',
     label: 'Shipping',
     faqs: [
-      { q: 'How long does delivery take?', a: 'Standard delivery takes 5–10 business days internationally. Express (2–3 days) and Overnight options are available at checkout. UK orders typically arrive within 2–5 days on standard.' },
+      { q: 'How long does delivery take?', a: 'Standard delivery takes 5–10 business days internationally. Express (2–3 days) and Overnight options are available at checkout. Canadian orders typically arrive within 2–5 days on standard.' },
       { q: 'Do you ship worldwide?', a: 'Yes. We ship to over 60 countries. Shipping rates and delivery times vary by destination and are calculated at checkout.' },
       { q: 'Will I be charged customs duties?', a: 'Customs duties and import taxes may apply depending on your country. These are not included in the product price and are the responsibility of the recipient. We cannot predict or control these charges.' },
       { q: 'How do I track my order?', a: 'You will receive a tracking email as soon as your order is dispatched. You can also track your order in your account under Order History.' },
@@ -29,10 +29,10 @@ const CATEGORIES = [
     id: 'returns',
     label: 'Returns',
     faqs: [
-      { q: 'What is your returns policy?', a: 'We accept returns within 14 days of delivery for unworn items in original condition with all tags attached. Please email hello@nurhaus.co with your order number to initiate a return.' },
-      { q: 'Are returns free?', a: 'UK returns are complimentary. For international orders, return shipping costs are deducted from your refund.' },
+      { q: 'What is your returns policy?', a: 'We accept returns within 14 days of delivery for unworn items in original condition with all tags attached. Please email sales@nurhaus.ca with your order number to initiate a return.' },
+      { q: 'Are returns free?', a: 'Canadian returns are complimentary. For international orders, return shipping costs are deducted from your refund.' },
       { q: 'How long does a refund take?', a: 'Refunds are processed within 5–7 business days of receiving your returned item. Your bank may take a further 2–3 business days to reflect the credit.' },
-      { q: 'Can I exchange for a different size?', a: 'Yes. We offer exchanges within 14 days. Email hello@nurhaus.co with your order number and preferred size. Exchanges are subject to availability and shipped at no cost.' },
+      { q: 'Can I exchange for a different size?', a: 'Yes. We offer exchanges within 14 days. Email sales@nurhaus.ca with your order number and preferred size. Exchanges are subject to availability and shipped at no cost.' },
     ],
   },
   {
@@ -41,7 +41,7 @@ const CATEGORIES = [
     faqs: [
       { q: 'How do your pieces fit?', a: 'Our pieces are designed with a relaxed, modest silhouette. They are generally true to size. If you are between sizes, we recommend sizing up. Full measurement details are on our Size Guide page.' },
       { q: 'Do you offer custom sizing?', a: 'We do not currently offer made-to-measure but our size range covers XS–XXL. If you need specific measurement guidance, our team is happy to help via email or WhatsApp.' },
-      { q: 'I am unsure between two sizes. What should I do?', a: 'Email us at hello@nurhaus.co with your measurements and the piece you are considering. Our team will recommend the best fit based on the specific cut of that garment.' },
+      { q: 'I am unsure between two sizes. What should I do?', a: 'Email us at sales@nurhaus.ca with your measurements and the piece you are considering. Our team will recommend the best fit based on the specific cut of that garment.' },
     ],
   },
   {
@@ -182,7 +182,7 @@ export default function FAQPage() {
           <p className="text-smoke text-sm mb-8 max-w-xs mx-auto">Our team responds within 24 hours on business days.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact" className="btn-primary">Contact Us</Link>
-            <a href="https://wa.me/447700900000" className="btn-outline">WhatsApp</a>
+            <a href="https://wa.me/16479386284" className="btn-outline">WhatsApp</a>
           </div>
         </div>
       </div>
