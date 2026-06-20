@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from '@/contexts/CartContext';
 
 interface NavigationProps {
   onCartOpen:   () => void;
   onSearchOpen: () => void;
-  cartCount:    number;
 }
 
 const links = [
@@ -28,9 +28,11 @@ const menuLinks = [
   { label: 'Contact',     href: '/contact' },
 ];
 
-export default function Navigation({ onCartOpen, onSearchOpen, cartCount }: NavigationProps) {
+export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { cart } = useCart();
+  const cartCount = cart?.totalQuantity ?? 0;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 64);

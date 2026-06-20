@@ -10,12 +10,19 @@ import WelcomePopup from './WelcomePopup';
 import ExitIntentPopup from './ExitIntentPopup';
 import WaitlistPopup from './WaitlistPopup';
 import { NurhausContext } from '@/contexts/NurhausContext';
+import { CartProvider } from '@/contexts/CartContext';
+import type { AppProduct } from '@/lib/shopify/types';
 import Lenis from 'lenis';
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+export default function Providers({
+  children,
+  searchProducts = [],
+}: {
+  children: React.ReactNode;
+  searchProducts?: AppProduct[];
+}) {
   const [cartOpen, setCartOpen]         = useState(false);
   const [searchOpen, setSearchOpen]     = useState(false);
-  const [cartCount, setCartCount]       = useState(0);
   const [waitlistOpen, setWaitlistOpen] = useState(false);
   const [waitlistProduct, setWaitlistProduct] = useState('');
 
@@ -45,31 +52,32 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <NurhausContext.Provider value={{ openWaitlist }}>
-      <AnnouncementBar />
-      <Navigation
-        onCartOpen={() => setCartOpen(true)}
-        onSearchOpen={() => setSearchOpen(true)}
-        cartCount={cartCount}
-      />
-      <CartDrawer
-        open={cartOpen}
-        onClose={() => setCartOpen(false)}
-        onCountChange={setCartCount}
-      />
-      <SearchOverlay
-        open={searchOpen}
-        onClose={() => setSearchOpen(false)}
-      />
-      <WelcomePopup />
-      <ExitIntentPopup />
-      <WaitlistPopup
-        open={waitlistOpen}
-        productName={waitlistProduct}
-        onClose={() => setWaitlistOpen(false)}
-      />
-      {/* 44px announcement bar + 80px nav = 124px total header height */}
-      <main className="pt-[124px]">{children}</main>
-      <Footer />
+      <CartProvider>
+        <AnnouncementBar />
+        <Navigation
+          onCartOpen={() => setCartOpen(true)}
+          onSearchOpen={() => setSearchOpen(true)}
+        />
+        <CartDrawer
+          open={cartOpen}
+          onClose={() => setCartOpen(false)}
+        />
+        <SearchOverlay
+          open={searchOpen}
+          onClose={() => setSearchOpen(false)}
+          products={searchProducts}
+        />
+        <WelcomePopup />
+        <ExitIntentPopup />
+        <WaitlistPopup
+          open={waitlistOpen}
+          productName={waitlistProduct}
+          onClose={() => setWaitlistOpen(false)}
+        />
+        {/* 44px announcement bar + 80px nav = 124px total header height */}
+        <main className="pt-[124px]">{children}</main>
+        <Footer />
+      </CartProvider>
     </NurhausContext.Provider>
   );
 }

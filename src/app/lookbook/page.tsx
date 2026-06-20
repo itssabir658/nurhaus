@@ -59,7 +59,7 @@ const SCENES = [
 ];
 
 export default function LookbookPage() {
-  const sectionsRef = useRef<HTMLDivElement[]>([]);
+  const sectionsRef = useRef<HTMLElement[]>([]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);

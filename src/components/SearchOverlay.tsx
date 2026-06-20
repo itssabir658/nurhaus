@@ -4,31 +4,22 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { AppProduct } from '@/lib/shopify/types';
 
 interface SearchOverlayProps {
-  open:    boolean;
-  onClose: () => void;
+  open:     boolean;
+  onClose:  () => void;
+  products: AppProduct[];
 }
 
-const PRODUCTS = [
-  { name: 'The Sahar Abaya',  price: '$680', handle: 'sahar-abaya',  image: 'https://images.unsplash.com/photo-1760083545495-b297b1690672?auto=format&fit=crop&w=200&q=70' },
-  { name: 'The Noor Dress',   price: '$420', handle: 'noor-dress',   image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=200&q=70' },
-  { name: 'The Layla Dress',  price: '$455', handle: 'layla-dress',  image: 'https://images.unsplash.com/photo-1762605135332-8a7ce1403187?auto=format&fit=crop&w=200&q=70' },
-  { name: 'The Layl Abaya',   price: '$720', handle: 'layl-abaya',   image: 'https://images.unsplash.com/photo-1772474500365-c2c520545f44?auto=format&fit=crop&w=200&q=70' },
-  { name: 'The Dunya Dress',  price: '$390', handle: 'dunya-dress',  image: 'https://images.unsplash.com/photo-1764179690247-df7f4014def7?auto=format&fit=crop&w=200&q=70' },
-  { name: 'The Rana Dress',   price: '$435', handle: 'rana-dress',   image: 'https://images.unsplash.com/photo-1773439877634-e6ef9f571c12?auto=format&fit=crop&w=200&q=70' },
-  { name: 'The Samar Dress',  price: '$410', handle: 'samar-dress',  image: 'https://images.unsplash.com/photo-1762605135012-56a59a059e60?auto=format&fit=crop&w=200&q=70' },
-  { name: 'The Zahra Dress',  price: '$470', handle: 'zahra-dress',  image: 'https://images.unsplash.com/photo-1772714601004-23b94ae3913d?auto=format&fit=crop&w=200&q=70' },
-];
+const RECENT = ['Abaya', 'Dress'];
 
-const RECENT = ['The Sahar', 'Abaya', 'Dress'];
-
-export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
+export default function SearchOverlay({ open, onClose, products }: SearchOverlayProps) {
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const results = query.length > 1
-    ? PRODUCTS.filter((p) => p.name.toLowerCase().includes(query.toLowerCase()))
+    ? products.filter((p) => p.name.toLowerCase().includes(query.toLowerCase()))
     : [];
 
   useEffect(() => {
@@ -115,10 +106,12 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
                         className="group"
                       >
                         <div className="product-card-img aspect-[3/4] mb-3">
-                          <Image src={p.image} alt={p.name} width={200} height={266} className="w-full h-full object-cover" />
+                          {p.images[0] && (
+                            <Image src={p.images[0]} alt={p.name} width={200} height={266} className="w-full h-full object-cover" />
+                          )}
                         </div>
                         <p className="font-display text-base">{p.name}</p>
-                        <p className="text-sm text-smoke mt-0.5">{p.price}</p>
+                        <p className="text-sm text-smoke mt-0.5">${p.price.toLocaleString()}</p>
                       </Link>
                     ))}
                   </div>
@@ -143,28 +136,32 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
                 </div>
 
                 {/* Trending */}
-                <div>
-                  <p className="eyebrow mb-6">The Collection</p>
-                  <ul className="space-y-4">
-                    {PRODUCTS.slice(0, 4).map((p) => (
-                      <li key={p.handle}>
-                        <Link
-                          href={`/products/${p.handle}`}
-                          onClick={onClose}
-                          className="flex items-center gap-4 group"
-                        >
-                          <div className="w-12 h-16 product-card-img flex-shrink-0">
-                            <Image src={p.image} alt={p.name} width={48} height={64} className="w-full h-full object-cover" />
-                          </div>
-                          <div>
-                            <p className="text-sm text-ink group-hover:text-accent transition-colors duration-300 font-medium">{p.name}</p>
-                            <p className="text-xs text-muted mt-0.5">{p.price}</p>
-                          </div>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {products.length > 0 && (
+                  <div>
+                    <p className="eyebrow mb-6">The Collection</p>
+                    <ul className="space-y-4">
+                      {products.slice(0, 4).map((p) => (
+                        <li key={p.handle}>
+                          <Link
+                            href={`/products/${p.handle}`}
+                            onClick={onClose}
+                            className="flex items-center gap-4 group"
+                          >
+                            <div className="w-12 h-16 product-card-img flex-shrink-0">
+                              {p.images[0] && (
+                                <Image src={p.images[0]} alt={p.name} width={48} height={64} className="w-full h-full object-cover" />
+                              )}
+                            </div>
+                            <div>
+                              <p className="text-sm text-ink group-hover:text-accent transition-colors duration-300 font-medium">{p.name}</p>
+                              <p className="text-xs text-muted mt-0.5">${p.price.toLocaleString()}</p>
+                            </div>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
           </div>
