@@ -59,7 +59,7 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
           {/* Logo */}
           <Link
             href="/"
-            className="font-display font-medium uppercase tracking-[0.14em] text-[17px] leading-[0.88] text-center"
+            className="font-display font-medium uppercase tracking-[0.14em] text-[24px] leading-[0.88] text-center"
             aria-label="NÜRHAUS home"
           >
             <span className="block">NÜR</span>
@@ -151,7 +151,7 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
               <Link
                 href="/"
                 onClick={() => setMenuOpen(false)}
-                className="font-display font-medium uppercase tracking-[0.14em] text-[17px] leading-[0.88] text-center text-primary"
+                className="font-display font-medium uppercase tracking-[0.14em] text-[24px] leading-[0.88] text-center text-primary"
               >
                 <span className="block">NÜR</span>
                 <span className="block">HAUS</span>

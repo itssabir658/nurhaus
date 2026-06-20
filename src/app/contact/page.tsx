@@ -54,9 +54,9 @@ export default function ContactPage() {
                 <p className="eyebrow mb-5">Reach Us</p>
                 <div className="space-y-5">
                   {[
-                    { label: 'Email', value: 'hello@nurhaus.co', href: 'mailto:hello@nurhaus.co' },
-                    { label: 'WhatsApp', value: '+44 7700 900 000', href: 'https://wa.me/447700900000' },
-                    { label: 'Location', value: 'London, United Kingdom', href: null },
+                    { label: 'Email', value: 'sales@nurhaus.ca', href: 'mailto:sales@nurhaus.ca' },
+                    { label: 'WhatsApp', value: '+1 (647) 938-6284', href: 'https://wa.me/16479386284' },
+                    { label: 'Location', value: 'Canada, Toronto', href: null },
                   ].map((item) => (
                     <div key={item.label}>
                       <p className="text-xs text-muted tracking-widest uppercase mb-1">{item.label}</p>
@@ -76,8 +76,8 @@ export default function ContactPage() {
                 <p className="eyebrow mb-5">Hours</p>
                 <div className="space-y-2">
                   {[
-                    { day: 'Monday – Friday', time: '10:00 – 18:00 GMT' },
-                    { day: 'Saturday',        time: '10:00 – 14:00 GMT' },
+                    { day: 'Monday – Friday', time: '10:00 – 18:00 EST' },
+                    { day: 'Saturday',        time: '10:00 – 14:00 EST' },
                     { day: 'Sunday',          time: 'Closed' },
                   ].map((h) => (
                     <div key={h.day} className="flex justify-between text-sm">
