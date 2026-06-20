@@ -98,6 +98,9 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Link columns — grouped into a compact 3-up row on mobile so "Care" never
+             wraps alone; the wrapper dissolves on md+ so each column is its own grid item. */}
+          <div className="col-span-2 grid grid-cols-3 gap-x-6 md:contents">
           <div>
             <p className="eyebrow-light mb-5">Shop</p>
             <ul className="space-y-3">
@@ -142,6 +145,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
+          </div>
           </div>
         </div>
       </div>
