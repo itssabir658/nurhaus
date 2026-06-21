@@ -151,7 +151,7 @@ export default function Footer() {
       </div>
 
       {/* Ghost wordmark — pure texture, sits behind nothing, decorative */}
-      <div aria-hidden="true" className="select-none pointer-events-none -mb-[2vw] -mt-4">
+      <div aria-hidden="true" className="select-none pointer-events-none mb-8 md:mb-12 -mt-4">
         <p className="font-display text-center text-primary/[0.06] text-[17vw] leading-[0.8] tracking-tight whitespace-nowrap">
           NÜRHAUS
         </p>
