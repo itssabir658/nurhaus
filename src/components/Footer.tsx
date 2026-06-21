@@ -98,6 +98,9 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Link columns — grouped into a compact 3-up row on mobile so "Care" never
+             wraps alone; the wrapper dissolves on md+ so each column is its own grid item. */}
+          <div className="col-span-2 grid grid-cols-3 gap-x-6 md:contents">
           <div>
             <p className="eyebrow-light mb-5">Shop</p>
             <ul className="space-y-3">
@@ -143,11 +146,12 @@ export default function Footer() {
               ))}
             </ul>
           </div>
+          </div>
         </div>
       </div>
 
       {/* Ghost wordmark — pure texture, sits behind nothing, decorative */}
-      <div aria-hidden="true" className="select-none pointer-events-none -mb-[2vw] -mt-4">
+      <div aria-hidden="true" className="select-none pointer-events-none mb-8 md:mb-12 -mt-4">
         <p className="font-display text-center text-primary/[0.06] text-[17vw] leading-[0.8] tracking-tight whitespace-nowrap">
           NÜRHAUS
         </p>
