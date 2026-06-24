@@ -143,7 +143,6 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                   Filter
                 </button>
 
-                <span className="text-[0.7rem] text-muted tracking-wide">{filtered.length} pieces</span>
               </div>
             </div>
           </div>
