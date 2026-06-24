@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 const shopLinks  = ['Collection', 'Size Guide'];
@@ -73,11 +74,14 @@ export default function Footer() {
           {/* Brand column */}
           <div className="col-span-2 md:col-span-2 flex flex-col justify-between">
             <div>
-              <Link
-                href="/"
-                className="font-display font-medium uppercase tracking-[0.14em] text-[22px] leading-[0.88] inline-block mb-6"
-              >
-                NÜR HAUS
+              <Link href="/" aria-label="NÜR HAUS home" className="inline-block mb-6">
+                <Image
+                  src="/nurhaus-logo.png"
+                  alt="NÜR HAUS"
+                  width={64}
+                  height={48}
+                  className="h-12 w-auto object-contain invert"
+                />
               </Link>
               <p className="text-sm text-primary/55 leading-relaxed max-w-[220px]">
                 Modest luxury, in measured light. Made in small batches, for women who dress with intention.
@@ -145,7 +149,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Ghost wordmark — pure texture, sits behind nothing, decorative */}
+      {/* Ghost wordmark */}
       <div aria-hidden="true" className="select-none pointer-events-none -mb-[2vw] -mt-4">
         <p className="font-display text-center text-primary/[0.06] text-[17vw] leading-[0.8] tracking-tight whitespace-nowrap">
           NÜR HAUS
@@ -153,7 +157,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="relative border-t border-primary/15">
+      <div className="relative">
         <div className="site-max site-px pt-10 pb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-primary/45">© 2026 NÜR HAUS. All rights reserved.</p>
           <p className="text-xs text-primary/45">Made in small batches.</p>

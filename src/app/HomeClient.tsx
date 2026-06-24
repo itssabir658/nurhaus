@@ -14,8 +14,6 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
 };
 
-const MANIFESTO_TEXT = 'We make few things, slowly. Cloth chosen for the way it holds light, lines drawn for the way a woman moves through a room. Eight pieces this season — two abayas, six dresses — each finished by hand and meant to be kept.';
-const MANIFESTO_WORDS = MANIFESTO_TEXT.split(' ');
 
 export default function HomeClient({ products, configured }: { products: AppProduct[]; configured: boolean }) {
   const heroRef   = useRef<HTMLDivElement>(null);
@@ -100,12 +98,13 @@ export default function HomeClient({ products, configured }: { products: AppProd
           transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1], delay: 0.15 }}
         />
 
-        <div className="relative z-10 h-full site-max site-px flex flex-col justify-end pb-52 md:pb-60">
+        {/* Headline + Subtext + CTAs — all pinned to bottom-left */}
+        <div className="absolute bottom-6 sm:bottom-8 md:bottom-12 left-0 right-0 z-10 pl-6 md:pl-12 xl:pl-20 pr-6 md:pr-12 xl:pr-20">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-5 md:mb-6"
+            className="mb-4 md:mb-6"
           >
             <span
               className="eyebrow-light inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5"
@@ -119,12 +118,12 @@ export default function HomeClient({ products, configured }: { products: AppProd
               Autumn — Launch Collection
             </span>
           </motion.div>
-          <h1 className="font-display text-primary leading-[0.92] text-[2.6rem] sm:text-[4.2rem] md:text-[6.2rem] lg:text-[8rem] max-w-5xl">
+          <h1 className="font-display text-primary leading-[0.92] text-[2.2rem] sm:text-[3.2rem] md:text-[4.6rem] lg:text-[6.5rem] xl:text-[8rem] max-w-5xl mb-4 md:mb-6 lg:mb-8">
             {['Modest luxury,', 'in measured light.'].map((line, i) => (
               <div key={i} className="overflow-hidden pb-[0.15em]">
                 <motion.span
                   className="block"
-                  style={{ fontStyle: 'normal' }}
+                  style={{ fontStyle: i === 1 ? 'italic' : 'normal' }}
                   initial={{ y: '100%' }}
                   animate={{ y: 0 }}
                   transition={{ delay: 1.05 + i * 0.15, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
@@ -134,10 +133,6 @@ export default function HomeClient({ products, configured }: { products: AppProd
               </div>
             ))}
           </h1>
-        </div>
-
-        {/* Subtext + CTAs — pinned to bottom */}
-        <div className="absolute bottom-8 md:bottom-12 left-0 right-0 z-10 site-max site-px">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}

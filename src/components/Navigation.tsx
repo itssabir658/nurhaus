@@ -54,12 +54,15 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
       >
         <nav className="site-max site-px h-20 flex items-center justify-between gap-8">
           {/* Logo */}
-          <Link
-            href="/"
-            className="font-display font-medium uppercase tracking-[0.14em] text-[24px] leading-[0.88]"
-            aria-label="NÜR HAUS home"
-          >
-            NÜR HAUS
+          <Link href="/" aria-label="NÜR HAUS home">
+            <Image
+              src="/nurhaus-logo.png"
+              alt="NÜR HAUS"
+              width={64}
+              height={48}
+              className="h-12 w-auto object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop links */}
@@ -144,12 +147,14 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
           >
             {/* Header row */}
             <div className="site-px h-20 flex items-center justify-between flex-shrink-0 mt-[44px]">
-              <Link
-                href="/"
-                onClick={() => setMenuOpen(false)}
-                className="font-display font-medium uppercase tracking-[0.14em] text-[24px] leading-[0.88] text-primary"
-              >
-                NÜR HAUS
+              <Link href="/" onClick={() => setMenuOpen(false)} aria-label="NÜR HAUS home">
+                <Image
+                  src="/nurhaus-logo.png"
+                  alt="NÜR HAUS"
+                  width={64}
+                  height={48}
+                  className="h-12 w-auto object-contain invert"
+                />
               </Link>
               <button
                 onClick={() => setMenuOpen(false)}

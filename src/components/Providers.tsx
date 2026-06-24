@@ -6,7 +6,6 @@ import Footer from './Footer';
 import CartDrawer from './CartDrawer';
 import SearchOverlay from './SearchOverlay';
 import AnnouncementBar from './AnnouncementBar';
-import ExitIntentPopup from './ExitIntentPopup';
 import { NurhausContext } from '@/contexts/NurhausContext';
 import { CartProvider } from '@/contexts/CartContext';
 import type { AppProduct } from '@/lib/shopify/types';
@@ -19,8 +18,8 @@ export default function Providers({
   children: React.ReactNode;
   searchProducts?: AppProduct[];
 }) {
-  const [cartOpen, setCartOpen]         = useState(false);
-  const [searchOpen, setSearchOpen]     = useState(false);
+  const [cartOpen, setCartOpen]     = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const openWaitlist = useCallback((_productName: string) => {}, []);
 
   useEffect(() => {
@@ -59,7 +58,6 @@ export default function Providers({
           onClose={() => setSearchOpen(false)}
           products={searchProducts}
         />
-        <ExitIntentPopup />
         {/* 44px announcement bar + 80px nav = 124px total header height */}
         <main className="pt-[124px]">{children}</main>
         <Footer />
