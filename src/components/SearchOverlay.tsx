@@ -110,7 +110,7 @@ export default function SearchOverlay({ open, onClose, products }: SearchOverlay
                             <Image src={p.images[0]} alt={p.name} width={200} height={266} className="w-full h-full object-cover" />
                           )}
                         </div>
-                        <p className="font-display text-base">{p.name}</p>
+                        <p className="font-product text-base">{p.name}</p>
                         <p className="text-sm text-smoke mt-0.5">${p.price.toLocaleString()}</p>
                       </Link>
                     ))}

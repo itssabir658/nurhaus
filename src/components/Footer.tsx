@@ -33,14 +33,14 @@ export default function Footer() {
       {/* Newsletter — large, centered, editorial */}
       <div className="border-b border-primary/15">
         <motion.div
-          className="site-max site-px py-24 md:py-32 text-center"
+          className="site-max site-px py-14 md:py-32 text-center"
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
           <p className="eyebrow-light mb-6">The Circle</p>
-          <h3 className="font-display text-[2.4rem] md:text-[4.25rem] leading-[1.05] mb-10 max-w-2xl mx-auto">
+          <h3 className="font-display text-[1.75rem] sm:text-[2.4rem] md:text-[4.25rem] leading-[1.05] mb-8 md:mb-10 max-w-2xl mx-auto">
             Quiet news, for those who prefer it that way.
           </h3>
           {submitted ? (
@@ -69,35 +69,39 @@ export default function Footer() {
       </div>
 
       {/* Brand + links */}
-      <div className="site-max site-px py-16 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-x-8 gap-y-14">
+      <div className="site-max site-px pt-6 pb-16 md:pb-20">
+        {/* Logo — above the grid so description aligns with column headings */}
+        <Link href="/" aria-label="NÜR HAUS home" className="inline-block mb-10">
+          <Image
+            src="/nurhaus-logo.png"
+            alt="NÜR HAUS"
+            width={64}
+            height={48}
+            className="h-12 w-auto object-contain invert"
+          />
+        </Link>
+
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-x-6 md:gap-x-8 gap-y-10 md:gap-y-14">
           {/* Brand column */}
-          <div className="col-span-2 md:col-span-2 flex flex-col justify-between">
+          <div className="col-span-3 md:col-span-2 flex flex-col justify-between">
             <div>
-              <Link href="/" aria-label="NÜR HAUS home" className="inline-block mb-6">
-                <Image
-                  src="/nurhaus-logo.png"
-                  alt="NÜR HAUS"
-                  width={64}
-                  height={48}
-                  className="h-12 w-auto object-contain invert"
-                />
-              </Link>
               <p className="text-sm text-primary/55 leading-relaxed max-w-[220px]">
                 Modest luxury, in measured light. Made in small batches, for women who dress with intention.
               </p>
             </div>
-            <div className="flex gap-6 mt-10">
-              {['Instagram'].map((s) => (
-                <a
-                  key={s}
-                  href="#"
-                  aria-label={s}
-                  className="text-xs text-primary/55 hover:text-gold transition-colors duration-300 tracking-wide"
-                >
-                  {s}
-                </a>
-              ))}
+            <div className="flex items-center gap-3 mt-10">
+              <span className="text-xs text-primary/45 tracking-wide">Find us on</span>
+              <a
+                href="#"
+                aria-label="Instagram"
+                className="text-primary/55 hover:text-gold transition-colors duration-300"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+                </svg>
+              </a>
             </div>
           </div>
 
@@ -149,19 +153,11 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Ghost wordmark */}
-      <div aria-hidden="true" className="select-none pointer-events-none -mb-[2vw] -mt-4">
-        <p className="font-display text-center text-primary/[0.06] text-[17vw] leading-[0.8] tracking-tight whitespace-nowrap">
+      {/* Ghost wordmark — full-width, flush to footer bottom */}
+      <div aria-hidden="true" className="select-none pointer-events-none mt-6 pt-[0.15em]">
+        <p className="text-center text-primary/[0.07] text-[19.5vw] leading-[0.82] tracking-[0.02em] whitespace-nowrap" style={{ fontFamily: 'var(--font-display)' }}>
           NÜR HAUS
         </p>
-      </div>
-
-      {/* Bottom bar */}
-      <div className="relative">
-        <div className="site-max site-px pt-10 pb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-primary/45">© 2026 NÜR HAUS. All rights reserved.</p>
-          <p className="text-xs text-primary/45">Made in small batches.</p>
-        </div>
       </div>
     </footer>
   );

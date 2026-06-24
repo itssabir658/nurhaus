@@ -14,10 +14,9 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
 };
 
-
 export default function HomeClient({ products, configured }: { products: AppProduct[]; configured: boolean }) {
-  const heroRef   = useRef<HTMLDivElement>(null);
-  const manifestoRef = useRef<HTMLParagraphElement>(null);
+  const heroRef    = useRef<HTMLDivElement>(null);
+  const curtainRef = useRef<HTMLDivElement>(null);
 
   // Mouse-follow parallax for the hero image — desktop only, spring-smoothed so it never costs a re-render.
   const mvX = useMotionValue(0);
@@ -41,6 +40,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
+    // Scroll parallax on hero image
     if (heroRef.current) {
       gsap.fromTo(
         heroRef.current,
@@ -49,19 +49,21 @@ export default function HomeClient({ products, configured }: { products: AppProd
       );
     }
 
-    if (manifestoRef.current) {
-      gsap.to(manifestoRef.current.querySelectorAll('.word'), {
-        color: '#111111',
-        ease: 'none',
-        stagger: 0.4,
-        scrollTrigger: {
-          trigger: manifestoRef.current,
-          start: 'top 75%',
-          end: 'bottom 50%',
-          scrub: true,
-        },
-      });
+    // Curtain reveal
+    if (curtainRef.current) {
+      gsap.set(curtainRef.current, { scaleY: 1 });
+      gsap.to(curtainRef.current, { scaleY: 0, transformOrigin: 'top', duration: 1.1, delay: 0.15, ease: 'power2.inOut' });
     }
+
+    // Hero entrance animations (elements start hidden via inline style in JSX)
+    gsap.to('.hero-eyebrow', { opacity: 1, y: 0,       duration: 0.8, delay: 0.9,  ease: 'power3.out' });
+    gsap.fromTo('.hero-line',
+      { yPercent: 100, opacity: 0 },
+      { yPercent: 0, opacity: 1, stagger: 0.15, duration: 0.9, delay: 1.05, ease: 'power3.out' }
+    );
+    gsap.to('.hero-subtext', { opacity: 1, y: 0,       duration: 0.8, delay: 1.5,  ease: 'power3.out' });
+    gsap.to('.hero-ctas',    { opacity: 1, y: 0,       duration: 0.8, delay: 1.7,  ease: 'power3.out' });
+    gsap.to('.hero-scroll',  { opacity: 1,             duration: 0.8, delay: 2.2  });
 
     return () => ScrollTrigger.killAll();
   }, []);
@@ -90,85 +92,47 @@ export default function HomeClient({ products, configured }: { products: AppProd
         </div>
 
         {/* Cinematic curtain reveal */}
-        <motion.div
+        <div
+          ref={curtainRef}
           className="absolute inset-0 z-30 bg-primary pointer-events-none"
           style={{ transformOrigin: 'top' }}
-          initial={{ scaleY: 1 }}
-          animate={{ scaleY: 0 }}
-          transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1], delay: 0.15 }}
         />
 
         {/* Headline + Subtext + CTAs — all pinned to bottom-left */}
         <div className="absolute bottom-6 sm:bottom-8 md:bottom-12 left-0 right-0 z-10 pl-6 md:pl-12 xl:pl-20 pr-6 md:pr-12 xl:pr-20">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-4 md:mb-6"
-          >
-            <span
-              className="eyebrow-light inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5"
-              style={{
-                backdropFilter: 'blur(14px) saturate(160%)',
-                WebkitBackdropFilter: 'blur(14px) saturate(160%)',
-                background: 'rgba(255,255,255,0.1)',
-                color: '#111111',
-              }}
-            >
-              Autumn — Launch Collection
-            </span>
-          </motion.div>
-          <h1 className="font-display text-primary leading-[0.92] text-[2.2rem] sm:text-[3.2rem] md:text-[4.6rem] lg:text-[6.5rem] xl:text-[8rem] max-w-5xl mb-4 md:mb-6 lg:mb-8">
+          <h1 className="font-hero font-normal text-primary leading-[0.92] text-[2.2rem] sm:text-[3.2rem] md:text-[4.6rem] lg:text-[6.5rem] xl:text-[8rem] max-w-5xl mb-4 md:mb-6 lg:mb-8">
             {['Modest luxury,', 'in measured light.'].map((line, i) => (
               <div key={i} className="overflow-hidden pb-[0.15em]">
-                <motion.span
-                  className="block"
-                  style={{ fontStyle: i === 1 ? 'italic' : 'normal' }}
-                  initial={{ y: '100%' }}
-                  animate={{ y: 0 }}
-                  transition={{ delay: 1.05 + i * 0.15, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                <span
+                  className="hero-line block"
+                  style={{ fontStyle: i === 1 ? 'italic' : 'normal', opacity: 0 }}
                 >
                   {line}
-                </motion.span>
+                </span>
               </div>
             ))}
           </h1>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-primary/75 text-sm md:text-base max-w-md mb-6"
-          >
+          <p className="hero-subtext text-primary/75 text-sm md:text-base max-w-md mb-6" style={{ opacity: 0, transform: 'translateY(12px)' }}>
             Abayas and dresses cut in small batches, for women who dress with intention.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.7, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-wrap gap-3 sm:gap-4"
-          >
+          </p>
+          <div className="hero-ctas flex gap-3 sm:gap-4" style={{ opacity: 0, transform: 'translateY(12px)' }}>
             <Link
               href="/shop?category=Abaya"
-              className="inline-flex items-center justify-center gap-2 bg-primary text-ink text-[0.8rem] tracking-[0.08em] uppercase font-medium px-7 py-4 hover:bg-gold transition-colors duration-400"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-primary text-ink text-[0.7rem] sm:text-[0.8rem] tracking-[0.05em] sm:tracking-[0.08em] uppercase font-medium px-5 sm:px-7 py-4 hover:bg-gold transition-colors duration-400"
             >
               Shop Abayas
             </Link>
             <Link
               href="/shop?category=Dress"
-              className="inline-flex items-center justify-center gap-2 border border-primary/50 text-primary text-[0.8rem] tracking-[0.08em] uppercase font-medium px-7 py-4 hover:border-primary hover:bg-primary/10 transition-all duration-400"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 border border-primary/50 text-primary text-[0.7rem] sm:text-[0.8rem] tracking-[0.05em] sm:tracking-[0.08em] uppercase font-medium px-5 sm:px-7 py-4 hover:border-primary hover:bg-primary/10 transition-all duration-400"
             >
               Shop Dresses
             </Link>
-          </motion.div>
+          </div>
         </div>
 
         {/* Scroll cue */}
-        <motion.div
-          className="absolute bottom-8 right-6 md:right-10 z-10 hidden sm:flex flex-col items-center gap-2 text-primary/60"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.2, duration: 0.8 }}
-        >
+        <div className="hero-scroll absolute bottom-8 right-6 md:right-10 z-10 hidden sm:flex flex-col items-center gap-2 text-primary/60" style={{ opacity: 0 }}>
           <span className="text-[0.62rem] tracking-[0.18em] uppercase" style={{ writingMode: 'vertical-rl' }}>Scroll</span>
           <motion.span
             className="block w-px h-10 bg-primary/40"
@@ -176,12 +140,12 @@ export default function HomeClient({ products, configured }: { products: AppProd
             transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
             style={{ transformOrigin: 'top' }}
           />
-        </motion.div>
+        </div>
       </section>
 
       {/* INTERLUDE */}
       <section className="bg-midnight text-primary">
-        <div className="site-max site-px py-28 md:py-44 grid md:grid-cols-2 gap-16 md:gap-28 items-center">
+        <div className="site-max site-px py-14 md:py-44 grid md:grid-cols-2 gap-10 md:gap-28 items-center">
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -189,7 +153,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
             viewport={{ once: true }}
           >
             <p className="eyebrow-light mb-6">Campaign — No. 01</p>
-            <h2 className="font-display text-[2.4rem] md:text-[3.5rem] leading-[1.1] tracking-tight">
+            <h2 className="font-display text-[1.75rem] sm:text-[2.4rem] md:text-[3.5rem] leading-[1.1] tracking-tight">
               A wardrobe should be quiet enough to last a lifetime.
             </h2>
           </motion.div>
@@ -213,14 +177,14 @@ export default function HomeClient({ products, configured }: { products: AppProd
       </section>
 
       {/* COLLECTION PREVIEW */}
-      <section className="site-max site-px py-28 md:py-44">
-        <div className="flex items-end justify-between mb-16 md:mb-24">
+      <section className="site-max site-px py-14 md:py-44">
+        <div className="flex items-end justify-between mb-10 md:mb-24">
           <div>
             <motion.p className="eyebrow mb-3" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
               The Collection
             </motion.p>
             <motion.h2
-              className="font-display text-[2.4rem] md:text-[4rem] tracking-tight max-w-xl leading-tight"
+              className="font-display text-[1.75rem] sm:text-[2.4rem] md:text-[4rem] tracking-tight max-w-xl leading-tight"
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -247,7 +211,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
             <ShopifySetupNotice context="the collection" />
           )
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-16">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-10 md:gap-y-16">
             {products.slice(0, 6).map((p, i) => (
               <motion.div
                 key={p.handle}
@@ -272,7 +236,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                   </div>
                   <p className="eyebrow mb-1.5">{p.kind} · {String(i + 1).padStart(2, '0')}</p>
                   <div className="flex items-baseline justify-between">
-                    <span className="font-display text-xl">{p.name}</span>
+                    <span className="font-product text-xl">{p.name}</span>
                     <span className="text-sm text-smoke">${p.price.toLocaleString()}</span>
                   </div>
                 </Link>
@@ -288,7 +252,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
 
       {/* STORY TEASE */}
       <section className="bg-secondary/30">
-        <div className="site-max site-px py-28 md:py-40 grid md:grid-cols-2 gap-16 items-center">
+        <div className="site-max site-px py-14 md:py-40 grid md:grid-cols-2 gap-10 md:gap-16 items-center">
           <motion.div
             className="aspect-[4/5] overflow-hidden"
             variants={fadeUp}
@@ -312,7 +276,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
             viewport={{ once: true }}
           >
             <p className="eyebrow mb-6">Our Story</p>
-            <h2 className="font-display text-[2.4rem] md:text-[3.5rem] leading-[1.1] tracking-tight mb-8">
+            <h2 className="font-display text-[1.75rem] sm:text-[2.4rem] md:text-[3.5rem] leading-[1.1] tracking-tight mb-8">
               &ldquo;Elegance is not attention. It is presence.&rdquo;
             </h2>
             <p className="text-smoke text-base leading-relaxed mb-10 max-w-md">

@@ -11,6 +11,54 @@
 }
 
 @font-face {
+  font-family: 'TT Ramillas';
+  src: url('/fonts/TT Ramillas Trial Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Ramillas';
+  src: url('/fonts/TT Ramillas Trial Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Ramillas';
+  src: url('/fonts/TT Ramillas Trial Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Ramillas';
+  src: url('/fonts/TT Ramillas Trial Medium Italic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Ramillas';
+  src: url('/fonts/TT Ramillas Trial Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Ramillas';
+  src: url('/fonts/TT Ramillas Trial Bold Italic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Conega';
   src: url('/fonts/CONEGA.otf') format('opentype');
   font-weight: 400;
@@ -26,7 +74,7 @@
   --c-secondary: #DCCFC2;
   --c-ink:       #111111;
   --c-accent:    #8E7D6A;
-  --c-gold:      #C7A76C;
+  --c-gold:      #be9455;
   --c-hairline:  #E4DDD6;
   --c-midnight:  #1C1712;
   --c-smoke:     #7A746F;
@@ -63,7 +111,7 @@ img, video { display: block; max-width: 100%; }
    TYPOGRAPHY
    ============================================================ */
 .eyebrow {
-  font-family: var(--font-sans);
+  font-family: var(--font-eyebrow);
   font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: 0.28em;
@@ -72,7 +120,7 @@ img, video { display: block; max-width: 100%; }
 }
 
 .eyebrow-light {
-  font-family: var(--font-sans);
+  font-family: var(--font-eyebrow);
   font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: 0.28em;

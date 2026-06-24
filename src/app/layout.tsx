@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Inter, Manrope } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import Providers from '@/components/Providers';
 import { getProducts, isShopifyConfigured } from '@/lib/shopify';
@@ -14,6 +15,15 @@ const cormorant = Cormorant_Garamond({
 
 const inter = Inter({
   subsets: ['latin'],
+  variable: '--font-eyebrow',
+  display: 'swap',
+});
+
+const figtree = localFont({
+  src: [
+    { path: '../../public/fonts/Figtree-VariableFont_wght.ttf', style: 'normal' },
+    { path: '../../public/fonts/Figtree-Italic-VariableFont_wght.ttf', style: 'italic' },
+  ],
   variable: '--font-sans',
   display: 'swap',
 });
@@ -46,7 +56,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${inter.variable} ${manrope.variable}`}
+      className={`${cormorant.variable} ${inter.variable} ${figtree.variable} ${manrope.variable}`}
     >
       <body className="bg-primary text-ink font-sans">
         <Providers searchProducts={searchProducts}>{children}</Providers>

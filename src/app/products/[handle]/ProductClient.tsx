@@ -170,7 +170,7 @@ export default function ProductClient({
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
               <p className="eyebrow mb-3">{product.kind}</p>
-              <h1 className="font-display text-[2.8rem] md:text-[3.5rem] leading-tight tracking-tight mb-4">
+              <h1 className="font-product text-[2.8rem] md:text-[3.5rem] leading-tight tracking-tight mb-4">
                 {product.name}
               </h1>
               <p className="font-display text-2xl text-accent mb-8">${product.price.toLocaleString()}</p>
@@ -431,7 +431,7 @@ export default function ProductClient({
                         />
                       )}
                     </div>
-                    <p className="font-display text-base group-hover:text-accent transition-colors">{p.name}</p>
+                    <p className="font-product text-base group-hover:text-accent transition-colors">{p.name}</p>
                     <p className="text-sm text-smoke mt-0.5">${p.price.toLocaleString()}</p>
                   </Link>
                 </motion.div>
@@ -463,7 +463,7 @@ export default function ProductClient({
                         <Image src={p.images[0]} alt={p.name} width={300} height={400} loading="lazy" className="w-full h-full object-cover" />
                       )}
                     </div>
-                    <p className="font-display text-lg group-hover:text-accent transition-colors">{p.name}</p>
+                    <p className="font-product text-lg group-hover:text-accent transition-colors">{p.name}</p>
                     <p className="text-sm text-smoke mt-1">${p.price.toLocaleString()}</p>
                   </Link>
                 </motion.div>

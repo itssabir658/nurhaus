@@ -171,7 +171,7 @@ export default function CartPageClient({ crossSell }: { crossSell: AppProduct[] 
                       <div className="aspect-[3/4] relative overflow-hidden bg-secondary/20 mb-3">
                         {p.images[0] && <Image src={p.images[0]} alt={p.name} fill className="object-cover object-center product-card-img" />}
                       </div>
-                      <p className="font-display text-base group-hover:text-accent transition-colors mb-1">{p.name}</p>
+                      <p className="font-product text-base group-hover:text-accent transition-colors mb-1">{p.name}</p>
                       <p className="text-sm text-smoke">${p.price.toLocaleString()}</p>
                     </Link>
                   </motion.div>

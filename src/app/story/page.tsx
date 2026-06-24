@@ -30,27 +30,43 @@ const fadeUp = {
 
 export default function StoryPage() {
   const heroTextRef = useRef<HTMLDivElement>(null);
+  const introRef    = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-
-    if (heroTextRef.current) {
-      gsap.from(heroTextRef.current.querySelectorAll('.line-inner'), {
+    const ctx = gsap.context(() => {
+      gsap.from('.line-inner', {
         yPercent: 100,
         stagger: 0.12,
         duration: 1.1,
         ease: 'power4.out',
         delay: 0.3,
       });
+    }, heroTextRef);
+
+    const el = introRef.current;
+    if (el) {
+      gsap.set(el, { opacity: 0, y: 40 });
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
     }
 
-    return () => ScrollTrigger.killAll();
+    return () => { ctx.revert(); ScrollTrigger.getAll().forEach(t => t.kill()); };
   }, []);
 
   return (
     <div className="page-enter">
       {/* Hero */}
-      <section className="relative min-h-[92vh] flex items-end pb-24 md:pb-40 overflow-hidden">
+      <section className="relative h-[82svh] md:min-h-[92vh] flex items-end pb-6 md:pb-40 overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1762605135376-ae5af70a5628?auto=format&fit=crop&w=1800&q=80"
@@ -63,12 +79,24 @@ export default function StoryPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-midnight/20 via-midnight/30 to-midnight/70" />
         </div>
         <div className="relative z-10 site-max site-px">
-          <p className="eyebrow-light mb-8">Our Story</p>
+          <div className="mb-3">
+            <span
+              className="eyebrow-light inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5"
+              style={{
+                backdropFilter: 'blur(14px) saturate(160%)',
+                WebkitBackdropFilter: 'blur(14px) saturate(160%)',
+                background: 'rgba(255,255,255,0.1)',
+                color: 'var(--c-primary)',
+              }}
+            >
+              Our Story
+            </span>
+          </div>
           <div ref={heroTextRef}>
             {['"Elegance is not attention.', 'It is presence."'].map((line, i) => (
               <div key={i} className="overflow-hidden">
                 <div
-                  className="line-inner font-display text-primary leading-[0.92] tracking-tight text-[3rem] sm:text-[5rem] md:text-[7rem] lg:text-[8.5rem]"
+                  className="line-inner font-display text-primary leading-[0.92] tracking-tight text-[2rem] sm:text-[3.5rem] md:text-[7rem] lg:text-[8.5rem]"
                   style={{ fontStyle: 'normal' }}
                 >
                   {line}
@@ -81,15 +109,12 @@ export default function StoryPage() {
 
       {/* Intro */}
       <section className="site-max site-px py-24 md:py-40 max-w-4xl">
-        <motion.p
+        <p
+          ref={introRef}
           className="font-display text-[1.6rem] md:text-[2.2rem] leading-[1.35] tracking-tight text-ink/90"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
         >
           NÜR HAUS was founded on the belief that a garment should ask nothing of the woman wearing it — no compromise, no apology. Modest dressing is not a category. It is a point of view.
-        </motion.p>
+        </p>
       </section>
 
       {/* Founder split */}

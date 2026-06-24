@@ -20,7 +20,9 @@ const config: Config = {
         muted:     '#B8AFA7',
       },
       fontFamily: {
-        display: ['Brolimo', 'Georgia', 'serif'],
+        display: ['TT Ramillas', 'Georgia', 'serif'],
+        hero:    ['TT Ramillas', 'Georgia', 'serif'],
+        product: ['Brolimo',  'Georgia', 'serif'],
         sans:    ['var(--font-sans)',    'system-ui', 'sans-serif'],
         body:    ['var(--font-body)',    'system-ui', 'sans-serif'],
       },

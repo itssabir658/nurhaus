@@ -35,7 +35,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
   return (
     <div className="page-enter">
       {/* Hero */}
-      <section className="relative h-[70vh] overflow-hidden">
+      <section className="relative h-[82svh] md:h-[70vh] overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1762376268273-645db555eaf9?auto=format&fit=crop&w=1800&q=80"
           alt="Shop the Nürhaus collection"
@@ -45,17 +45,27 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
           className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-midnight/10 via-midnight/30 to-midnight/60" />
-        <div className="relative z-10 h-full site-max site-px flex flex-col justify-end pb-20">
-          <motion.p
-            className="eyebrow-light mb-4"
+        <div className="relative z-10 h-full site-max site-px flex flex-col justify-end pb-6 md:pb-12">
+          <motion.div
+            className="mb-4"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.7, ease: [0.22,1,0.36,1] }}
           >
-            Autumn Collection
-          </motion.p>
+            <span
+              className="eyebrow-light inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5"
+              style={{
+                backdropFilter: 'blur(14px) saturate(160%)',
+                WebkitBackdropFilter: 'blur(14px) saturate(160%)',
+                background: 'rgba(255,255,255,0.1)',
+                color: 'var(--c-primary)',
+              }}
+            >
+              Autumn Collection
+            </span>
+          </motion.div>
           <motion.h1
-            className="font-display text-primary text-[3rem] md:text-[6rem] leading-[0.92] tracking-tight max-w-3xl"
+            className="font-display text-primary text-[2.2rem] sm:text-[3rem] md:text-[6rem] leading-[0.92] tracking-tight max-w-3xl"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.9, ease: [0.22,1,0.36,1] }}
@@ -312,14 +322,14 @@ function ProductCard({ product: p, large = false }: { product: AppProduct; large
           <span className="absolute top-4 right-4 bg-midnight/80 px-3 py-1 eyebrow text-primary">Sold Out</span>
         )}
         <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-midnight/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <p className="font-display text-lg text-primary">{p.name}</p>
+          <p className="font-product text-lg text-primary">{p.name}</p>
           <p className="text-primary/80 text-sm mt-0.5">${p.price.toLocaleString()}</p>
         </div>
       </div>
       <div className="mt-4">
         <p className="eyebrow mb-1">{p.kind}</p>
         <div className="flex items-baseline justify-between">
-          <span className={`font-display ${large ? 'text-2xl' : 'text-xl'}`}>{p.name}</span>
+          <span className={`font-product ${large ? 'text-2xl' : 'text-xl'}`}>{p.name}</span>
           <span className="text-sm text-smoke">${p.price.toLocaleString()}</span>
         </div>
       </div>

@@ -157,7 +157,7 @@ export default function SearchPageClient({ products }: { products: AppProduct[] 
                           <span className="eyebrow bg-primary/90 text-ink px-2 py-1 text-[0.6rem]">{product.kind}</span>
                         </div>
                       </div>
-                      <p className="font-display text-base group-hover:text-accent transition-colors mb-1">{product.name}</p>
+                      <p className="font-product text-base group-hover:text-accent transition-colors mb-1">{product.name}</p>
                       <p className="text-sm text-smoke">${product.price.toLocaleString()}</p>
                     </Link>
                   </motion.div>
