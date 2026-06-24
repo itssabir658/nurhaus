@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Brolimo';
+  src: url('/fonts/BrolimoRegular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Conega';
+  src: url('/fonts/CONEGA.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --c-primary:   #F8F5F1;
+  --c-secondary: #DCCFC2;
+  --c-ink:       #111111;
+  --c-accent:    #8E7D6A;
+  --c-gold:      #C7A76C;
+  --c-hairline:  #E4DDD6;
+  --c-midnight:  #1C1712;
+  --c-smoke:     #7A746F;
+  --c-muted:     #B8AFA7;
+
+  --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--c-primary);
+  color: var(--c-ink);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--c-gold);
+  color: var(--c-primary);
+}
+
+img, video { display: block; max-width: 100%; }
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+
+.eyebrow-light {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.site-px {
+  padding-inline: 24px;
+}
+@media (min-width: 768px) {
+  .site-px { padding-inline: 48px; }
+}
+@media (min-width: 1280px) {
+  .site-px { padding-inline: 80px; }
+}
+
+.site-max {
+  max-width: 1400px;
+  margin-inline: auto;
+}
+
+/* ============================================================
+   REVEAL ANIMATIONS (CSS-only fallback)
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.9s var(--ease-expo) both;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--c-primary); }
+::-webkit-scrollbar-thumb { background: var(--c-accent); border-radius: 2px; }
+
+/* ============================================================
+   FOCUS
+   ============================================================ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--c-gold);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   PROSE (journal articles)
+   ============================================================ */
+.prose-nurhaus {
+  max-width: 680px;
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: #2A2520;
+}
+.prose-nurhaus h2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  color: var(--c-ink);
+}
+.prose-nurhaus p { margin-bottom: 1.5rem; }
+.prose-nurhaus blockquote {
+  border-left: 2px solid var(--c-gold);
+  padding-left: 1.5rem;
+  margin-inline: 0;
+  font-family: var(--font-display);
+  font-style: normal;
+  font-size: 1.4rem;
+  color: var(--c-ink);
+  line-height: 1.4;
+}
+
+/* ============================================================
+   FORM ELEMENTS
+   ============================================================ */
+.input-luxury {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--c-hairline);
+  padding: 14px 0;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--c-ink);
+  transition: border-color 400ms var(--ease-expo);
+  outline: none;
+}
+.input-luxury::placeholder { color: var(--c-muted); }
+.input-luxury:focus { border-color: var(--c-accent); }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--c-ink);
+  color: var(--c-primary);
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 18px 40px;
+  transition: background 400ms var(--ease-expo), color 400ms var(--ease-expo);
+  cursor: pointer;
+  border: none;
+}
+.btn-primary:hover {
+  background: var(--c-accent);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 17px 40px;
+  border: 1px solid var(--c-ink);
+  transition: background 400ms var(--ease-expo), color 400ms var(--ease-expo);
+  cursor: pointer;
+}
+.btn-outline:hover {
+  background: var(--c-ink);
+  color: var(--c-primary);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--c-primary);
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 17px 40px;
+  border: 1px solid rgba(248, 245, 241, 0.35);
+  transition: border-color 400ms, background 400ms;
+  cursor: pointer;
+}
+.btn-ghost:hover {
+  border-color: var(--c-primary);
+  background: rgba(248, 245, 241, 0.08);
+}
+
+/* ============================================================
+   PRODUCT CARD
+   ============================================================ */
+.product-card-img {
+  overflow: hidden;
+  background: #EDE8E2;
+}
+.product-card-img img {
+  transition: transform 1.2s var(--ease-expo);
+  will-change: transform;
+}
+.product-card:hover .product-card-img img {
+  transform: scale(1.05);
+}
+
+/* ============================================================
+   ACCORDION
+   ============================================================ */
+.accordion-content {
+  overflow: hidden;
+  transition: max-height 500ms var(--ease-expo);
+}
+
+/* ============================================================
+   LENIS SMOOTH SCROLL
+   ============================================================ */
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
+
+/* ============================================================
+   PAGE TRANSITIONS
+   ============================================================ */
+.page-enter {
+  animation: pageEnter 600ms var(--ease-expo) both;
+}
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
