@@ -151,7 +151,7 @@ export default function StoryPage() {
               <p>NÜR HAUS started in my apartment with a pattern table and four bolts of fabric. The first pieces were for women I knew. Then for women I didn't. The approach has not changed: start from need, remove everything unnecessary, keep only what is irreducible.</p>
               <p>Every decision — the length, the fabric weight, the single seam at the back — is a conversation with the woman who will wear it. I hope she finds, as I did, that dressing quietly is its own form of power.</p>
             </div>
-            <p className="font-display text-2xl text-accent mt-10">— Leila A., Founder</p>
+            <p className="font-display text-2xl text-accent mt-10">— Hamna Zaman, Founder</p>
           </motion.div>
         </div>
       </section>
