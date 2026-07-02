@@ -117,16 +117,10 @@ export default function HomeClient({ products, configured }: { products: AppProd
           </p>
           <div className="hero-ctas flex gap-3 sm:gap-4" style={{ opacity: 0, transform: 'translateY(12px)' }}>
             <Link
-              href="/shop?category=Abaya"
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-primary text-ink text-[0.7rem] sm:text-[0.8rem] tracking-[0.05em] sm:tracking-[0.08em] uppercase font-medium px-5 sm:px-7 py-4 hover:bg-gold transition-colors duration-400"
+              href="/shop"
+              className="inline-flex items-center justify-center gap-2 bg-primary text-ink text-[0.7rem] sm:text-[0.8rem] tracking-[0.05em] sm:tracking-[0.08em] uppercase font-medium px-5 sm:px-7 py-4 hover:bg-gold transition-colors duration-400"
             >
-              Shop Abayas
-            </Link>
-            <Link
-              href="/shop?category=Dress"
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 border border-primary/50 text-primary text-[0.7rem] sm:text-[0.8rem] tracking-[0.05em] sm:tracking-[0.08em] uppercase font-medium px-5 sm:px-7 py-4 hover:border-primary hover:bg-primary/10 transition-all duration-400"
-            >
-              Shop Dresses
+              Shop Now
             </Link>
           </div>
         </div>
