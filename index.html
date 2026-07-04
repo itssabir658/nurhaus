@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NÜRHAUS — The Collection</title>
+  <meta name="description" content="NÜRHAUS. Modest luxury, in measured light. Launch collection: two abayas, six dresses." />
+
+  <!-- Preload the hero image so it paints before the preloader fades -->
+  <link rel="preload" as="image"
+        href="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80"
+        fetchpriority="high" />
+
+  <!-- Fonts: trimmed to the weights actually used -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&family=Amiri:wght@400&display=swap" rel="stylesheet" />
+
+  <!-- GSAP + ScrollTrigger + Lenis (essential for brand motion) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+       ============================================================ */
+    :root {
+      --c-bg:       #FAF9F6;
+      --c-ink:      #1A1A1A;
+      --c-smoke:    #6B6760;
+      --c-gilt:     #A88B5C;
+      --c-hairline: #E3DFD6;
+      --c-midnight: #16202B;
+
+      --f-display: 'Playfair Display', Georgia, serif;
+      --f-sans:    'Inter', system-ui, sans-serif;
+      --f-arabic:  'Amiri', serif;
+
+      --sp:   24px;    /* side padding, mobile  */
+      --sp-d: 40px;    /* side padding, desktop */
+      --mw:   1400px;  /* max content width     */
+    }
+
+    /* ============================================================
+       RESET
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img   { display: block; max-width: 100%; }
+    a     { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
+    ul    { list-style: none; }
+
+    /* ============================================================
+       BASE
+       ============================================================ */
+    html { -webkit-font-smoothing: antialiased; }
+    body {
+      background:   var(--c-bg);
+      color:        var(--c-ink);
+      font-family:  var(--f-sans);
+      font-size:    16px;
+      line-height:  1.5;
+      overflow-x:   hidden;
+    }
+    body.is-loading { overflow: hidden; height: 100vh; }
+    ::selection { background: var(--c-gilt); color: var(--c-bg); }
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible { outline: 2px solid var(--c-gilt); outline-offset: 3px; }
+
+    /* ============================================================
+       TYPOGRAPHY HELPERS
+       ============================================================ */
+    .eyebrow {
+      font-family:    var(--f-sans);
+      font-weight:    500;
+      font-size:      0.68rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color:          var(--c-gilt);
+    }
+
+    .wordmark {
+      font-family:    var(--f-display);
+      font-weight:    500;
+      text-transform: uppercase;
+      line-height:    0.88;
+      letter-spacing: 0.14em;
+      text-align:     center;
+      display:        inline-block;
+    }
+    .wordmark span { display: block; }
+
+    /* ============================================================
+       ANIMATION HOOKS
+       ============================================================ */
+    [data-reveal] { opacity: 0; transform: translateY(28px); }
+    .arch          { clip-path: url(#mihrab); }
+    .manifesto .word { color: #D8D4CB; }
+
+    /* ============================================================
+       PRELOADER
+       ============================================================ */
+    #preloader {
+      position:        fixed;
+      inset:           0;
+      z-index:         100;
+      display:         flex;
+      flex-direction:  column;
+      align-items:     center;
+      justify-content: center;
+      background:      var(--c-bg);
+    }
+    #pre-line {
+      margin-top: 20px;
+      height:     1px;
+      width:      0;
+      background: var(--c-gilt);
+    }
+
+    /* ============================================================
+       NAVIGATION
+       ============================================================ */
+    #nav {
+      position:   fixed;
+      top:        0;
+      left:       0;
+      right:      0;
+      z-index:    50;
+      transition: background 500ms ease, border-color 500ms ease,
+                  backdrop-filter 500ms ease;
+    }
+    #nav.scrolled {
+      background:             rgba(250, 249, 246, 0.85);
+      backdrop-filter:        blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom:          1px solid var(--c-hairline);
+    }
+    .nav-inner {
+      max-width:       var(--mw);
+      margin-inline:   auto;
+      padding-inline:  var(--sp);
+      height:          80px;
+      display:         flex;
+      align-items:     center;
+      justify-content: space-between;
+    }
+    @media (min-width: 768px) { .nav-inner { padding-inline: var(--sp-d); } }
+
+    .nav-links {
+      display:     none;
+      align-items: center;
+      gap:         40px;
+      font-size:   0.875rem;
+      color:       rgba(26, 26, 26, 0.8);
+    }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+    .nav-links a { transition: color 0.2s; }
+    .nav-links a:hover { color: var(--c-gilt); }
+
+    .menu-btn {
+      display:        flex;
+      flex-direction: column;
+      gap:            5px;
+      padding:        8px;
+    }
+    .menu-btn span { display: block; width: 24px; height: 1px; background: var(--c-ink); }
+    @media (min-width: 768px) { .menu-btn { display: none; } }
+
+    /* ============================================================
+       MOBILE MENU
+       ============================================================ */
+    #menu {
+      position:        fixed;
+      inset:           0;
+      z-index:         60;
+      background:      var(--c-bg);
+      display:         flex;
+      flex-direction:  column;
+      align-items:     center;
+      justify-content: center;
+      gap:             32px;
+      transition:      opacity 0.5s ease, visibility 0.5s;
+    }
+    #menu.closed { opacity: 0; visibility: hidden; pointer-events: none; }
+    #menu-close {
+      position:    absolute;
+      top:         28px;
+      right:       28px;
+      font-size:   1.5rem;
+      font-family: var(--f-display);
+      line-height: 1;
+    }
+    #menu a { font-family: var(--f-display); font-size: 1.875rem; }
+    @media (min-width: 768px) { #menu { display: none; } }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      position: relative;
+      height:   100vh;
+      height:   100svh; /* respects mobile browser chrome */
+      width:    100%;
+      overflow: hidden;
+    }
+    #hero-media {
+      position:     absolute;
+      inset:        0;
+      will-change:  transform;
+    }
+    #hero-media img {
+      width:       100%;
+      height:      120%;
+      object-fit:  cover;
+      object-position: center top;
+    }
+    .hero-overlay {
+      position:   absolute;
+      inset:      0;
+      background: linear-gradient(
+        to top,
+        rgba(22, 32, 43, 0.55) 0%,
+        rgba(22, 32, 43, 0.12) 40%,
+        rgba(22, 32, 43, 0.18) 100%
+      );
+    }
+    .hero-content {
+      position:        relative;
+      z-index:         10;
+      height:          100%;
+      max-width:       var(--mw);
+      margin-inline:   auto;
+      padding-inline:  var(--sp);
+      padding-bottom:  80px;
+      display:         flex;
+      flex-direction:  column;
+      justify-content: flex-end;
+    }
+    @media (min-width: 768px) {
+      .hero-content {
+        padding-inline: var(--sp-d);
+        padding-bottom: 112px;
+      }
+    }
+
+    .hero-headline {
+      font-family: var(--f-display);
+      color:       var(--c-bg);
+      line-height: 0.95;
+      font-size:   clamp(2.8rem, 9vw, 6.5rem);
+      max-width:   900px;
+      margin-top:  20px;
+    }
+    .hero-headline .clip { overflow: hidden; }
+
+    .hero-cta {
+      display:        inline-flex;
+      align-items:    center;
+      gap:            12px;
+      color:          var(--c-bg);
+      font-size:      0.875rem;
+      letter-spacing: 0.05em;
+      border-bottom:  1px solid rgba(250, 249, 246, 0.4);
+      padding-bottom: 4px;
+      margin-top:     40px;
+      transition:     border-color 0.2s;
+    }
+    .hero-cta:hover { border-color: var(--c-gilt); }
+    .hero-cta .arrow { transition: transform 0.2s; }
+    .hero-cta:hover .arrow { transform: translateX(4px); }
+
+    .magnetic { display: inline-block; will-change: transform; }
+
+    /* ============================================================
+       MANIFESTO
+       ============================================================ */
+    .manifesto-section { position: relative; overflow: hidden; }
+    .manifesto-inner {
+      max-width:      1100px;
+      margin-inline:  auto;
+      padding-inline: var(--sp);
+      padding-block:  128px;
+    }
+    @media (min-width: 768px) {
+      .manifesto-inner {
+        padding-inline: var(--sp-d);
+        padding-block:  192px;
+      }
+    }
+
+    .manifesto {
+      font-family:    var(--f-display);
+      font-size:      clamp(1.875rem, 4vw, 3.4rem);
+      line-height:    1.25;
+      letter-spacing: -0.01em;
+      margin-top:     40px;
+    }
+
+    /* ============================================================
+       INTERLUDE
+       ============================================================ */
+    .interlude { background: var(--c-midnight); color: var(--c-bg); }
+    .interlude-inner {
+      max-width:      var(--mw);
+      margin-inline:  auto;
+      padding-inline: var(--sp);
+      padding-block:  96px;
+      display:        grid;
+      gap:            56px;
+      align-items:    center;
+    }
+    @media (min-width: 768px) {
+      .interlude-inner {
+        padding-inline:      var(--sp-d);
+        padding-block:       144px;
+        grid-template-columns: 1fr 1fr;
+        gap:                 80px;
+      }
+    }
+
+    .interlude-headline {
+      font-family:    var(--f-display);
+      font-size:      clamp(2rem, 4vw, 3.2rem);
+      line-height:    1.15;
+      letter-spacing: -0.01em;
+      margin-top:     24px;
+    }
+    .interlude-arabic {
+      font-family: var(--f-arabic);
+      color:       var(--c-gilt);
+      font-size:   clamp(1.5rem, 2.5vw, 2rem);
+      margin-top:  32px;
+      text-align:  right;
+    }
+    .interlude-image {
+      aspect-ratio: 4/5;
+      overflow:     hidden;
+      background:   rgba(255, 255, 255, 0.04);
+    }
+
+    /* ============================================================
+       COLLECTION
+       ============================================================ */
+    #collection {
+      max-width:      var(--mw);
+      margin-inline:  auto;
+      padding-inline: var(--sp);
+      padding-block:  128px;
+    }
+    @media (min-width: 768px) {
+      #collection {
+        padding-inline: var(--sp-d);
+        padding-block:  192px;
+      }
+    }
+
+    .collection-head { margin-bottom: 64px; }
+    @media (min-width: 768px) { .collection-head { margin-bottom: 96px; } }
+    .collection-head h2 {
+      font-family:    var(--f-display);
+      font-size:      clamp(2.2rem, 5vw, 3.75rem);
+      letter-spacing: -0.02em;
+      max-width:      600px;
+      margin-top:     16px;
+    }
+
+    /* Grid: 1 col → 2 col tablet → asymmetric 12-col desktop */
+    .collection-grid {
+      display:               grid;
+      grid-template-columns: 1fr;
+      gap:                   48px;
+    }
+    @media (min-width: 540px) {
+      .collection-grid {
+        grid-template-columns: 1fr 1fr;
+        gap:                   28px;
+      }
+    }
+    @media (min-width: 900px) {
+      .collection-grid {
+        grid-template-columns: repeat(12, 1fr);
+        gap:                   40px;
+      }
+      .piece-1 { grid-column: 1 / span 6; }
+      .piece-2 { grid-column: 8 / span 5; margin-top: 5rem; }
+      .piece-3 { grid-column: 2 / span 5; margin-top: 2rem; }
+      .piece-4 { grid-column: 7 / span 6; }
+      .piece-5 { grid-column: 1 / span 4; }
+      .piece-6 { grid-column: 6 / span 4; margin-top: 4rem; }
+      .piece-7 { grid-column: 1 / span 5; margin-top: 1rem; }
+      .piece-8 { grid-column: 7 / span 5; margin-top: 5rem; }
+      .piece-1 .frame,
+      .piece-4 .frame { aspect-ratio: 4/5; }
+    }
+
+    .piece .frame {
+      position:     relative;
+      overflow:     hidden;
+      background:   #EFEBE3;
+      aspect-ratio: 3/4;
+    }
+    .piece .frame img {
+      width:      100%;
+      height:     100%;
+      object-fit: cover;
+      display:    block;
+      transform:  scale(1.01);
+      transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .piece:hover .frame img { transform: scale(1.07); }
+
+    .piece .meta {
+      position:        absolute;
+      inset:           auto 0 0 0;
+      padding:         20px 22px;
+      display:         flex;
+      justify-content: space-between;
+      align-items:     baseline;
+      gap:             16px;
+      color:           var(--c-bg);
+      background:      linear-gradient(to top, rgba(26, 26, 26, 0.55), rgba(26, 26, 26, 0));
+      opacity:         0;
+      transform:       translateY(10px);
+      transition:      opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .piece:hover .meta,
+    .piece:focus-within .meta { opacity: 1; transform: translateY(0); }
+    .piece .meta .name { font-family: var(--f-display); font-size: 1.1rem; }
+    .piece .meta .price { font-size: 0.8rem; letter-spacing: 0.05em; }
+
+    .piece .kind {
+      margin-top:     14px;
+      font-weight:    500;
+      font-size:      0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color:          var(--c-gilt);
+    }
+    .piece .title-row {
+      margin-top:      5px;
+      display:         flex;
+      justify-content: space-between;
+      align-items:     baseline;
+      gap:             16px;
+    }
+    .piece .title-row .t { font-family: var(--f-display); font-size: 1.25rem; }
+    .piece .title-row .p { font-size: 0.875rem; color: var(--c-smoke); }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    #footer { border-top: 1px solid var(--c-hairline); }
+    .footer-inner {
+      max-width:      var(--mw);
+      margin-inline:  auto;
+      padding-inline: var(--sp);
+      padding-block:  80px;
+    }
+    @media (min-width: 768px) {
+      .footer-inner {
+        padding-inline: var(--sp-d);
+        padding-block:  112px;
+      }
+    }
+
+    .footer-top { display: grid; gap: 64px; }
+    @media (min-width: 768px) { .footer-top { grid-template-columns: 1fr 1fr; } }
+
+    .footer-signup h3 {
+      font-family:    var(--f-display);
+      font-size:      clamp(1.75rem, 3vw, 2.25rem);
+      letter-spacing: -0.01em;
+      max-width:      380px;
+      line-height:    1.2;
+      margin-top:     20px;
+    }
+    .signup-row {
+      display:       flex;
+      align-items:   center;
+      gap:           16px;
+      max-width:     420px;
+      margin-top:    32px;
+      border-bottom: 1px solid rgba(26, 26, 26, 0.2);
+      transition:    border-color 0.2s;
+    }
+    .signup-row:focus-within { border-color: var(--c-gilt); }
+    .signup-row input {
+      flex:        1;
+      background:  transparent;
+      padding:     12px 0;
+      font-size:   0.875rem;
+      color:       var(--c-ink);
+      border:      none;
+      outline:     none;
+      font-family: var(--f-sans);
+    }
+    .signup-row input::placeholder { color: rgba(107, 103, 96, 0.7); }
+    .signup-row button { font-size: 0.875rem; letter-spacing: 0.05em; transition: color 0.2s; }
+    .signup-row button:hover { color: var(--c-gilt); }
+    #signup-msg { margin-top: 12px; font-size: 0.75rem; color: var(--c-gilt); min-height: 16px; }
+
+    .footer-links {
+      display:               grid;
+      grid-template-columns: 1fr 1fr;
+      gap:                   32px;
+    }
+    @media (min-width: 768px) { .footer-links { justify-items: end; } }
+    .footer-links .eyebrow { margin-bottom: 20px; }
+    .footer-links ul  { display: flex; flex-direction: column; gap: 12px; }
+    .footer-links a   { font-size: 0.875rem; color: var(--c-smoke); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--c-ink); }
+
+    .footer-bottom {
+      margin-top:      80px;
+      padding-top:     32px;
+      border-top:      1px solid var(--c-hairline);
+      display:         flex;
+      flex-direction:  column;
+      align-items:     center;
+      gap:             16px;
+      font-size:       0.75rem;
+      color:           var(--c-smoke);
+    }
+    @media (min-width: 640px) {
+      .footer-bottom {
+        flex-direction:  row;
+        justify-content: space-between;
+      }
+    }
+    .social-links { display: flex; gap: 24px; }
+    .social-links a { transition: color 0.2s; }
+    .social-links a:hover { color: var(--c-ink); }
+
+    /* ============================================================
+       REDUCED MOTION
+       ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      [data-reveal] { opacity: 1 !important; transform: none !important; }
+      .manifesto .word { color: var(--c-ink) !important; }
+      .piece .frame img { transition: none; }
+      * { scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+
+<body class="is-loading">
+
+  <!-- Mihrab arch clip-path — scales with the element it's applied to -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <clipPath id="mihrab" clipPathUnits="objectBoundingBox">
+        <path d="M0,1 L0,0.4 C0,0.15 0.25,0.02 0.5,0 C0.75,0.02 1,0.15 1,0.4 L1,1 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <!-- PRELOADER -------------------------------------------------- -->
+  <div id="preloader">
+    <div style="overflow:hidden">
+      <span id="pre-name" class="wordmark"
+            style="font-size: clamp(2.5rem, 7vw, 4.5rem); color: var(--c-ink)">
+        <span>NÜR</span><span>HAUS</span>
+      </span>
+    </div>
+    <div id="pre-line"></div>
+  </div>
+
+  <!-- NAVIGATION ------------------------------------------------- -->
+  <header id="nav">
+    <nav class="nav-inner">
+      <a href="#top" style="line-height:1" aria-label="NÜRHAUS home">
+        <span class="wordmark"
+              style="font-size: clamp(13px, 1.1vw, 17px); color: var(--c-ink)">
+          <span>NÜR</span><span>HAUS</span>
+        </span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#collection">Collection</a></li>
+        <li><a href="#manifesto">Atelier</a></li>
+        <li><a href="#footer">Contact</a></li>
+      </ul>
+      <button id="menu-open" class="menu-btn" aria-label="Open menu">
+        <span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- MOBILE MENU ----------------------------------------------- -->
+  <div id="menu" class="closed" role="dialog" aria-modal="true" aria-label="Navigation">
+    <button id="menu-close" aria-label="Close menu">×</button>
+    <a href="#collection">Collection</a>
+    <a href="#manifesto">Atelier</a>
+    <a href="#footer">Contact</a>
+  </div>
+
+  <main id="top">
+
+    <!-- HERO ------------------------------------------------------ -->
+    <section class="hero" aria-label="Hero">
+      <div id="hero-media">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80"
+             alt="Editorial portrait, Nürhaus launch collection"
+             fetchpriority="high"
+             width="1600" height="1067" />
+        <div class="hero-overlay" aria-hidden="true"></div>
+      </div>
+      <div class="hero-content">
+        <p class="eyebrow" style="color: rgba(250,249,246,0.9)" data-hero>Autumn — Launch Collection</p>
+        <h1 class="hero-headline">
+          <span class="clip"><span data-hero>Modest luxury,</span></span>
+          <span class="clip"><em data-hero>in measured light.</em></span>
+        </h1>
+        <div data-hero>
+          <a href="#collection" class="magnetic hero-cta">
+            <span>Explore the Collection</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANIFESTO ------------------------------------------------- -->
+    <section id="manifesto" class="manifesto-section">
+      <div class="manifesto-inner">
+        <p class="eyebrow">The Atelier</p>
+        <p class="manifesto">
+          We make few things, slowly. Cloth chosen for the way it holds light, lines drawn for the way a woman moves through a room. Eight pieces this season — two abayas, six dresses — each finished by hand and meant to be kept.
+        </p>
+      </div>
+    </section>
+
+    <!-- INTERLUDE ------------------------------------------------- -->
+    <section class="interlude" aria-label="Campaign">
+      <div class="interlude-inner">
+        <div data-reveal>
+          <p class="eyebrow">Campaign — No. 01</p>
+          <h2 class="interlude-headline">A wardrobe should be quiet enough to last a lifetime.</h2>
+          <p class="interlude-arabic" dir="rtl" lang="ar">على مهلٍ، وبنور</p>
+        </div>
+        <div class="interlude-image arch" data-reveal>
+          <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=900&q=80"
+               alt="Nürhaus campaign No. 01"
+               loading="lazy" decoding="async"
+               width="900" height="1125" />
+        </div>
+      </div>
+    </section>
+
+    <!-- COLLECTION ------------------------------------------------ -->
+    <section id="collection" aria-label="The Collection">
+      <div class="collection-head">
+        <p class="eyebrow">The Collection</p>
+        <h2>Eight pieces, kept deliberately small.</h2>
+      </div>
+
+      <div class="collection-grid">
+
+        <article class="piece piece-1" data-reveal>
+          <div class="frame arch">
+            <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=900&q=80"
+                 alt="The Sahar Abaya"
+                 loading="lazy" decoding="async" width="900" height="1200" />
+            <div class="meta" aria-hidden="true">
+              <span class="name">The Sahar Abaya</span>
+              <span class="price">$680</span>
+            </div>
+          </div>
+          <p class="kind">Abaya · 01</p>
+          <div class="title-row">
+            <span class="t">The Sahar</span>
+            <span class="p">$680</span>
+          </div>
+        </article>
+
+        <article class="piece piece-2" data-reveal>
+          <div class="frame">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80"
+                 alt="The Noor Dress"
+                 loading="lazy" decoding="async" width="900" height="1200" />
+            <div class="meta" aria-hidden="true">
+              <span class="name">The Noor Dress</span>
+              <span class="price">$420</span>
+            </div>
+          </div>
+          <p class="kind">Dress · 02</p>
+          <div class="title-row">
+            <span class="t">The Noor</span>
+            <span class="p">$420</span>
+          </div>
+        </article>
+
+        <article class="piece piece-3" data-reveal>
+          <div class="frame">
+            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=900&q=80"
+                 alt="The Layla Dress"
+                 loading="lazy" decoding="async" width="900" height="1200" />
+            <div class="meta" aria-hidden="true">
+              <span class="name">The Layla Dress</span>
+              <span class="price">$455</span>
+            </div>
+          </div>
+          <p class="kind">Dress · 03</p>
+          <div class="title-row">
+            <span class="t">The Layla</span>
+            <span class="p">$455</span>
+          </div>
+        </article>
+
+        <article class="piece piece-4" data-reveal>
+          <div class="frame arch">
+            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=80"
+                 alt="The Layl Abaya"
+                 loading="lazy" decoding="async" width="1000" height="1333" />
+            <div class="meta" aria-hidden="true">
+              <span class="name">The Layl Abaya</span>
+              <span class="price">$720</span>
+            </div>
+          </div>
+          <p class="kind">Abaya · 04</p>
+          <div class="title-row">
+            <span class="t">The Layl</span>
+            <span class="p">$720</span>
+          </div>
+        </article>
+
+        <article class="piece piece-5" data-reveal>
+          <div class="frame">
+            <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80"
+                 alt="The Dunya Dress"
+                 loading="lazy" decoding="async" width="900" height="1200" />
+            <div class="meta" aria-hidden="true">
+              <span class="name">The Dunya Dress</span>
+              <span class="price">$390</span>
+            </div>
+          </div>
+          <p class="kind">Dress · 05</p>
+          <div class="title-row">
+            <span class="t">The Dunya</span>
+            <span class="p">$390</span>
+          </div>
+        </article>
+
+        <article class="piece piece-6" data-reveal>
+          <div class="frame">
+            <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?auto=format&fit=crop&w=900&q=80"
+                 alt="The Rana Dress"
+                 loading="lazy" decoding="async" width="900" height="1200" />
+            <div class="meta" aria-hidden="true">
+              <span class="name">The Rana Dress</span>
+              <span class="price">$435</span>
+            </div>
+          </div>
+          <p class="kind">Dress · 06</p>
+          <div class="title-row">
+            <span class="t">The Rana</span>
+            <span class="p">$435</span>
+          </div>
+        </article>
+
+        <article class="piece piece-7" data-reveal>
+          <div class="frame">
+            <img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=900&q=80"
+                 alt="The Samar Dress"
+                 loading="lazy" decoding="async" width="900" height="1200" />
+            <div class="meta" aria-hidden="true">
+              <span class="name">The Samar Dress</span>
+              <span class="price">$410</span>
+            </div>
+          </div>
+          <p class="kind">Dress · 07</p>
+          <div class="title-row">
+            <span class="t">The Samar</span>
+            <span class="p">$410</span>
+          </div>
+        </article>
+
+        <article class="piece piece-8" data-reveal>
+          <div class="frame">
+            <img src="https://images.unsplash.com/photo-1534126511673-b6899657816a?auto=format&fit=crop&w=900&q=80"
+                 alt="The Zahra Dress"
+                 loading="lazy" decoding="async" width="900" height="1200" />
+            <div class="meta" aria-hidden="true">
+              <span class="name">The Zahra Dress</span>
+              <span class="price">$470</span>
+            </div>
+          </div>
+          <p class="kind">Dress · 08</p>
+          <div class="title-row">
+            <span class="t">The Zahra</span>
+            <span class="p">$470</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER ----------------------------------------------------- -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+
+        <div class="footer-signup" data-reveal>
+          <p class="eyebrow">The List</p>
+          <h3>Be the first to know when a piece is released.</h3>
+          <form id="signup" class="signup-row">
+            <input type="email" required placeholder="Email address" autocomplete="email" />
+            <button type="submit">Join →</button>
+          </form>
+          <p id="signup-msg" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="footer-links" data-reveal>
+          <div>
+            <p class="eyebrow">House</p>
+            <ul>
+              <li><a href="#collection">Collection</a></li>
+              <li><a href="#manifesto">Atelier</a></li>
+              <li><a href="#">Sizing &amp; Care</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="eyebrow">Care</p>
+            <ul>
+              <li><a href="#">Shipping</a></li>
+              <li><a href="#">Returns</a></li>
+              <li><a href="#">Privacy</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <span class="wordmark" style="font-size: 13px; color: var(--c-ink)">
+          <span>NÜR</span><span>HAUS</span>
+        </span>
+        <div class="social-links">
+          <a href="#" aria-label="Instagram">Instagram</a>
+          <a href="#" aria-label="Pinterest">Pinterest</a>
+          <a href="#" aria-label="TikTok">TikTok</a>
+        </div>
+        <span>© 2026 NÜRHAUS. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* Smooth scroll */
+    let lenis = null;
+    if (!reduce && window.Lenis) {
+      lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((t) => lenis.raf(t * 1000));
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    /* Anchor scrolling */
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (id.length < 2) return;
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        closeMenu();
+        lenis ? lenis.scrollTo(el, { offset: 0 }) : el.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    /* Page start */
+    function startPage() {
+      document.body.classList.remove('is-loading');
+      ScrollTrigger.refresh();
+      heroIn();
+    }
+
+    if (reduce) {
+      document.getElementById('preloader').style.display = 'none';
+      startPage();
+    } else {
+      gsap.timeline({ onComplete: startPage })
+        .from('#pre-name', { y: 30, opacity: 0, duration: 0.9, ease: 'power3.out' })
+        .to('#pre-line',  { width: 120, duration: 0.7, ease: 'power2.inOut' }, '-=0.2')
+        .to('#preloader', { opacity: 0, duration: 0.8, ease: 'power2.inOut' }, '+=0.35')
+        .set('#preloader', { display: 'none' });
+    }
+
+    /* Hero entrance + parallax */
+    function heroIn() {
+      if (reduce) return;
+      gsap.to('[data-hero]', { y: 0, opacity: 1, duration: 1, ease: 'power3.out', stagger: 0.12 });
+      gsap.fromTo('#hero-media',
+        { yPercent: 0 },
+        { yPercent: 15, ease: 'none',
+          scrollTrigger: { trigger: '#top', start: 'top top', end: 'bottom top', scrub: true } }
+      );
+    }
+    if (!reduce) gsap.set('[data-hero]', { y: 24, opacity: 0 });
+
+    /* Sticky nav glass */
+    const nav = document.getElementById('nav');
+    ScrollTrigger.create({
+      start: 'top -60',
+      end:   99999,
+      onUpdate: (s) => nav.classList.toggle('scrolled', s.scroll() > 60),
+    });
+
+    /* Manifesto word reveal */
+    const man = document.querySelector('.manifesto');
+    if (man) {
+      man.innerHTML = man.textContent.trim()
+        .split(/\s+/)
+        .map((w) => '<span class="word">' + w + '</span>')
+        .join(' ');
+      if (!reduce) {
+        gsap.to('.manifesto .word', {
+          color: '#1A1A1A',
+          ease:  'none',
+          stagger: 0.5,
+          scrollTrigger: { trigger: '.manifesto', start: 'top 78%', end: 'bottom 55%', scrub: true },
+        });
+      }
+    }
+
+    /* Scroll reveals */
+    if (!reduce) {
+      gsap.utils.toArray('[data-reveal]').forEach((el) =>
+        gsap.to(el, {
+          y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 85%' },
+        })
+      );
+    } else {
+      gsap.set('[data-reveal]', { opacity: 1, y: 0 });
+    }
+
+    /* Magnetic CTA */
+    if (!reduce) {
+      document.querySelectorAll('.magnetic').forEach((el) => {
+        el.addEventListener('mousemove', (e) => {
+          const r = el.getBoundingClientRect();
+          gsap.to(el, {
+            x: (e.clientX - r.left - r.width  / 2) * 0.35,
+            y: (e.clientY - r.top  - r.height / 2) * 0.5,
+            duration: 0.6, ease: 'power3.out',
+          });
+        });
+        el.addEventListener('mouseleave', () =>
+          gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.4)' })
+        );
+      });
+    }
+
+    /* Mobile menu */
+    const menu = document.getElementById('menu');
+    function closeMenu() { menu.classList.add('closed'); }
+    document.getElementById('menu-open').addEventListener('click', () => menu.classList.remove('closed'));
+    document.getElementById('menu-close').addEventListener('click', closeMenu);
+
+    /* Email signup */
+    document.getElementById('signup').addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('signup-msg').textContent = 'Thank you — you’re on the list.';
+      e.target.reset();
+    });
+  })();
+  </script>
+</body>
+</html>
