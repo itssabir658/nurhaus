@@ -217,35 +217,32 @@ export default function HomeClient({ products, configured }: { products: AppProd
               The Abayas
             </motion.p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full justify-between">
-              {[
-                { handle: 'layl-abaya',  overline: 'Abaya - 01', name: 'The Presence Abaya', price: 300, imgPosition: 'object-[30%_50%]' },
-                { handle: 'sahar-abaya', overline: 'Abaya - 02', name: 'The Comfort Abaya',  price: 250, imgPosition: 'object-[70%_50%]' },
-              ].map((item, index) => {
-                const product = products.find((p) => p.handle === item.handle);
-                return (
-                  <motion.div key={item.handle} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className={`max-w-lg ${index === 1 ? 'justify-self-end' : ''}`}>
-                    <Link href={`/products/${item.handle}`} className="product-card group block">
+              {products
+                .filter((p) => p.kind === 'Abaya')
+                .slice(0, 2)
+                .map((product, index) => (
+                  <motion.div key={product.handle} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className={`max-w-lg ${index === 1 ? 'justify-self-end' : ''}`}>
+                    <Link href={`/products/${product.handle}`} className="product-card group block">
                       <div className="product-card-img aspect-[3/4] mb-5">
-                        {product?.images[0] && (
+                        {product.images[0] && (
                           <Image
                             src={product.images[0]}
-                            alt={item.name}
+                            alt={product.name}
                             width={800}
                             height={1067}
                             loading="lazy"
-                            className={`w-full h-full object-cover ${item.imgPosition}`}
+                            className={`w-full h-full object-cover ${index === 0 ? 'object-[30%_50%]' : 'object-[70%_50%]'}`}
                           />
                         )}
                       </div>
-                      <p className="eyebrow mb-1.5">{item.overline}</p>
+                      <p className="eyebrow mb-1.5">Abaya - {String(index + 1).padStart(2, '0')}</p>
                       <div className="flex items-baseline justify-between">
-                        <span className="font-product text-xl">{item.name}</span>
-                        <span className="text-sm text-smoke">${item.price.toLocaleString()}</span>
+                        <span className="font-product text-xl">{product.name}</span>
+                        <span className="text-sm text-smoke">${product.price.toLocaleString()}</span>
                       </div>
                     </Link>
                   </motion.div>
-                );
-              })}
+                ))}
             </div>
           </div>
         )}
