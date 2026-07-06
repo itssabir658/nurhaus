@@ -38,8 +38,8 @@ export function toAppProduct(p: ShopifyProduct): AppProduct {
     ? Number(p.compareAtPriceRange.maxVariantPrice.amount)
     : null;
 
-  // Derive kind from tags: if "Abaya" tag exists, it's an Abaya; otherwise, Dress
-  const kind = p.tags.some((tag) => tag.toLowerCase() === 'abaya') ? 'Abaya' : 'Dress';
+  // Use Shopify's productType field: if it contains "Abaya", it's an Abaya; otherwise, Dress
+  const kind = p.productType && p.productType.toLowerCase().includes('abaya') ? 'Abaya' : 'Dress';
 
   return {
     id: p.id,
