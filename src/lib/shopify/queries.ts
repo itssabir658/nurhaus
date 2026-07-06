@@ -40,6 +40,9 @@ const PRODUCT_FRAGMENT = `
     description
     descriptionHtml
     productType
+    productTypeMetafield: metafield(namespace: "custom", key: "product_type") {
+      value
+    }
     tags
     availableForSale
     options {

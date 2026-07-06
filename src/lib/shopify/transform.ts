@@ -38,11 +38,14 @@ export function toAppProduct(p: ShopifyProduct): AppProduct {
     ? Number(p.compareAtPriceRange.maxVariantPrice.amount)
     : null;
 
+  // Use metafield if available, otherwise fall back to productType, then default to 'Dress'
+  const kind = p.productTypeMetafield?.value || p.productType || 'Dress';
+
   return {
     id: p.id,
     handle: p.handle,
     name: p.title,
-    kind: p.productType || 'Dress',
+    kind,
     description: p.description,
     descriptionHtml: p.descriptionHtml,
     price: Number(p.priceRange.minVariantPrice.amount),

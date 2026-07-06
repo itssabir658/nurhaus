@@ -39,6 +39,7 @@ export interface ShopifyProduct {
   description: string;
   descriptionHtml: string;
   productType: string;
+  productTypeMetafield?: { value: string | null } | null;
   tags: string[];
   availableForSale: boolean;
   options: ShopifyProductOption[];
