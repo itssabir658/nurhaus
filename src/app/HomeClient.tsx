@@ -174,7 +174,10 @@ export default function HomeClient({ products, configured }: { products: AppProd
           )
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-10 md:gap-y-16">
-            {products.slice(0, 6).map((p, i) => (
+            {products
+              .filter((p) => p.kind === 'Dress')
+              .slice(0, 6)
+              .map((p, i) => (
               <motion.div
                 key={p.handle}
                 variants={fadeUp}
