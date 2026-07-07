@@ -41,6 +41,11 @@ export function toAppProduct(p: ShopifyProduct): AppProduct {
   // Use Shopify's productType field: if it contains "Abaya", it's an Abaya; otherwise, Dress
   const kind = p.productType && p.productType.toLowerCase().includes('abaya') ? 'Abaya' : 'Dress';
 
+  // DEBUG: Log what we're getting from Shopify
+  if (typeof window !== 'undefined') {
+    console.log(`[Product ${p.title}] productType="${p.productType}" → kind="${kind}"`);
+  }
+
   return {
     id: p.id,
     handle: p.handle,
