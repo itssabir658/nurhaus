@@ -200,6 +200,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                     )}
                   </div>
                   <p className="eyebrow mb-1.5">{p.kind} · {String(i + 1).padStart(2, '0')}</p>
+                  <p className="text-xs text-smoke/50">[productType: {p.productType || 'MISSING'}]</p>
                   <div className="flex items-baseline justify-between">
                     <span className="font-product text-xl">{p.name}</span>
                     <span className="text-sm text-smoke">${p.price.toLocaleString()}</span>
@@ -239,6 +240,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                         )}
                       </div>
                       <p className="eyebrow mb-1.5">Abaya - {String(index + 1).padStart(2, '0')}</p>
+                      <p className="text-xs text-smoke/50">[productType: {product.productType || 'MISSING'}]</p>
                       <div className="flex items-baseline justify-between">
                         <span className="font-product text-xl">{product.name}</span>
                         <span className="text-sm text-smoke">${product.price.toLocaleString()}</span>
