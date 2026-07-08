@@ -61,11 +61,11 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                 color: 'var(--c-primary)',
               }}
             >
-              Autumn Collection
+              Summer Collection
             </span>
           </motion.div>
           <motion.h1
-            className="font-display text-primary text-[2.2rem] sm:text-[3rem] md:text-[6rem] leading-[0.92] tracking-tight max-w-3xl"
+            className="font-display text-primary text-[clamp(1.6rem,7vw,6rem)] leading-[0.92] tracking-tight whitespace-nowrap"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.9, ease: [0.22,1,0.36,1] }}
@@ -78,7 +78,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            Luxury modest wear designed for women who value elegance without compromise.
+            Modest pieces designed for everyday women who value elegance without compromise.
           </motion.p>
         </div>
       </section>
@@ -254,7 +254,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                 {[
                   { label: 'Category', opts: categories.filter((c) => c !== 'All') },
                   { label: 'Size',     opts: ['XS', 'S', 'M', 'L', 'XL', 'XXL'] },
-                  { label: 'Colour',   opts: ['Ivory', 'Black', 'Sand', 'Blush', 'Stone'] },
+                  /* Colour filter hidden for now */
                 ].map((group) => (
                   <div key={group.label}>
                     <p className="eyebrow mb-4">{group.label}</p>
@@ -271,14 +271,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                     </div>
                   </div>
                 ))}
-                <div>
-                  <p className="eyebrow mb-4">Price Range</p>
-                  <div className="flex items-center gap-3">
-                    <input placeholder="Min" className="input-luxury flex-1 text-sm" style={{ fontSize: '0.875rem' }} />
-                    <span className="text-muted">—</span>
-                    <input placeholder="Max" className="input-luxury flex-1 text-sm" style={{ fontSize: '0.875rem' }} />
-                  </div>
-                </div>
+                {/* Price Range filter hidden for now */}
               </div>
               <div className="border-t border-hairline px-8 py-6 flex-shrink-0 flex gap-3">
                 <button className="btn-outline flex-1 text-sm" onClick={() => setFilterOpen(false)}>Clear</button>

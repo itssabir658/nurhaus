@@ -100,21 +100,22 @@ export default function HomeClient({ products, configured }: { products: AppProd
 
         {/* Headline + Subtext + CTAs — pinned to bottom, centered */}
         <div className="absolute bottom-6 sm:bottom-8 md:bottom-12 left-0 right-0 z-10 px-6 md:px-12 xl:px-20 flex flex-col items-center text-center">
-          <p
-            className="hero-eyebrow font-sans font-light text-primary/75 text-[clamp(0.75rem,0.5rem+1vw,1.125rem)] tracking-[0.25em] uppercase mb-3 md:mb-4"
-            style={{ opacity: 0, transform: 'translateY(12px)' }}
-          >
-            Step Into the Light
-          </p>
-          <h1 className="font-hero font-[350] uppercase text-primary leading-[0.95] tracking-[0.005em] sm:tracking-[0.015em] lg:tracking-[0.02em] text-[clamp(2.25rem,1.25rem+4vw,6.5rem)] md:whitespace-nowrap mb-4 md:mb-6 lg:mb-8">
+          <h1 className="font-hero font-[350] uppercase text-primary leading-[0.95] tracking-[0.005em] sm:tracking-[0.015em] lg:tracking-[0.02em] text-[clamp(2.25rem,1.25rem+4vw,6.5rem)] md:whitespace-nowrap mb-0 md:mb-1">
             <div className="overflow-hidden pb-[0.1em]">
               <span className="hero-line block" style={{ opacity: 0 }}>
-                Elegance That&rsquo;s Pure
+                Modest Silhouettes,
               </span>
             </div>
           </h1>
+          <p className="font-hero italic font-normal text-primary text-[clamp(1.4rem,1.1rem+1.2vw,1.875rem)] tracking-[0.1em] mb-4 md:mb-6 lg:mb-8">
+            <span className="overflow-hidden pb-[0.1em] block">
+              <span className="hero-line block" style={{ opacity: 0 }}>
+                Thoughtfully Made.
+              </span>
+            </span>
+          </p>
           <p className="hero-subtext text-primary/75 text-sm md:text-base max-w-md mb-6" style={{ opacity: 0, transform: 'translateY(12px)' }}>
-            Abayas and dresses cut in small batches, for women who dress with intention.
+            Small-batch abayas and dresses &mdash; light, easy, and made with intention.
           </p>
           <div className="hero-ctas flex gap-3 sm:gap-4" style={{ opacity: 0, transform: 'translateY(12px)' }}>
             <Link

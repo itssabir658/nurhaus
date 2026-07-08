@@ -66,7 +66,7 @@ export default function StoryPage() {
   return (
     <div className="page-enter">
       {/* Hero */}
-      <section className="relative h-[82svh] md:min-h-[92vh] flex items-end pb-6 md:pb-40 overflow-hidden">
+      <section className="relative h-[82svh] md:min-h-[92vh] flex items-end pb-6 md:pb-12 overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1762605135376-ae5af70a5628?auto=format&fit=crop&w=1800&q=80"
@@ -94,9 +94,9 @@ export default function StoryPage() {
           </div>
           <div ref={heroTextRef}>
             {['"Elegance is not attention.', 'It is presence."'].map((line, i) => (
-              <div key={i} className="overflow-hidden">
+              <div key={i} className="overflow-hidden pb-[0.14em]">
                 <div
-                  className="line-inner font-display text-primary leading-[0.92] tracking-tight text-[2rem] sm:text-[3.5rem] md:text-[7rem] lg:text-[8.5rem]"
+                  className={`line-inner font-display text-primary leading-[0.92] tracking-tight text-[clamp(1.6rem,7vw,6rem)] ${i === 1 ? 'pl-[0.26em]' : ''}`}
                   style={{ fontStyle: 'normal' }}
                 >
                   {line}
@@ -147,9 +147,11 @@ export default function StoryPage() {
               Built slowly, on purpose.
             </h2>
             <div className="space-y-5 text-smoke text-sm leading-relaxed max-w-md">
-              <p>I spent years looking for clothes that fit the life I was living — something that could move between a boardroom and a dinner without asking me to change who I was. Nothing existed. So I made it.</p>
-              <p>NÜR HAUS started in my apartment with a pattern table and four bolts of fabric. The first pieces were for women I knew. Then for women I didn't. The approach has not changed: start from need, remove everything unnecessary, keep only what is irreducible.</p>
-              <p>Every decision — the length, the fabric weight, the single seam at the back — is a conversation with the woman who will wear it. I hope she finds, as I did, that dressing quietly is its own form of power.</p>
+              <p>I spent years looking for clothes that fit the life I was living &mdash; simple, modest, and easy for everyday wear. So I started designing my own.</p>
+              <p>NÜR HAUS was created from that need. Pieces that feel considered, without being complicated. Modest clothing made to be lived in &mdash; moving gently through everyday moments, not just special occasions.</p>
+              <p>The focus has always been on ease and comfort. Soft silhouettes, breathable fabrics, and designs that feel natural the moment you put them on. Nothing overwhelming, just pieces that feel like they belong in your life.</p>
+              <p>Each design is made with quiet attention to detail &mdash; how it moves, how it falls, and how it makes you feel when you wear it.</p>
+              <p>This is clothing for everyday life. What you reach for when you want to feel comfortable, modest, and like yourself.</p>
             </div>
             <p className="font-display text-2xl text-accent mt-10">— Hamna Zaman, Founder</p>
           </motion.div>
