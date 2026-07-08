@@ -210,10 +210,6 @@ export default function HomeClient({ products, configured }: { products: AppProd
           </div>
         )}
 
-        <div className="mt-16 text-center md:hidden">
-          <Link href="/shop" className="btn-outline">View All Pieces</Link>
-        </div>
-
         {products.filter((p) => p.kind === 'Abaya').length > 0 && (
           <div className="mt-16 md:mt-28">
             <motion.p className="eyebrow mb-6" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
