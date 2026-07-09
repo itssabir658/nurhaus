@@ -73,7 +73,7 @@ export default function ContactPage() {
               <div className="border-t border-hairline pt-8">
                 <p className="eyebrow mb-4">Response Time</p>
                 <p className="text-sm text-smoke leading-relaxed max-w-sm">
-                  We respond to all enquiries within 24 hours on business days. Email is the fastest way to reach us.
+                  We respond to all enquiries within 3&ndash;4 business days. Email is the fastest way to reach us.
                 </p>
               </div>
 
