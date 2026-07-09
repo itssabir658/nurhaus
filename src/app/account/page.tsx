@@ -63,7 +63,7 @@ function OrdersSection() {
               <div className="mt-5 pt-5 border-t border-hairline flex items-center gap-6">
                 <button className="text-xs text-smoke hover:text-ink transition-colors tracking-wide">View Details</button>
                 <button className="text-xs text-smoke hover:text-ink transition-colors tracking-wide">Track Order</button>
-                <button className="text-xs text-smoke hover:text-ink transition-colors tracking-wide">Request Return</button>
+                <button className="text-xs text-smoke hover:text-ink transition-colors tracking-wide">Request Store Credit</button>
               </div>
             </motion.div>
           ))}

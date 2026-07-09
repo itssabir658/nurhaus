@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const MESSAGES = [
   'Complimentary Worldwide Shipping on Orders Above $250',
   'Limited First Collection — Now Available',
-  'Free Returns Within 14 Days',
+  'Store Credit Only — No Refunds',
   'New Season Drop Available Now',
   'Crafted in Limited Quantities — Each Piece Numbered',
 ];

@@ -18,17 +18,17 @@ const REGIONS = [
 ];
 
 const RETURN_STEPS = [
-  { step: '01', title: 'Request',    body: 'Email sales@nurhaus.ca within 14 days of receiving your order. Include your order number and reason for return.' },
-  { step: '02', title: 'Package',    body: 'Place the item in its original packaging with all tags attached. Items must be unworn and in original condition.' },
-  { step: '03', title: 'Ship',       body: 'We will send you a pre-paid return label. Drop the package at any approved carrier location.' },
-  { step: '04', title: 'Refund',     body: 'Refunds are processed within 5–7 business days of receiving the returned item. You will receive an email confirmation.' },
+  { step: '01', title: 'Request',      body: 'Email sales@nurhaus.ca within 14 days of receiving your order. Include your order number and reason.' },
+  { step: '02', title: 'Package',      body: 'Place the item in its original packaging with all tags attached. Items must be unworn and in original condition.' },
+  { step: '03', title: 'Ship',         body: 'We will send you a pre-paid return label. Drop the package at any approved carrier location.' },
+  { step: '04', title: 'Store Credit', body: 'Once your item is received and inspected, store credit is issued within 5–7 business days. We do not offer refunds.' },
 ];
 
 const FAQS = [
   { q: 'Can I exchange an item for a different size?', a: 'Yes. Request an exchange through sales@nurhaus.ca within 14 days. Subject to availability, we will ship the replacement at no additional cost.' },
-  { q: 'What if my order arrives damaged?', a: 'Please photograph the item and packaging immediately and email us within 48 hours. We will arrange a replacement or full refund.' },
-  { q: 'Are returns free?', a: 'We provide complimentary return labels for Canadian orders. International return shipping costs are deducted from the refund amount.' },
-  { q: 'Can I return a sale item?', a: 'Sale items are eligible for exchange or store credit only, not refund. Final sale items are non-returnable.' },
+  { q: 'What if my order arrives damaged?', a: 'Please photograph the item and packaging immediately and email us within 48 hours. We will arrange a replacement or store credit.' },
+  { q: 'Do you offer refunds?', a: 'We do not offer refunds. Eligible unworn items with all tags attached may be returned within 14 days for store credit only.' },
+  { q: 'Are returns free?', a: 'We provide complimentary return labels for Canadian orders. For international orders, return shipping is deducted from your store credit.' },
 ];
 
 const fadeUp = { hidden: { opacity: 0, y: 28 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22,1,0.36,1] } } };
@@ -120,13 +120,13 @@ export default function ShippingPage() {
             className="font-display text-3xl md:text-4xl tracking-tight mb-3"
             variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
           >
-            14 days. No questions.
+            Store credit only.
           </motion.h2>
           <motion.p
             className="text-smoke text-sm mb-12 max-w-lg"
             variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
           >
-            If your piece is not right, we will make it right. Returns are accepted within 14 days of delivery for unworn items with all tags attached.
+            We do not offer refunds. Eligible unworn items with all tags attached may be returned within 14 days of delivery for store credit only.
           </motion.p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

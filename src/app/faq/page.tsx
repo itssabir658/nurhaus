@@ -29,9 +29,9 @@ const CATEGORIES = [
     id: 'returns',
     label: 'Returns',
     faqs: [
-      { q: 'What is your returns policy?', a: 'We accept returns within 14 days of delivery for unworn items in original condition with all tags attached. Please email sales@nurhaus.ca with your order number to initiate a return.' },
-      { q: 'Are returns free?', a: 'Canadian returns are complimentary. For international orders, return shipping costs are deducted from your refund.' },
-      { q: 'How long does a refund take?', a: 'Refunds are processed within 5–7 business days of receiving your returned item. Your bank may take a further 2–3 business days to reflect the credit.' },
+      { q: 'What is your returns policy?', a: 'We do not offer refunds. Eligible unworn items in original condition with all tags attached may be returned within 14 days of delivery for store credit only. Please email sales@nurhaus.ca with your order number to begin.' },
+      { q: 'Do you offer refunds?', a: 'No. All returns are issued as store credit only — never a refund to your original payment method. Store credit never expires and can be used on any future order.' },
+      { q: 'How is my store credit issued?', a: 'Once your returned item is received and inspected, store credit is issued within 5–7 business days and sent to you by email as a code to use at checkout.' },
       { q: 'Can I exchange for a different size?', a: 'Yes. We offer exchanges within 14 days. Email sales@nurhaus.ca with your order number and preferred size. Exchanges are subject to availability and shipped at no cost.' },
     ],
   },
@@ -40,7 +40,7 @@ const CATEGORIES = [
     label: 'Sizing',
     faqs: [
       { q: 'How do your pieces fit?', a: 'Our pieces are designed with a relaxed, modest silhouette. They are generally true to size. If you are between sizes, we recommend sizing up. Full measurement details are on our Size Guide page.' },
-      { q: 'Do you offer custom sizing?', a: 'We do not currently offer made-to-measure but our size range covers XS–XXL. If you need specific measurement guidance, our team is happy to help via email or WhatsApp.' },
+      { q: 'Do you offer custom sizing?', a: 'We do not currently offer made-to-measure but our size range covers S–XL. If you need specific measurement guidance, our team is happy to help via email.' },
       { q: 'I am unsure between two sizes. What should I do?', a: 'Email us at sales@nurhaus.ca with your measurements and the piece you are considering. Our team will recommend the best fit based on the specific cut of that garment.' },
     ],
   },

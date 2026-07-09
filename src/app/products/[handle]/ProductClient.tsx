@@ -16,7 +16,7 @@ const ACCORDION_LABELS: Record<typeof ACCORDION_ITEMS[number], string> = {
 };
 
 const CARE_COPY = 'Dry clean recommended unless otherwise noted on the garment label.\nStore on a padded hanger, away from direct sunlight.\nSteam on low heat, holding the iron 5cm from delicate embellishment.';
-const SHIPPING_COPY = 'Complimentary standard shipping on orders over $500\nDelivery in 5–10 business days\nExpress available at checkout (2–3 days)\nFree returns within 14 days';
+const SHIPPING_COPY = 'Complimentary standard shipping on orders over $500\nDelivery in 5–10 business days\nExpress available at checkout (2–3 days)\nStore credit only — no refunds';
 
 const RECENT_STORAGE_KEY = 'nh_recent';
 
@@ -313,7 +313,7 @@ export default function ProductClient({
               <div className="mt-8 pt-8 border-t border-hairline space-y-3">
                 {[
                   { icon: '✦', text: 'Complimentary shipping on orders over $500' },
-                  { icon: '✦', text: 'Free returns within 14 days' },
+                  { icon: '✦', text: 'Store credit only — no refunds' },
                   { icon: '✦', text: 'Each piece finished by hand in our atelier' },
                 ].map((item) => (
                   <p key={item.text} className="text-xs text-smoke flex items-start gap-3">
