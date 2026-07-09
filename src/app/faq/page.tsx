@@ -32,7 +32,7 @@ const CATEGORIES = [
       { q: 'What is your returns policy?', a: 'We do not offer refunds. Eligible unworn items in original condition with all tags attached may be returned within 5 days of delivery for store credit only. Please email sales@nurhaus.ca with your order number to begin.' },
       { q: 'Do you offer refunds?', a: 'No. All returns are issued as store credit only — never a refund to your original payment method. Store credit never expires and can be used on any future order.' },
       { q: 'How is my store credit issued?', a: 'Once your returned item is received and inspected, store credit is issued within 5–7 business days and sent to you by email as a code to use at checkout.' },
-      { q: 'Can I exchange for a different size?', a: 'Yes. We offer exchanges within 5 days. Email sales@nurhaus.ca with your order number and preferred size. Exchanges are subject to availability and shipped at no cost.' },
+      { q: 'Can I exchange for a different size?', a: 'Yes. We offer exchanges within 5 days. Email sales@nurhaus.ca with your order number and preferred size. Exchanges are subject to availability.' },
     ],
   },
   {
