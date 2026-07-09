@@ -41,7 +41,6 @@ const CATEGORIES = [
     faqs: [
       { q: 'How do your pieces fit?', a: 'Our pieces are designed with a relaxed, modest silhouette. They are generally true to size. If you are between sizes, we recommend sizing up. Full measurement details are on our Size Guide page.' },
       { q: 'Do you offer custom sizing?', a: 'We do not currently offer made-to-measure but our size range covers S–XL. If you need specific measurement guidance, our team is happy to help via email.' },
-      { q: 'I am unsure between two sizes. What should I do?', a: 'Email us at sales@nurhaus.ca with your measurements and the piece you are considering. Our team will recommend the best fit based on the specific cut of that garment.' },
     ],
   },
   {
