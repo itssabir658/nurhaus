@@ -137,13 +137,6 @@ export default function FAQPage() {
                   )}
                 </button>
               ))}
-
-              <div className="hidden lg:block mt-16 pt-8 border-t border-hairline">
-                <p className="text-xs text-muted leading-relaxed mb-4">
-                  Can&rsquo;t find an answer?
-                </p>
-                <Link href="/contact" className="btn-outline text-xs py-2.5 px-5 block text-center">Contact Us</Link>
-              </div>
             </nav>
 
             {/* FAQ items */}
@@ -178,8 +171,7 @@ export default function FAQPage() {
       {/* Bottom CTA */}
       <div className="border-t border-hairline bg-secondary/20">
         <div className="site-max site-px py-16 md:py-20 text-center">
-          <p className="font-display text-2xl md:text-3xl tracking-tight mb-3">Still have a question?</p>
-          <p className="text-smoke text-sm mb-8 max-w-xs mx-auto">Our team responds within 24 hours on business days.</p>
+          <p className="font-display text-2xl md:text-3xl tracking-tight mb-8">Still have a question?</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact" className="btn-primary">Contact Us</Link>
             <a href="https://wa.me/16479386284" className="btn-outline">WhatsApp</a>
