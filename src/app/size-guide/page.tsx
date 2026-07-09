@@ -4,21 +4,17 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ABAYA_SIZES = [
-  { size: 'XS',  bust: '31.5–33.1', waist: '24.4–26.0', hip: '34.3–35.8', length: '54.3' },
   { size: 'S',   bust: '33.1–34.6', waist: '26.0–27.6', hip: '35.8–37.4', length: '55.1' },
   { size: 'M',   bust: '34.6–36.2', waist: '27.6–29.1', hip: '37.4–39.0', length: '55.9' },
   { size: 'L',   bust: '36.2–37.8', waist: '29.1–30.7', hip: '39.0–40.6', length: '56.7' },
   { size: 'XL',  bust: '37.8–39.4', waist: '30.7–32.3', hip: '40.6–42.1', length: '57.5' },
-  { size: 'XXL', bust: '39.4–40.9', waist: '32.3–33.9', hip: '42.1–43.7', length: '58.3' },
 ];
 
 const DRESS_SIZES = [
-  { size: 'XS',  bust: '32.3–33.9', waist: '25.2–26.8', hip: '35.0–36.6', length: '46.5' },
   { size: 'S',   bust: '33.9–35.4', waist: '26.8–28.3', hip: '36.6–38.2', length: '47.2' },
   { size: 'M',   bust: '35.4–37.0', waist: '28.3–29.9', hip: '38.2–39.8', length: '48.0' },
   { size: 'L',   bust: '37.0–38.6', waist: '29.9–31.5', hip: '39.8–41.3', length: '48.8' },
   { size: 'XL',  bust: '38.6–40.2', waist: '31.5–33.1', hip: '41.3–42.9', length: '49.6' },
-  { size: 'XXL', bust: '40.2–41.7', waist: '33.1–34.6', hip: '42.9–44.5', length: '50.4' },
 ];
 
 const TIPS = [

@@ -253,7 +253,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
               <div className="flex-1 overflow-y-auto px-8 py-8 space-y-10">
                 {[
                   { label: 'Category', opts: categories.filter((c) => c !== 'All') },
-                  { label: 'Size',     opts: ['XS', 'S', 'M', 'L', 'XL', 'XXL'] },
+                  { label: 'Size',     opts: ['S', 'M', 'L', 'XL'] },
                   /* Colour filter hidden for now */
                 ].map((group) => (
                   <div key={group.label}>

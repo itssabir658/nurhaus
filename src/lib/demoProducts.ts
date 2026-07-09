@@ -4,7 +4,7 @@
 // real products exist — see usage in src/app/**/page.tsx.
 import type { AppProduct, AppVariant } from './shopify/types';
 
-const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
+const SIZES = ['S', 'M', 'L', 'XL'];
 
 function makeVariants(opts: {
   handle: string;
@@ -62,8 +62,8 @@ export const DEMO_PRODUCTS: AppProduct[] = [
       'https://images.unsplash.com/photo-1773439877634-e6ef9f571c12?auto=format&fit=crop&w=1000&q=85',
       'https://images.unsplash.com/photo-1619043518800-7f14be467dca?auto=format&fit=crop&w=1000&q=85',
     ],
-    sizes: [...SIZES, 'XXL'],
-    variants: makeVariants({ handle: 'noor-dress', price: 420, image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=600&q=80', sizes: [...SIZES, 'XXL'] }),
+    sizes: SIZES,
+    variants: makeVariants({ handle: 'noor-dress', price: 420, image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=600&q=80', sizes: SIZES }),
     availableForSale: true,
     tags: [],
   },
