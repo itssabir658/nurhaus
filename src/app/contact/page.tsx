@@ -71,19 +71,10 @@ export default function ContactPage() {
               </div>
 
               <div className="border-t border-hairline pt-8">
-                <p className="eyebrow mb-5">Hours</p>
-                <div className="space-y-2">
-                  {[
-                    { day: 'Monday – Friday', time: '10:00 – 18:00 EST' },
-                    { day: 'Saturday',        time: '10:00 – 14:00 EST' },
-                    { day: 'Sunday',          time: 'Closed' },
-                  ].map((h) => (
-                    <div key={h.day} className="flex justify-between text-sm">
-                      <span className="text-smoke">{h.day}</span>
-                      <span className="text-ink">{h.time}</span>
-                    </div>
-                  ))}
-                </div>
+                <p className="eyebrow mb-4">Response Time</p>
+                <p className="text-sm text-smoke leading-relaxed max-w-sm">
+                  We respond to all enquiries within 24 hours on business days. Email is the fastest way to reach us.
+                </p>
               </div>
 
               <div className="border-t border-hairline pt-8">
@@ -99,10 +90,19 @@ export default function ContactPage() {
               </div>
 
               <div className="border-t border-hairline pt-8">
-                <p className="eyebrow mb-4">Response Time</p>
-                <p className="text-sm text-smoke leading-relaxed max-w-sm">
-                  We respond to all enquiries within 24 hours on business days. Email is the fastest way to reach us.
-                </p>
+                <p className="eyebrow mb-5">Hours</p>
+                <div className="space-y-2">
+                  {[
+                    { day: 'Monday – Friday', time: '10:00 – 18:00 EST' },
+                    { day: 'Saturday',        time: '10:00 – 14:00 EST' },
+                    { day: 'Sunday',          time: 'Closed' },
+                  ].map((h) => (
+                    <div key={h.day} className="flex justify-between text-sm">
+                      <span className="text-smoke">{h.day}</span>
+                      <span className="text-ink">{h.time}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
