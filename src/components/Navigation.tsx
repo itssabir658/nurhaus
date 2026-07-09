@@ -13,7 +13,6 @@ interface NavigationProps {
 
 const links = [
   { label: 'Collection', href: '/shop' },
-  { label: 'Our Story',  href: '/journal' },
 ];
 
 const menuLinks = [

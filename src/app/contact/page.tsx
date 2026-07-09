@@ -55,8 +55,6 @@ export default function ContactPage() {
                 <div className="space-y-5">
                   {[
                     { label: 'Email', value: 'sales@nurhaus.ca', href: 'mailto:sales@nurhaus.ca' },
-                    { label: 'WhatsApp', value: '+1 (647) 938-6284', href: 'https://wa.me/16479386284' },
-                    { label: 'Location', value: 'Canada, Toronto', href: null },
                   ].map((item) => (
                     <div key={item.label}>
                       <p className="text-xs text-muted tracking-widest uppercase mb-1">{item.label}</p>
@@ -91,7 +89,7 @@ export default function ContactPage() {
               <div className="border-t border-hairline pt-8">
                 <p className="eyebrow mb-5">Follow</p>
                 <div className="flex gap-6">
-                  {['Instagram', 'Pinterest', 'TikTok'].map((s) => (
+                  {['Instagram'].map((s) => (
                     <a key={s} href="#" className="text-sm text-smoke hover:text-ink transition-colors duration-300 relative group">
                       {s}
                       <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-accent group-hover:w-full transition-all duration-400" />
@@ -103,7 +101,7 @@ export default function ContactPage() {
               <div className="border-t border-hairline pt-8">
                 <p className="eyebrow mb-4">Response Time</p>
                 <p className="text-sm text-smoke leading-relaxed max-w-sm">
-                  We respond to all enquiries within 24 hours on business days. For urgent matters, WhatsApp is the fastest way to reach us.
+                  We respond to all enquiries within 24 hours on business days. Email is the fastest way to reach us.
                 </p>
               </div>
             </div>

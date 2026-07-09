@@ -6,22 +6,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import NewsletterBlock from '@/components/NewsletterBlock';
-
-const VALUES = [
-  { title: 'Minimalism',       body: 'We remove until what remains cannot be removed. Every seam, every button, every proportion is a deliberate decision.' },
-  { title: 'Modesty',          body: 'Modesty is not restriction. It is a choice that carries its own kind of authority — quiet, confident, irreducible.' },
-  { title: 'Craftsmanship',    body: 'Every piece is cut and assembled in our atelier. Hands, not machines, determine the character of each garment.' },
-  { title: 'Timeless Design',  body: 'We do not follow seasons. A NÜR HAUS piece should be as relevant in ten years as the day it was made.' },
-];
-
-const TIMELINE = [
-  { year: '2021', event: 'The idea: a modest fashion house that refuses compromise.' },
-  { year: '2022', event: 'Six months in a studio in Istanbul, developing the first patterns.' },
-  { year: '2023', event: 'First atelier team of four. First fabric sourcing trip to Japan.' },
-  { year: '2024', event: 'Quiet launch: 12 pieces, sold in 48 hours by word of mouth.' },
-  { year: '2025', event: 'The Collection: eight pieces, two abayas, six dresses. Now available worldwide.' },
-];
 
 const fadeUp = {
   hidden:  { opacity: 0, y: 40 },
@@ -158,82 +142,6 @@ export default function StoryPage() {
         </div>
       </section>
 
-      {/* Brand values */}
-      <section className="site-max site-px py-24 md:py-44">
-        <div className="mb-16 md:mb-24">
-          <motion.p className="eyebrow mb-4" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-            What We Believe
-          </motion.p>
-          <motion.h2
-            className="font-display text-[2.4rem] md:text-[4rem] tracking-tight max-w-xl leading-tight"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            Four principles. No exceptions.
-          </motion.h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-16">
-          {VALUES.map((v, i) => (
-            <motion.div
-              key={v.title}
-              className="border-t border-hairline pt-8"
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: (i % 2) * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <p className="eyebrow mb-4">{String(i + 1).padStart(2, '0')}</p>
-              <h3 className="font-display text-2xl md:text-3xl tracking-tight mb-4">{v.title}</h3>
-              <p className="text-smoke text-sm leading-relaxed max-w-sm">{v.body}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="bg-midnight text-primary">
-        <div className="site-max site-px py-24 md:py-44">
-          <motion.p className="eyebrow-light mb-4" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-            The Journey
-          </motion.p>
-          <motion.h2
-            className="font-display text-[2.4rem] md:text-[4rem] tracking-tight mb-20 max-w-xl leading-tight"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            Built with patience.
-          </motion.h2>
-
-          <div className="relative">
-            <div className="absolute left-0 md:left-[120px] top-0 bottom-0 w-px bg-primary/15" />
-            <div className="space-y-16">
-              {TIMELINE.map((item, i) => (
-                <motion.div
-                  key={item.year}
-                  className="flex gap-8 md:gap-16 items-start relative pl-6 md:pl-0"
-                  initial={{ opacity: 0, x: -24 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <div className="absolute left-0 md:left-[116px] top-2 w-2 h-2 rounded-full bg-gold" />
-                  <span className="hidden md:block font-display text-gold text-2xl min-w-[100px] text-right">{item.year}</span>
-                  <div className="md:pl-10">
-                    <span className="md:hidden eyebrow-light block mb-2">{item.year}</span>
-                    <p className="text-primary/80 text-base leading-relaxed max-w-lg">{item.event}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="site-max site-px py-24 md:py-40 text-center">
         <motion.h2
@@ -253,13 +161,6 @@ export default function StoryPage() {
         >
           <Link href="/shop" className="btn-primary">Explore the Collection</Link>
         </motion.div>
-      </section>
-
-      {/* Newsletter */}
-      <section className="border-t border-hairline">
-        <div className="site-max site-px py-24 md:py-32">
-          <NewsletterBlock />
-        </div>
       </section>
     </div>
   );
