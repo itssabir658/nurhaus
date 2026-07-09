@@ -1,72 +1,17 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 
 const shopLinks  = ['Collection', 'Size Guide'];
 const houseLinks = ['Our Story', 'Contact'];
 const careLinks  = ['FAQ', 'Privacy Policy', 'Terms'];
 
-const fadeUp = {
-  hidden:  { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
-};
-
 export default function Footer() {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    setSubmitted(true);
-    setEmail('');
-  };
-
   return (
     <footer className="relative bg-midnight text-primary overflow-hidden">
       {/* Gold seam — the transition from the cream body into the dark footer */}
       <div className="h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
-
-      {/* Newsletter — large, centered, editorial */}
-      <div className="border-b border-primary/15">
-        <motion.div
-          className="site-max site-px py-14 md:py-32 text-center"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <p className="eyebrow-light mb-6">The Circle</p>
-          <h3 className="font-display text-[1.75rem] sm:text-[2.4rem] md:text-[4.25rem] leading-[1.05] mb-8 md:mb-10 max-w-2xl mx-auto">
-            Quiet news, for those who prefer it that way.
-          </h3>
-          {submitted ? (
-            <p className="text-sm text-gold">Thank you — you&apos;re on the list.</p>
-          ) : (
-            <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
-              <div className="flex items-center border-b border-primary/30 focus-within:border-gold transition-colors duration-400">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email address"
-                  required
-                  className="flex-1 bg-transparent py-3 text-sm text-primary placeholder:text-primary/40 outline-none font-sans text-center"
-                />
-                <button
-                  type="submit"
-                  className="text-[0.7rem] tracking-[0.18em] uppercase text-primary/80 hover:text-gold transition-colors duration-300 py-3 pl-4 font-sans font-medium flex-shrink-0"
-                >
-                  Join →
-                </button>
-              </div>
-            </form>
-          )}
-        </motion.div>
-      </div>
 
       {/* Brand + links */}
       <div className="site-max site-px pt-6 pb-16 md:pb-20">
