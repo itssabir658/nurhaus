@@ -61,7 +61,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                 color: 'var(--c-primary)',
               }}
             >
-              Summer Collection
+              Summer Drop
             </span>
           </motion.div>
           <motion.h1
