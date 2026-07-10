@@ -51,6 +51,19 @@ export default function ProductClient({
   const productSoldOut = !product.availableForSale;
   const variantSoldOut = hasSizes && selectedSize ? !selectedVariant?.availableForSale : false;
 
+  // Shopify reports quantityAvailable only when inventory tracking is on for this variant;
+  // null means untracked/unlimited, so there's no cap to enforce.
+  const maxQty = selectedVariant?.quantityAvailable ?? null;
+  const atMaxQty = maxQty !== null && qty >= maxQty;
+
+  // Re-clamp quantity whenever the selected size (and therefore its stock cap) changes —
+  // e.g. going from a size with 5 in stock down to one with only 2.
+  useEffect(() => {
+    if (maxQty !== null) {
+      setQty((q) => Math.min(Math.max(1, q), maxQty));
+    }
+  }, [maxQty]);
+
   useEffect(() => {
     try {
       const stored: string[] = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]');
@@ -78,6 +91,7 @@ export default function ProductClient({
     }
     const variant = selectedVariant ?? product.variants[0];
     if (!variant) return;
+    const safeQty = maxQty !== null ? Math.min(qty, maxQty) : qty;
 
     // Demo-catalog items have no real Shopify variant to add — show a lightweight
     // notice without touching the cart, so the design previews correctly either way.
@@ -89,7 +103,7 @@ export default function ProductClient({
 
     setIsAddingToCart(true);
     try {
-      await addItem(variant.id, qty);
+      await addItem(variant.id, safeQty);
       openCart();
     } finally {
       setIsAddingToCart(false);
@@ -103,6 +117,7 @@ export default function ProductClient({
     }
     const variant = selectedVariant ?? product.variants[0];
     if (!variant) return;
+    const safeQty = maxQty !== null ? Math.min(qty, maxQty) : qty;
 
     if (isDemo) {
       setDemoNotice(true);
@@ -115,7 +130,7 @@ export default function ProductClient({
       // Shopify's Storefront API issues checkout sessions via the cart's checkoutUrl —
       // this creates/updates the cart for just this variant, then hands off to Shopify's
       // hosted checkout, bypassing the cart page entirely.
-      const updatedCart = await addItem(variant.id, qty);
+      const updatedCart = await addItem(variant.id, safeQty);
       window.location.href = updatedCart.checkoutUrl;
     } finally {
       setIsBuyingNow(false);
@@ -262,13 +277,24 @@ export default function ProductClient({
 
               {/* Quantity */}
               {!productSoldOut && !variantSoldOut && (
-                <div className="flex items-center gap-4 mb-8">
-                  <p className="eyebrow">Qty</p>
-                  <div className="flex items-center border border-hairline">
-                    <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-10 h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center text-lg">−</button>
-                    <span className="w-10 text-center text-sm">{qty}</span>
-                    <button onClick={() => setQty(qty + 1)} className="w-10 h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center">+</button>
+                <div className="mb-8">
+                  <div className="flex items-center gap-4">
+                    <p className="eyebrow">Qty</p>
+                    <div className="flex items-center border border-hairline">
+                      <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-10 h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center text-lg">−</button>
+                      <span className="w-10 text-center text-sm">{qty}</span>
+                      <button
+                        onClick={() => setQty((q) => (maxQty !== null ? Math.min(q + 1, maxQty) : q + 1))}
+                        disabled={atMaxQty}
+                        className="w-10 h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-smoke"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
+                  {atMaxQty && (
+                    <p className="text-xs text-muted mt-2">Maximum stock reached.</p>
+                  )}
                 </div>
               )}
 
