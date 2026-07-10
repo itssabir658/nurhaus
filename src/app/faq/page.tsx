@@ -47,8 +47,8 @@ const CATEGORIES = [
     id: 'care',
     label: 'Care',
     faqs: [
-      { q: 'How should I care for my NÜR HAUS pieces?', a: 'Care instructions vary by fabric and are printed on the garment label. Most of our pieces are hand-wash or dry-clean only. Detailed care guidance is included in the product packaging.' },
-      { q: 'Can I iron my pieces?', a: 'Most fabrics can be lightly steamed. Ironing directly should be done on a low setting with a pressing cloth. Never iron printed or embroidered sections.' },
+      { q: 'How should I care for my NÜR HAUS pieces?', a: 'Care instructions are printed on the garment label. All of our pieces are dry-clean only. Detailed care guidance is included in the product packaging.' },
+      { q: 'Can I iron my pieces?', a: 'Our pieces should be steamed only — please do not iron them directly. Steam on a low setting, keeping the steamer away from any printed or embroidered sections.' },
       { q: 'What fabric are your pieces made from?', a: 'We use a range of premium natural and blended fabrics including silk crepe, fine wool, structured cotton, and chiffon. The exact fabric composition is listed on each product page.' },
     ],
   },
