@@ -29,16 +29,17 @@ export default function ProductClient({
   related: AppProduct[];
   isDemo?: boolean;
 }) {
-  const { openWaitlist } = useNurhaus();
+  const { openWaitlist, openCart } = useNurhaus();
   const { addItem } = useCart();
 
-  const [activeImage, setActiveImage]   = useState(0);
-  const [selectedSize, setSelectedSize] = useState('');
-  const [qty, setQty]                   = useState(1);
-  const [openSection, setOpenSection]   = useState<string | null>(null);
-  const [addedToCart, setAddedToCart]   = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [demoNotice, setDemoNotice]     = useState(false);
+  const [activeImage, setActiveImage]     = useState(0);
+  const [selectedSize, setSelectedSize]   = useState('');
+  const [qty, setQty]                     = useState(1);
+  const [openSection, setOpenSection]     = useState<string | null>(null);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isBuyingNow, setIsBuyingNow]     = useState(false);
+  const [sizeError, setSizeError]         = useState(false);
+  const [demoNotice, setDemoNotice]       = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<AppProduct[]>([]);
 
   const hasSizes = product.sizes.length > 0;
@@ -65,46 +66,59 @@ export default function ProductClient({
     } catch { /* ignore */ }
   }, [product.handle, related]);
 
+  const triggerSizeError = () => {
+    setSizeError(true);
+    window.setTimeout(() => setSizeError(false), 600);
+  };
+
   const handleAddToCart = async () => {
-    if (hasSizes && !selectedSize) return;
+    if (hasSizes && !selectedSize) {
+      triggerSizeError();
+      return;
+    }
     const variant = selectedVariant ?? product.variants[0];
     if (!variant) return;
 
-    // Demo-catalog items have no real Shopify variant to add — show the same success
-    // animation without touching the cart, so the design previews correctly either way.
+    // Demo-catalog items have no real Shopify variant to add — show a lightweight
+    // notice without touching the cart, so the design previews correctly either way.
     if (isDemo) {
-      setAddedToCart(true);
-      setTimeout(() => setAddedToCart(false), 2400);
+      setDemoNotice(true);
+      window.setTimeout(() => setDemoNotice(false), 3200);
       return;
     }
 
-    setIsSubmitting(true);
+    setIsAddingToCart(true);
     try {
       await addItem(variant.id, qty);
-      setAddedToCart(true);
-      setTimeout(() => setAddedToCart(false), 2400);
+      openCart();
     } finally {
-      setIsSubmitting(false);
+      setIsAddingToCart(false);
     }
   };
 
   const handleBuyNow = async () => {
-    if (hasSizes && !selectedSize) return;
+    if (hasSizes && !selectedSize) {
+      triggerSizeError();
+      return;
+    }
     const variant = selectedVariant ?? product.variants[0];
     if (!variant) return;
 
     if (isDemo) {
       setDemoNotice(true);
-      setTimeout(() => setDemoNotice(false), 3200);
+      window.setTimeout(() => setDemoNotice(false), 3200);
       return;
     }
 
-    setIsSubmitting(true);
+    setIsBuyingNow(true);
     try {
+      // Shopify's Storefront API issues checkout sessions via the cart's checkoutUrl —
+      // this creates/updates the cart for just this variant, then hands off to Shopify's
+      // hosted checkout, bypassing the cart page entirely.
       const updatedCart = await addItem(variant.id, qty);
       window.location.href = updatedCart.checkoutUrl;
     } finally {
-      setIsSubmitting(false);
+      setIsBuyingNow(false);
     }
   };
 
@@ -194,7 +208,7 @@ export default function ProductClient({
                       Size Guide
                     </Link>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className={`flex flex-wrap gap-2 ${sizeError ? 'animate-shake' : ''}`}>
                     {product.sizes.map((s) => {
                       const variantForSize = product.variants.find((v) =>
                         v.selectedOptions.some((o) => o.name.toLowerCase() === 'size' && o.value === s)
@@ -224,7 +238,9 @@ export default function ProductClient({
                     })}
                   </div>
                   {!selectedSize && (
-                    <p className="text-xs text-muted mt-2">Please select a size</p>
+                    <p className={`text-xs mt-2 transition-colors duration-200 ${sizeError ? 'text-red-500 font-medium' : 'text-muted'}`}>
+                      Please select a size
+                    </p>
                   )}
                   {variantSoldOut && (
                     <p className="text-xs text-smoke mt-2">This size is currently sold out.</p>
@@ -274,24 +290,17 @@ export default function ProductClient({
                   <>
                     <button
                       onClick={handleAddToCart}
-                      disabled={(hasSizes && !selectedSize) || variantSoldOut || isSubmitting}
-                      className={`btn-primary w-full transition-all duration-500 ${(hasSizes && !selectedSize) || variantSoldOut ? 'opacity-40 cursor-not-allowed' : ''}`}
+                      disabled={variantSoldOut || isAddingToCart || isBuyingNow}
+                      className={`btn-primary w-full transition-all duration-500 ${variantSoldOut ? 'opacity-40 cursor-not-allowed' : ''}`}
                     >
-                      {addedToCart ? (
-                        <span className="flex items-center justify-center gap-2">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <polyline points="20 6 9 17 4 12" />
-                          </svg>
-                          Added to Cart
-                        </span>
-                      ) : isSubmitting ? 'Adding…' : 'Add to Cart'}
+                      {isAddingToCart ? 'Adding…' : 'Add to Cart'}
                     </button>
                     <button
                       onClick={handleBuyNow}
-                      disabled={(hasSizes && !selectedSize) || variantSoldOut || isSubmitting}
-                      className={`btn-outline w-full ${(hasSizes && !selectedSize) || variantSoldOut ? 'opacity-40 cursor-not-allowed' : ''}`}
+                      disabled={variantSoldOut || isAddingToCart || isBuyingNow}
+                      className={`btn-outline w-full ${variantSoldOut ? 'opacity-40 cursor-not-allowed' : ''}`}
                     >
-                      Buy Now
+                      {isBuyingNow ? 'Processing…' : 'Buy Now'}
                     </button>
                     <AnimatePresence>
                       {demoNotice && (

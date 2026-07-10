@@ -21,6 +21,7 @@ export default function Providers({
   const [cartOpen, setCartOpen]     = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const openWaitlist = useCallback((_productName: string) => {}, []);
+  const openCart = useCallback(() => setCartOpen(true), []);
 
   useEffect(() => {
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
@@ -47,7 +48,7 @@ export default function Providers({
   }, []);
 
   return (
-    <NurhausContext.Provider value={{ openWaitlist }}>
+    <NurhausContext.Provider value={{ openWaitlist, openCart }}>
       <CartProvider>
         <AnnouncementBar />
         <Navigation

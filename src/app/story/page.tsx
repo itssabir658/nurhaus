@@ -50,7 +50,7 @@ export default function StoryPage() {
   return (
     <div className="page-enter">
       {/* Hero */}
-      <section className="relative h-[82svh] md:min-h-[92vh] flex items-end pb-6 md:pb-12 overflow-hidden">
+      <section className="relative h-[82svh] md:min-h-[92vh] flex items-end pb-16 md:pb-24 overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1762605135376-ae5af70a5628?auto=format&fit=crop&w=1800&q=80"
