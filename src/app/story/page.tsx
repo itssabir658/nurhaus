@@ -50,7 +50,7 @@ export default function StoryPage() {
   return (
     <div className="page-enter">
       {/* Hero */}
-      <section className="relative h-[82svh] md:min-h-[92vh] flex items-end pb-16 md:pb-24 overflow-hidden">
+      <section className="relative h-[82svh] md:min-h-[92vh] overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1762605135376-ae5af70a5628?auto=format&fit=crop&w=1800&q=80"
@@ -62,7 +62,7 @@ export default function StoryPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-midnight/20 via-midnight/30 to-midnight/70" />
         </div>
-        <div className="relative z-10 site-max site-px">
+        <div className="relative z-10 h-full site-max site-px flex flex-col justify-end pb-6 md:pb-12">
           <div className="mb-3">
             <span
               className="eyebrow-light inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5"
