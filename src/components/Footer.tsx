@@ -107,9 +107,12 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Ghost wordmark — full-width, flush to footer bottom */}
-      <div aria-hidden="true" className="select-none pointer-events-none mt-6 pt-[0.15em]">
-        <p className="text-center text-primary/[0.07] text-[19.5vw] leading-[0.82] tracking-[0.02em] whitespace-nowrap" style={{ fontFamily: 'var(--font-display)' }}>
+      {/* Embossed wordmark — full-width, flush to footer bottom */}
+      <div aria-hidden="true" className="select-none mt-6 pt-[0.15em]">
+        <p
+          className="wordmark-emboss text-center text-[19.5vw] leading-[0.82] tracking-[0.02em] whitespace-nowrap"
+          style={{ fontFamily: 'var(--font-display)' }}
+        >
           NÜR HAUS
         </p>
       </div>
