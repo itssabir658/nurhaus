@@ -6,10 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const INITIAL_WISHLIST = [
-  { name: 'The Sahar Abaya',  category: 'Abaya', price: '$680', handle: 'sahar-abaya',  image: 'https://images.unsplash.com/photo-1760083545495-b297b1690672?auto=format&fit=crop&w=600&q=80', inStock: true  },
-  { name: 'The Noor Dress',   category: 'Dress', price: '$420', handle: 'noor-dress',   image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=600&q=80', inStock: true  },
-  { name: 'The Layl Abaya',   category: 'Abaya', price: '$720', handle: 'layl-abaya',   image: 'https://images.unsplash.com/photo-1772474500365-c2c520545f44?auto=format&fit=crop&w=600&q=80', inStock: false },
-  { name: 'The Dunya Dress',  category: 'Dress', price: '$390', handle: 'dunya-dress',  image: 'https://images.unsplash.com/photo-1764179690247-df7f4014def7?auto=format&fit=crop&w=600&q=80', inStock: true  },
+  { name: 'Layla',  category: 'Abaya', price: '$680', handle: 'sahar-abaya',  image: 'https://images.unsplash.com/photo-1760083545495-b297b1690672?auto=format&fit=crop&w=600&q=80', inStock: true  },
+  { name: 'Amelie',   category: 'Dress', price: '$420', handle: 'noor-dress',   image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=600&q=80', inStock: true  },
+  { name: 'Yara',   category: 'Abaya', price: '$720', handle: 'layl-abaya',   image: 'https://images.unsplash.com/photo-1772474500365-c2c520545f44?auto=format&fit=crop&w=600&q=80', inStock: false },
+  { name: 'Faye',  category: 'Dress', price: '$390', handle: 'dunya-dress',  image: 'https://images.unsplash.com/photo-1764179690247-df7f4014def7?auto=format&fit=crop&w=600&q=80', inStock: true  },
 ];
 
 const stagger = {

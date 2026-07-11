@@ -30,7 +30,7 @@ export const DEMO_PRODUCTS: AppProduct[] = [
   {
     id: 'demo-sahar-abaya',
     handle: 'sahar-abaya',
-    name: 'The Sahar Abaya',
+    name: 'Layla',
     kind: 'Abaya',
     description: 'Named for the quiet hour before dawn, the Sahar is cut in a fluid double-layered crepe that moves like water and holds its shape with authority. A deep side slit and relaxed silhouette give freedom without sacrifice.',
     descriptionHtml: '<p>Named for the quiet hour before dawn, the Sahar is cut in a fluid double-layered crepe that moves like water and holds its shape with authority. A deep side slit and relaxed silhouette give freedom without sacrifice.</p>',
@@ -50,7 +50,7 @@ export const DEMO_PRODUCTS: AppProduct[] = [
   {
     id: 'demo-noor-dress',
     handle: 'noor-dress',
-    name: 'The Noor Dress',
+    name: 'Amelie',
     kind: 'Dress',
     description: 'The Noor is an exercise in proportion. A modest neckline meets a subtly flared skirt at the knee — the kind of dress that works in every room because it asks nothing of the room.',
     descriptionHtml: '<p>The Noor is an exercise in proportion. A modest neckline meets a subtly flared skirt at the knee — the kind of dress that works in every room because it asks nothing of the room.</p>',
@@ -70,7 +70,7 @@ export const DEMO_PRODUCTS: AppProduct[] = [
   {
     id: 'demo-layl-abaya',
     handle: 'layl-abaya',
-    name: 'The Layl Abaya',
+    name: 'Yara',
     kind: 'Abaya',
     description: 'The Layl — named for night — is a study in deep proportion. Cut extra long for full coverage with an open-front drape, structured shoulders, and a silk-chiffon overlay that catches light with each movement.',
     descriptionHtml: '<p>The Layl — named for night — is a study in deep proportion. Cut extra long for full coverage with an open-front drape, structured shoulders, and a silk-chiffon overlay that catches light with each movement.</p>',
@@ -90,7 +90,7 @@ export const DEMO_PRODUCTS: AppProduct[] = [
   {
     id: 'demo-dunya-dress',
     handle: 'dunya-dress',
-    name: 'The Dunya Dress',
+    name: 'Faye',
     kind: 'Dress',
     description: 'Measured, considered, quietly assured — the Dunya pairs a soft midi silhouette with a structured coat layer, built for the woman moving between meetings and everything after.',
     descriptionHtml: '<p>Measured, considered, quietly assured — the Dunya pairs a soft midi silhouette with a structured coat layer, built for the woman moving between meetings and everything after.</p>',
@@ -106,7 +106,7 @@ export const DEMO_PRODUCTS: AppProduct[] = [
   {
     id: 'demo-layla-dress',
     handle: 'layla-dress',
-    name: 'The Layla Dress',
+    name: 'Elayna',
     kind: 'Dress',
     description: 'The dress that disappears into the room, and takes it with her — minimalist, architectural, cut from a single uninterrupted line of fabric.',
     descriptionHtml: '<p>The dress that disappears into the room, and takes it with her — minimalist, architectural, cut from a single uninterrupted line of fabric.</p>',
@@ -122,7 +122,7 @@ export const DEMO_PRODUCTS: AppProduct[] = [
   {
     id: 'demo-zahra-dress',
     handle: 'zahra-dress',
-    name: 'The Zahra Dress',
+    name: 'Saphira',
     kind: 'Dress',
     description: 'In light, always — the Zahra is a two-piece co-ord in fluid mocha crepe, designed to read as one continuous silhouette.',
     descriptionHtml: '<p>In light, always — the Zahra is a two-piece co-ord in fluid mocha crepe, designed to read as one continuous silhouette.</p>',
@@ -138,7 +138,7 @@ export const DEMO_PRODUCTS: AppProduct[] = [
   {
     id: 'demo-rana-dress',
     handle: 'rana-dress',
-    name: 'The Rana Dress',
+    name: 'Dahlia',
     kind: 'Dress',
     description: 'Hand-embroidered detailing along the bodice and sleeve, finished with a fluid silk dupatta — quiet ceremony, made wearable.',
     descriptionHtml: '<p>Hand-embroidered detailing along the bodice and sleeve, finished with a fluid silk dupatta — quiet ceremony, made wearable.</p>',
@@ -154,7 +154,7 @@ export const DEMO_PRODUCTS: AppProduct[] = [
   {
     id: 'demo-samar-dress',
     handle: 'samar-dress',
-    name: 'The Samar Dress',
+    name: 'Alaïa',
     kind: 'Dress',
     description: 'A long architectural coat-dress in mocha wool blend, belted at the waist — the piece that makes the rest of the wardrobe optional.',
     descriptionHtml: '<p>A long architectural coat-dress in mocha wool blend, belted at the waist — the piece that makes the rest of the wardrobe optional.</p>',

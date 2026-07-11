@@ -20,9 +20,9 @@ const ORDERS = [
 ];
 
 const WISHLIST = [
-  { name: 'The Sahar Abaya', price: '$680', handle: 'sahar-abaya',   image: 'https://images.unsplash.com/photo-1760083545495-b297b1690672?auto=format&fit=crop&w=600&q=80' },
-  { name: 'The Noor Dress',  price: '$420', handle: 'noor-dress',    image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=600&q=80' },
-  { name: 'The Layl Abaya', price: '$720', handle: 'layl-abaya',    image: 'https://images.unsplash.com/photo-1772474500365-c2c520545f44?auto=format&fit=crop&w=600&q=80' },
+  { name: 'Layla', price: '$680', handle: 'sahar-abaya',   image: 'https://images.unsplash.com/photo-1760083545495-b297b1690672?auto=format&fit=crop&w=600&q=80' },
+  { name: 'Amelie',  price: '$420', handle: 'noor-dress',    image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=600&q=80' },
+  { name: 'Yara', price: '$720', handle: 'layl-abaya',    image: 'https://images.unsplash.com/photo-1772474500365-c2c520545f44?auto=format&fit=crop&w=600&q=80' },
 ];
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22,1,0.36,1] } } };
