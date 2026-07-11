@@ -385,7 +385,12 @@ html.lenis { height: auto; }
    PAGE TRANSITIONS
    ============================================================ */
 .page-enter {
-  animation: pageEnter 600ms var(--ease-expo) both;
+  /* No `both`/`forwards` fill: after the entrance completes the element
+     reverts to its base styles (opacity 1, transform none). Retaining a
+     `transform` here would make .page-enter the containing block for any
+     position:fixed descendant (e.g. modals), pinning them inside the page
+     instead of the viewport. */
+  animation: pageEnter 600ms var(--ease-expo);
 }
 @keyframes pageEnter {
   from { opacity: 0; transform: translateY(16px); }
