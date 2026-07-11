@@ -114,7 +114,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
               </span>
             </span>
           </p>
-          <p className="hero-subtext text-primary/75 text-sm md:text-base max-w-md mb-6" style={{ opacity: 0, transform: 'translateY(12px)' }}>
+          <p className="hero-subtext text-primary/75 text-sm md:text-base max-w-md md:max-w-none md:whitespace-nowrap mb-6" style={{ opacity: 0, transform: 'translateY(12px)' }}>
             Small-batch abayas and dresses &mdash; light, easy, and made with intention.
           </p>
           <div className="hero-ctas flex gap-3 sm:gap-4" style={{ opacity: 0, transform: 'translateY(12px)' }}>
