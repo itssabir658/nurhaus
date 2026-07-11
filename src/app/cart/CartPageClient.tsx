@@ -20,10 +20,41 @@ export default function CartPageClient({ crossSell }: { crossSell: AppProduct[] 
   const handleCheckout = () => {
     if (!cart?.checkoutUrl) return;
 
+    let checkoutUrl = cart.checkoutUrl;
+
     // Ensure the URL is absolute (has protocol)
-    const checkoutUrl = cart.checkoutUrl.startsWith('http')
-      ? cart.checkoutUrl
-      : `https://${cart.checkoutUrl}`;
+    if (!checkoutUrl.startsWith('http')) {
+      checkoutUrl = `https://${checkoutUrl}`;
+    }
+
+    // Rewrite domain from custom front-end domain to Shopify domain
+    // Shopify's API returns checkout URLs with the custom domain (nurhaus.ca),
+    // but Next.js intercepts these. We need to redirect to the raw Shopify domain (.myshopify.com)
+    const shopifyDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
+    if (shopifyDomain) {
+      try {
+        const url = new URL(checkoutUrl);
+        const currentHostname = url.hostname;
+
+        // Extract the store name from the Shopify domain (e.g., "nurhaus" from "nurhaus.myshopify.com")
+        const storeName = shopifyDomain.split('.')[0];
+        const shopifyHostname = `${storeName}.myshopify.com`;
+
+        // Replace custom domain with Shopify domain if they differ
+        if (currentHostname !== shopifyHostname) {
+          url.hostname = shopifyHostname;
+          checkoutUrl = url.toString();
+        }
+      } catch {
+        // If URL parsing fails, attempt string replacement as fallback
+        const storeName = shopifyDomain.split('.')[0];
+        const shopifyHostname = `${storeName}.myshopify.com`;
+        checkoutUrl = checkoutUrl.replace(
+          /https?:\/\/[^/]+/,
+          `https://${shopifyHostname}`
+        );
+      }
+    }
 
     setIsRedirecting(true);
     // Use window.location.href for guaranteed external navigation
