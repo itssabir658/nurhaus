@@ -45,9 +45,11 @@ export default function Footer() {
             <div className="flex items-center gap-3 mt-10">
               <span className="text-xs text-primary/45 tracking-wide">Find us on</span>
               <a
-                href="#"
+                href="https://www.instagram.com/nurhausco?igsh=cGs3dDd1end5c3Rs"
                 aria-label="Instagram"
                 className="text-primary/55 hover:text-gold transition-colors duration-300"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
