@@ -6,6 +6,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useNurhaus } from '@/contexts/NurhausContext';
 import { useCart } from '@/contexts/CartContext';
+import SizeGuideModal from '@/components/SizeGuideModal';
+import { getSizeGuideData } from '@/lib/sizeGuides';
 import type { AppProduct } from '@/lib/shopify/types';
 
 const ACCORDION_ITEMS = ['description', 'care', 'shipping'] as const;
@@ -41,6 +43,9 @@ export default function ProductClient({
   const [sizeError, setSizeError]         = useState(false);
   const [demoNotice, setDemoNotice]       = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<AppProduct[]>([]);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+
+  const sizeGuideData = getSizeGuideData(product.handle, product.kind);
 
   const hasSizes = product.sizes.length > 0;
 
@@ -219,9 +224,14 @@ export default function ProductClient({
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-3">
                     <p className="eyebrow">Select Size</p>
-                    <Link href="/size-guide" className="text-xs text-smoke hover:text-ink underline underline-offset-2 transition-colors">
-                      Size Guide
-                    </Link>
+                    {sizeGuideData && (
+                      <button
+                        onClick={() => setSizeGuideOpen(true)}
+                        className="text-xs text-smoke hover:text-ink underline underline-offset-2 transition-colors"
+                      >
+                        Size Guide
+                      </button>
+                    )}
                   </div>
                   <div className={`flex flex-wrap gap-2 ${sizeError ? 'animate-shake' : ''}`}>
                     {product.sizes.map((s) => {
@@ -506,6 +516,16 @@ export default function ProductClient({
             </div>
           </div>
         </div>
+      )}
+
+      {/* Size Guide Modal */}
+      {sizeGuideData && (
+        <SizeGuideModal
+          isOpen={sizeGuideOpen}
+          onClose={() => setSizeGuideOpen(false)}
+          productName={product.name}
+          guide={sizeGuideData}
+        />
       )}
     </div>
   );

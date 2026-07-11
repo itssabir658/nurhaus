@@ -17,7 +17,7 @@ const links = [
 
 const menuLinks = [
   { label: 'Our Story',   href: '/story' },
-  { label: 'Size Guide',  href: '/size-guide' },
+  { label: 'Collection',  href: '/shop' },
   { label: 'Contact',     href: '/contact' },
 ];
 

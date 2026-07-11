@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,10 +11,24 @@ const FREE_SHIPPING_THRESHOLD = 500;
 
 export default function CartPageClient({ crossSell }: { crossSell: AppProduct[] }) {
   const { cart, isLoading, isMutating, updateItem, removeItem } = useCart();
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const lines = cart?.lines ?? [];
   const subtotal = cart?.subtotal ?? 0;
   const progress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
   const remaining = Math.max(FREE_SHIPPING_THRESHOLD - subtotal, 0);
+
+  const handleCheckout = () => {
+    if (!cart?.checkoutUrl) return;
+
+    // Ensure the URL is absolute (has protocol)
+    const checkoutUrl = cart.checkoutUrl.startsWith('http')
+      ? cart.checkoutUrl
+      : `https://${cart.checkoutUrl}`;
+
+    setIsRedirecting(true);
+    // Use window.location.href for guaranteed external navigation
+    window.location.href = checkoutUrl;
+  };
 
   return (
     <div className="page-enter">
@@ -138,12 +153,13 @@ export default function CartPageClient({ crossSell }: { crossSell: AppProduct[] 
                   </div>
                   <p className="text-xs text-muted mt-1.5">Excluding duties where applicable</p>
                 </div>
-                <a
-                  href={cart?.checkoutUrl}
-                  className={`btn-primary w-full block text-center mb-4 ${!cart?.checkoutUrl ? 'opacity-40 pointer-events-none' : ''}`}
+                <button
+                  onClick={handleCheckout}
+                  disabled={!cart?.checkoutUrl || isRedirecting}
+                  className={`btn-primary w-full block text-center mb-4 ${!cart?.checkoutUrl || isRedirecting ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
-                  Proceed to Checkout
-                </a>
+                  {isRedirecting ? 'Redirecting...' : 'Proceed to Checkout'}
+                </button>
                 <Link href="/shop" className="btn-outline w-full block text-center text-sm py-3">Continue Shopping</Link>
                 <div className="mt-6 pt-5 border-t border-hairline flex items-center justify-center gap-4 text-muted">
                   {['Visa', 'Mastercard', 'PayPal', 'Apple Pay', 'Shop Pay'].map((p) => (

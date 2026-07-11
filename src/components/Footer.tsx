@@ -5,7 +5,6 @@ import Image from 'next/image';
 
 const shopLinks  = [
   { label: 'Collection',  href: '/shop' },
-  { label: 'Size Guide',  href: '/size-guide' },
 ];
 const houseLinks = [
   { label: 'Our Story', href: '/story' },
