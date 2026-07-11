@@ -144,7 +144,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
         <div className="flex items-end justify-between mb-10 md:mb-24">
           <div>
             <motion.p className="eyebrow mb-3" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-              The Collection
+              Chapter Ⅰ
             </motion.p>
             <motion.h2
               className="font-display text-[1.75rem] sm:text-[2.4rem] md:text-[4rem] tracking-tight md:max-w-none max-w-md leading-tight"
