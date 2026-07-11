@@ -55,6 +55,18 @@ const ALAIA_LONG_DRESS: SizeGuideData = {
   ],
 };
 
+// Saphira Long Dress size guide (XS is offered in the source chart but omitted here)
+const SAPHIRA_LONG_DRESS: SizeGuideData = {
+  name: 'Saphira Long Dress',
+  columns: ['Size', 'Length', 'Body Length', 'Waist', 'Chest', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
+  rows: [
+    { size: 'S', length: '54', bodyLength: '14', waist: '19.5', chest: '19.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
+    { size: 'M', length: '54', bodyLength: '14', waist: '20.5', chest: '20.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
+    { size: 'L', length: '55', bodyLength: '14', waist: '22', chest: '22', sleeves: '24', armhole: '11', shoulder: '16', flare: '65' },
+    { size: 'XL', length: '55', bodyLength: '14', waist: '23', chest: '23', sleeves: '24', armhole: '12', shoulder: '16.5', flare: '70' },
+  ],
+};
+
 /**
  * Resolve the size guide for a product.
  *
@@ -70,6 +82,7 @@ const ALAIA_LONG_DRESS: SizeGuideData = {
  * - "Dahlia" (former Rana) and "Amelie" (former Noor) share the S/M/L/XL dress
  *   guide (DAHLIA_LONG_DRESS).
  * - "Alaïa" (former Samar) has its own S/M/L/XL guide (ALAIA_LONG_DRESS).
+ * - "Saphira" (former Zahra) has its own S/M/L/XL guide (SAPHIRA_LONG_DRESS).
  */
 export function getSizeGuideData(
   productHandle: string,
@@ -116,8 +129,13 @@ export function getSizeGuideData(
     return ALAIA_LONG_DRESS;
   }
 
+  // Saphira (former Zahra Dress) — its own S/M/L/XL guide.
+  if (name === 'saphira' || handle === 'saphira' || handle === 'zahra-dress') {
+    return SAPHIRA_LONG_DRESS;
+  }
+
   // No size guide found for this product yet.
   return null;
 }
 
-export { ABAYA_OUTER, ABAYA_INNER, DAHLIA_LONG_DRESS, ALAIA_LONG_DRESS };
+export { ABAYA_OUTER, ABAYA_INNER, DAHLIA_LONG_DRESS, ALAIA_LONG_DRESS, SAPHIRA_LONG_DRESS };
