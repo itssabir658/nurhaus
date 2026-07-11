@@ -8,10 +8,6 @@ export interface SizeGuideData {
   rows: SizeRow[];
 }
 
-export interface SizeGuidesMap {
-  [productHandle: string]: SizeGuideData;
-}
-
 // Abaya shared size guide data
 const ABAYA_OUTER: SizeGuideData = {
   name: 'Abaya (Outer)',
@@ -48,54 +44,37 @@ const DAHLIA_LONG_DRESS: SizeGuideData = {
 };
 
 /**
- * Map of product handles to their size guides.
- * For abayas, both use the same guides (with outer and inner tabs).
- * For dresses, each has its own dedicated guide.
+ * Resolve the size guide for a product.
  *
- * Product types/categories:
- * - 'abaya': Both abayas share this guide
- * - Product-specific handles: Individual dress guides
+ * Matching is done primarily by the product's display NAME — the store owner
+ * controls it directly and it stays stable even when Shopify URL handles are
+ * changed — then by product type/kind for abayas, and finally by known current
+ * or legacy handles as a fallback (so the demo catalog and older links keep
+ * working). Returns null when no guide applies to the product yet.
+ *
+ * Current mapping:
+ * - Abayas ("Layla", "Yara") share one tabbed Outer/Inner guide, detected via
+ *   the Shopify product type (kind === 'Abaya').
+ * - "Dahlia" (former Rana) and "Amelie" (former Noor) share the S/M/L/XL dress
+ *   guide (DAHLIA_LONG_DRESS).
  */
-export const PRODUCT_SIZE_GUIDES: SizeGuidesMap = {
-  // Abayas — both share these guides
-  abaya: {
-    name: 'Abaya Size Guide',
-    columns: [], // Not used for abayas since they have tabs
-    rows: [], // Not used for abayas
-  },
+export function getSizeGuideData(
+  productHandle: string,
+  productType?: string,
+  productName?: string,
+) {
+  const handle = productHandle.toLowerCase();
+  const type = (productType ?? '').toLowerCase();
+  const name = (productName ?? '').toLowerCase().trim();
 
-  // Dresses — map product handles to their specific size guides
-  // Update these handles to match your actual product handles in Shopify
-  'noor-dress': DAHLIA_LONG_DRESS,
-  // Add more dresses here as needed:
-  // 'dunya-dress': DUNYA_DRESS_DATA,
-  // 'layla-dress': LAYLA_DRESS_DATA,
-  // 'zahra-dress': ZAHRA_DRESS_DATA,
-};
-
-/**
- * Get size guide data for a product by handle or type.
- * Returns null if no size guide exists for the product.
- */
-export function getSizeGuideData(productHandle: string, productType?: string) {
-  const handleLower = productHandle.toLowerCase();
-
-  // First, try direct handle lookup (with various normalizations)
-  if (PRODUCT_SIZE_GUIDES[handleLower]) {
-    return PRODUCT_SIZE_GUIDES[handleLower];
-  }
-
-  // Try without product type suffix (e.g., "dahlia-dress" -> "dahlia")
-  const baseHandle = handleLower.replace(/-(dress|abaya)$/, '');
-  if (baseHandle !== handleLower && PRODUCT_SIZE_GUIDES[baseHandle]) {
-    return PRODUCT_SIZE_GUIDES[baseHandle];
-  }
-
-  // Check if it's an abaya by type or handle
+  // Abayas — both current abayas share the tabbed Outer/Inner guide. Detected
+  // by product type first; the new handles (layla, yara) no longer contain the
+  // word "abaya", so the handle alone is no longer a reliable signal.
   const isAbaya =
-    productType?.toLowerCase().includes('abaya') ||
-    handleLower.includes('abaya');
-
+    type.includes('abaya') ||
+    handle.includes('abaya') ||
+    name === 'layla' ||
+    name === 'yara';
   if (isAbaya) {
     return {
       name: 'Abaya Size Guide',
@@ -103,7 +82,16 @@ export function getSizeGuideData(productHandle: string, productType?: string) {
     };
   }
 
-  // No size guide found
+  // Dresses that share the Dahlia S/M/L/XL guide: "Dahlia" (former Rana Dress)
+  // and "Amelie" (former Noor Dress). Match by name first, then by known
+  // current/legacy handles for the demo catalog and backward compatibility.
+  const dahliaGuideNames = ['dahlia', 'amelie'];
+  const dahliaGuideHandles = ['dahlia', 'amelie', 'rana-dress', 'noor-dress'];
+  if (dahliaGuideNames.includes(name) || dahliaGuideHandles.includes(handle)) {
+    return DAHLIA_LONG_DRESS;
+  }
+
+  // No size guide found for this product yet.
   return null;
 }
 

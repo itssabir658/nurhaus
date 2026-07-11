@@ -45,7 +45,7 @@ export default function ProductClient({
   const [recentlyViewed, setRecentlyViewed] = useState<AppProduct[]>([]);
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
-  const sizeGuideData = getSizeGuideData(product.handle, product.kind);
+  const sizeGuideData = getSizeGuideData(product.handle, product.kind, product.name);
 
   const hasSizes = product.sizes.length > 0;
 
