@@ -79,6 +79,20 @@ const ELAYNA_LONG_DRESS: SizeGuideData = {
   ],
 };
 
+// Faye Long Dress size guide (XS is offered in the source chart but omitted here).
+// Values currently match DAHLIA_LONG_DRESS but are kept as a separate object so
+// each dress can be edited independently.
+const FAYE_LONG_DRESS: SizeGuideData = {
+  name: 'Faye Long Dress',
+  columns: ['Size', 'Length', 'Body Length', 'Waist', 'Chest', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
+  rows: [
+    { size: 'S', length: '55', bodyLength: '14', waist: '19.5', chest: '19.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
+    { size: 'M', length: '55', bodyLength: '14', waist: '20.5', chest: '20.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
+    { size: 'L', length: '56', bodyLength: '14', waist: '22', chest: '22', sleeves: '24', armhole: '11', shoulder: '16', flare: '65' },
+    { size: 'XL', length: '56', bodyLength: '14', waist: '23', chest: '23', sleeves: '24', armhole: '12', shoulder: '16.5', flare: '70' },
+  ],
+};
+
 /**
  * Resolve the size guide for a product.
  *
@@ -96,6 +110,7 @@ const ELAYNA_LONG_DRESS: SizeGuideData = {
  * - "Alaïa" (former Samar) has its own S/M/L/XL guide (ALAIA_LONG_DRESS).
  * - "Saphira" (former Zahra) has its own S/M/L/XL guide (SAPHIRA_LONG_DRESS).
  * - "Elayna" (former Layla Dress) has its own S/M/L/XL guide (ELAYNA_LONG_DRESS).
+ * - "Faye" (former Dunya Dress) has its own S/M/L/XL guide (FAYE_LONG_DRESS).
  */
 export function getSizeGuideData(
   productHandle: string,
@@ -154,6 +169,11 @@ export function getSizeGuideData(
     return ELAYNA_LONG_DRESS;
   }
 
+  // Faye (former Dunya Dress) — its own S/M/L/XL guide.
+  if (name === 'faye' || handle === 'faye' || handle === 'dunya-dress') {
+    return FAYE_LONG_DRESS;
+  }
+
   // No size guide found for this product yet.
   return null;
 }
@@ -165,4 +185,5 @@ export {
   ALAIA_LONG_DRESS,
   SAPHIRA_LONG_DRESS,
   ELAYNA_LONG_DRESS,
+  FAYE_LONG_DRESS,
 };
