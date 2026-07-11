@@ -147,7 +147,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
             </div>
           </div>
 
-          {/* Magazine grid */}
+          {/* Product grid — matches the home page's collection grid */}
           <div className="site-max site-px py-16 md:py-24">
             {filtered.length === 0 ? (
               <p className="text-center text-smoke text-sm py-20">No pieces in this category yet.</p>
@@ -159,67 +159,20 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="space-y-24"
+                  className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-10 md:gap-y-16"
                 >
-                  {/* Row 1: Large left, small right */}
-                  {filtered.length > 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-end">
-                      <motion.div
-                        className="md:col-span-7"
-                        variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                      >
-                        <ProductCard product={filtered[0]} large />
-                      </motion.div>
-                      {filtered[1] && (
-                        <motion.div
-                          className="md:col-span-4 md:col-start-9 md:pb-16"
-                          variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                        >
-                          <ProductCard product={filtered[1]} />
-                        </motion.div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Row 2: Small left, large right */}
-                  {filtered.length > 2 && (
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-end">
-                      {filtered[2] && (
-                        <motion.div
-                          className="md:col-span-4 md:pb-20"
-                          variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                        >
-                          <ProductCard product={filtered[2]} />
-                        </motion.div>
-                      )}
-                      {filtered[3] && (
-                        <motion.div
-                          className="md:col-span-7 md:col-start-6"
-                          variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                        >
-                          <ProductCard product={filtered[3]} large />
-                        </motion.div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Remaining in 3-col grid */}
-                  {filtered.length > 4 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-16">
-                      {filtered.slice(4).map((p, i) => (
-                        <motion.div
-                          key={p.handle}
-                          variants={fadeUp}
-                          initial="hidden"
-                          whileInView="visible"
-                          viewport={{ once: true }}
-                          transition={{ delay: (i % 3) * 0.08 } as any}
-                        >
-                          <ProductCard product={p} />
-                        </motion.div>
-                      ))}
-                    </div>
-                  )}
+                  {filtered.map((p, i) => (
+                    <motion.div
+                      key={p.handle}
+                      variants={fadeUp}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                      transition={{ delay: (i % 3) * 0.1 } as any}
+                    >
+                      <ProductCard product={p} />
+                    </motion.div>
+                  ))}
                 </motion.div>
               </AnimatePresence>
             )}
