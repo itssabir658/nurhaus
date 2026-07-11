@@ -43,6 +43,18 @@ const DAHLIA_LONG_DRESS: SizeGuideData = {
   ],
 };
 
+// Amelie Long Dress size guide (XS is offered in the source chart but omitted here)
+const AMELIE_LONG_DRESS: SizeGuideData = {
+  name: 'Amelie Long Dress',
+  columns: ['Size', 'Length', 'Body Length', 'Waist', 'Chest', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
+  rows: [
+    { size: 'S', length: '56', bodyLength: '14', waist: '19.5', chest: '19.5', sleeves: '25', armhole: '10', shoulder: '15', flare: '70' },
+    { size: 'M', length: '57', bodyLength: '14', waist: '20.5', chest: '20.5', sleeves: '25', armhole: '10', shoulder: '15', flare: '70' },
+    { size: 'L', length: '57', bodyLength: '14', waist: '22', chest: '22', sleeves: '25', armhole: '11', shoulder: '16', flare: '70' },
+    { size: 'XL', length: '57', bodyLength: '14', waist: '23', chest: '23', sleeves: '25', armhole: '12', shoulder: '16.5', flare: '70' },
+  ],
+};
+
 // Alaïa Long Dress size guide (XS is offered in the source chart but omitted here)
 const ALAIA_LONG_DRESS: SizeGuideData = {
   name: 'Alaïa Long Dress',
@@ -105,8 +117,8 @@ const FAYE_LONG_DRESS: SizeGuideData = {
  * Current mapping:
  * - Abayas ("Layla", "Yara") share one tabbed Outer/Inner guide, detected via
  *   the Shopify product type (kind === 'Abaya').
- * - "Dahlia" (former Rana) and "Amelie" (former Noor) share the S/M/L/XL dress
- *   guide (DAHLIA_LONG_DRESS).
+ * - "Dahlia" (former Rana) has its own S/M/L/XL guide (DAHLIA_LONG_DRESS).
+ * - "Amelie" (former Noor) has its own S/M/L/XL guide (AMELIE_LONG_DRESS).
  * - "Alaïa" (former Samar) has its own S/M/L/XL guide (ALAIA_LONG_DRESS).
  * - "Saphira" (former Zahra) has its own S/M/L/XL guide (SAPHIRA_LONG_DRESS).
  * - "Elayna" (former Layla Dress) has its own S/M/L/XL guide (ELAYNA_LONG_DRESS).
@@ -142,13 +154,14 @@ export function getSizeGuideData(
     };
   }
 
-  // Dresses that share the Dahlia S/M/L/XL guide: "Dahlia" (former Rana Dress)
-  // and "Amelie" (former Noor Dress). Match by name first, then by known
-  // current/legacy handles for the demo catalog and backward compatibility.
-  const dahliaGuideNames = ['dahlia', 'amelie'];
-  const dahliaGuideHandles = ['dahlia', 'amelie', 'rana-dress', 'noor-dress'];
-  if (dahliaGuideNames.includes(name) || dahliaGuideHandles.includes(handle)) {
+  // Dahlia (former Rana Dress) — its own S/M/L/XL guide.
+  if (name === 'dahlia' || handle === 'dahlia' || handle === 'rana-dress') {
     return DAHLIA_LONG_DRESS;
+  }
+
+  // Amelie (former Noor Dress) — its own S/M/L/XL guide.
+  if (name === 'amelie' || handle === 'amelie' || handle === 'noor-dress') {
+    return AMELIE_LONG_DRESS;
   }
 
   // Alaïa (former Samar Dress) — its own S/M/L/XL guide. Name is compared in its
@@ -182,6 +195,7 @@ export {
   ABAYA_OUTER,
   ABAYA_INNER,
   DAHLIA_LONG_DRESS,
+  AMELIE_LONG_DRESS,
   ALAIA_LONG_DRESS,
   SAPHIRA_LONG_DRESS,
   ELAYNA_LONG_DRESS,
