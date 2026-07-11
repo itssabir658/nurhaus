@@ -273,6 +273,19 @@ export default function ProductClient({
                 </div>
               )}
 
+              {/* Size guide access when the size selector is hidden (sold out).
+                  Sizing info stays useful for sold-out / restocking pieces. */}
+              {productSoldOut && sizeGuideData && (
+                <div className="mb-6">
+                  <button
+                    onClick={() => setSizeGuideOpen(true)}
+                    className="text-xs text-smoke hover:text-ink underline underline-offset-2 transition-colors"
+                  >
+                    Size Guide
+                  </button>
+                </div>
+              )}
+
               {/* Limited stock indicator — only when Shopify reports real inventory numbers */}
               {!productSoldOut && selectedVariant?.availableForSale && selectedVariant.quantityAvailable !== null && selectedVariant.quantityAvailable <= 8 && (
                 <motion.p

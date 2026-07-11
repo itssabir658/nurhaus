@@ -55,7 +55,7 @@ export default function SizeGuideModal({ isOpen, onClose, productName, guide }: 
 
             {/* Tabs (if applicable) */}
             {isTabbedGuide && (
-              <div className="flex gap-0 border-b border-hairline px-6 overflow-x-auto">
+              <div className="flex gap-6 border-b border-hairline px-6 overflow-x-auto">
                 {(guide as any).tabs.map((tab: SizeGuideData, i: number) => (
                   <button
                     key={i}
