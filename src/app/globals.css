@@ -177,19 +177,43 @@ img, video { display: block; max-width: 100%; }
 }
 
 /* ============================================================
-   EMBOSSED WORDMARK (footer ghost text)
+   EMBOSSED WORDMARK WITH MOUSE-TRACKED SPOTLIGHT (footer ghost text)
+   Two stacked copies of the same text: a dark carved base, and a
+   brightened duplicate revealed only inside a radial-gradient mask
+   that follows --mouse-x/--mouse-y, like a flashlight over the emboss.
    ============================================================ */
-.wordmark-emboss {
-  color: var(--c-midnight);
-  text-shadow:
-    -1px -1px 1px rgba(255, 255, 255, 0.09),
-    1px 2px 3px rgba(0, 0, 0, 0.55);
-  transition: text-shadow 700ms var(--ease-out);
+.wordmark-spotlight {
+  --mouse-x: 50%;
+  --mouse-y: 50%;
 }
-.wordmark-emboss:hover {
+
+.wordmark-base,
+.wordmark-highlight {
+  margin: 0;
+}
+
+.wordmark-base {
+  color: #14100c;
   text-shadow:
-    -1.5px -1.5px 2px rgba(255, 255, 255, 0.2),
-    1.5px 2.5px 4px rgba(0, 0, 0, 0.65);
+    -1px -1px 1px rgba(255, 255, 255, 0.07),
+    1px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.wordmark-highlight {
+  position: absolute;
+  inset: 0;
+  color: #453b30;
+  text-shadow:
+    -1.5px -1.5px 2px rgba(255, 255, 255, 0.4),
+    1.5px 2.5px 4px rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  -webkit-mask-image: radial-gradient(circle 150px at var(--mouse-x) var(--mouse-y), black, transparent 70%);
+  mask-image: radial-gradient(circle 150px at var(--mouse-x) var(--mouse-y), black, transparent 70%);
+  transition: opacity 500ms var(--ease-out);
+}
+
+.wordmark-spotlight:hover .wordmark-highlight {
+  opacity: 1;
 }
 
 /* ============================================================
