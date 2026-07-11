@@ -177,47 +177,37 @@ img, video { display: block; max-width: 100%; }
 }
 
 /* ============================================================
-   EMBOSSED WORDMARK WITH MOUSE-TRACKED SPOTLIGHT (footer ghost text)
-   Two stacked copies of the same text: a dark carved base, and a
-   brightened duplicate revealed only inside a radial-gradient mask
-   that follows --mouse-x/--mouse-y, like a flashlight over the emboss.
+   PHYSICAL CARDSTOCK EMBOSS (footer wordmark)
+   Static, non-interactive. Text color matches the footer background
+   exactly; a tight top-left highlight + bottom-right shadow is the
+   only thing that reveals the letterforms, like a foil-stamped or
+   letterpress emboss on thick paper.
    ============================================================ */
-.wordmark-spotlight {
-  --mouse-x: 50%;
-  --mouse-y: 50%;
-}
-
-.wordmark-base,
-.wordmark-highlight {
+.wordmark-emboss {
   margin: 0;
-}
-
-.wordmark-base {
-  color: #14100c;
+  color: #1c1712;
   text-shadow:
-    -1px -1px 1px rgba(255, 255, 255, 0.07),
-    1px 2px 3px rgba(0, 0, 0, 0.6);
+    -1px -1px 1px rgba(255, 255, 255, 0.1),
+    1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
-.wordmark-highlight {
+/* ============================================================
+   CARDSTOCK GRAIN (footer texture overlay)
+   Low-opacity SVG feTurbulence noise painted over the whole footer,
+   desaturated, blended with 'overlay' so it reads as a matte paper
+   grain rather than colored static.
+   ============================================================ */
+.footer-grain {
+  position: relative;
+}
+.footer-grain::after {
+  content: '';
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(
-    135deg,
-    #8c592c 0%,
-    #c99b56 30%,
-    #ffedba 50%,
-    #c99b56 70%,
-    #8c592c 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.45);
-  opacity: 0;
-  -webkit-mask-image: radial-gradient(circle 150px at var(--mouse-x) var(--mouse-y), black, transparent 70%);
-  mask-image: radial-gradient(circle 150px at var(--mouse-x) var(--mouse-y), black, transparent 70%);
-  transition: opacity 500ms var(--ease-out);
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
 }
 
 .wordmark-spotlight:hover .wordmark-highlight {

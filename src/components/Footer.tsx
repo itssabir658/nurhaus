@@ -1,6 +1,5 @@
 'use client';
 
-import { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -18,18 +17,8 @@ const careLinks  = [
 ];
 
 export default function Footer() {
-  const wordmarkRef = useRef<HTMLDivElement>(null);
-
-  const handleWordmarkMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = wordmarkRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-    el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-  };
-
   return (
-    <footer className="relative bg-midnight text-primary overflow-hidden">
+    <footer className="footer-grain relative bg-midnight text-primary overflow-hidden">
       {/* Gold seam — the transition from the cream body into the dark footer */}
       <div className="h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
 
@@ -118,23 +107,11 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Embossed wordmark — full-width, flush to footer bottom.
-          Dual-layer: a dark carved base, plus a brightened duplicate masked
-          to a circle that tracks the cursor, like a flashlight over the emboss. */}
-      <div
-        ref={wordmarkRef}
-        onMouseMove={handleWordmarkMouseMove}
-        aria-hidden="true"
-        className="wordmark-spotlight select-none relative mt-6 pt-[0.15em]"
-      >
+      {/* Embossed wordmark — full-width, flush to footer bottom, carved
+          into the cardstock via a static top-left highlight / bottom-right shadow. */}
+      <div aria-hidden="true" className="select-none mt-6 pt-[0.15em]">
         <p
-          className="wordmark-base text-center text-[19.5vw] leading-[0.82] tracking-[0.02em] whitespace-nowrap"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
-          NÜR HAUS
-        </p>
-        <p
-          className="wordmark-highlight text-center text-[19.5vw] leading-[0.82] tracking-[0.02em] whitespace-nowrap"
+          className="wordmark-emboss text-center text-[19.5vw] leading-[0.82] tracking-[0.02em] whitespace-nowrap"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           NÜR HAUS
