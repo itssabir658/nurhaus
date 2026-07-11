@@ -3,9 +3,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-const shopLinks  = ['Collection', 'Size Guide'];
-const houseLinks = ['Our Story', 'Contact'];
-const careLinks  = ['FAQ', 'Privacy Policy', 'Terms'];
+const shopLinks  = [
+  { label: 'Collection',  href: '/shop' },
+  { label: 'Size Guide',  href: '/size-guide' },
+];
+const houseLinks = [
+  { label: 'Our Story', href: '/story' },
+  { label: 'Contact',   href: '/contact' },
+];
+const careLinks  = [
+  { label: 'FAQ',             href: '/faq' },
+  { label: 'Shipping & Returns', href: '/shipping' },
+];
 
 export default function Footer() {
   return (
@@ -54,12 +63,12 @@ export default function Footer() {
             <p className="eyebrow-light mb-5">Shop</p>
             <ul className="space-y-3">
               {shopLinks.map((l) => (
-                <li key={l}>
+                <li key={l.href}>
                   <Link
-                    href={`/${l.toLowerCase().replace(/\s+/g, '-')}`}
+                    href={l.href}
                     className="text-sm text-primary/60 hover:text-primary transition-colors duration-300"
                   >
-                    {l}
+                    {l.label}
                   </Link>
                 </li>
               ))}
@@ -69,12 +78,12 @@ export default function Footer() {
             <p className="eyebrow-light mb-5">House</p>
             <ul className="space-y-3">
               {houseLinks.map((l) => (
-                <li key={l}>
+                <li key={l.href}>
                   <Link
-                    href={`/${l.toLowerCase().replace(/\s+/g, '-')}`}
+                    href={l.href}
                     className="text-sm text-primary/60 hover:text-primary transition-colors duration-300"
                   >
-                    {l}
+                    {l.label}
                   </Link>
                 </li>
               ))}
@@ -84,12 +93,12 @@ export default function Footer() {
             <p className="eyebrow-light mb-5">Care</p>
             <ul className="space-y-3">
               {careLinks.map((l) => (
-                <li key={l}>
+                <li key={l.href}>
                   <Link
-                    href={`/${l.toLowerCase().replace(/\s+\S*/g, (m) => m.replace(/\s/g, '-')).replace(/[&]/g, '')}`}
+                    href={l.href}
                     className="text-sm text-primary/60 hover:text-primary transition-colors duration-300"
                   >
-                    {l}
+                    {l.label}
                   </Link>
                 </li>
               ))}
