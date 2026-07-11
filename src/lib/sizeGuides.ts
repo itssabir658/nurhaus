@@ -43,6 +43,18 @@ const DAHLIA_LONG_DRESS: SizeGuideData = {
   ],
 };
 
+// Alaïa Long Dress size guide (XS is offered in the source chart but omitted here)
+const ALAIA_LONG_DRESS: SizeGuideData = {
+  name: 'Alaïa Long Dress',
+  columns: ['Size', 'Length', 'Body Length', 'Waist', 'Chest', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
+  rows: [
+    { size: 'S', length: '55', bodyLength: '14', waist: '19.5', chest: '19.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
+    { size: 'M', length: '55', bodyLength: '14', waist: '20.5', chest: '20.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
+    { size: 'L', length: '55', bodyLength: '14', waist: '22', chest: '22', sleeves: '24', armhole: '11', shoulder: '16', flare: '65' },
+    { size: 'XL', length: '55', bodyLength: '14', waist: '23', chest: '23', sleeves: '24', armhole: '12', shoulder: '16.5', flare: '70' },
+  ],
+};
+
 /**
  * Resolve the size guide for a product.
  *
@@ -57,6 +69,7 @@ const DAHLIA_LONG_DRESS: SizeGuideData = {
  *   the Shopify product type (kind === 'Abaya').
  * - "Dahlia" (former Rana) and "Amelie" (former Noor) share the S/M/L/XL dress
  *   guide (DAHLIA_LONG_DRESS).
+ * - "Alaïa" (former Samar) has its own S/M/L/XL guide (ALAIA_LONG_DRESS).
  */
 export function getSizeGuideData(
   productHandle: string,
@@ -65,7 +78,13 @@ export function getSizeGuideData(
 ) {
   const handle = productHandle.toLowerCase();
   const type = (productType ?? '').toLowerCase();
-  const name = (productName ?? '').toLowerCase().trim();
+  // Strip diacritics so accented names (e.g. "Alaïa") match their ASCII
+  // slugified handles (e.g. "alaia") and are robust to how the name is typed.
+  const name = (productName ?? '')
+    .toLowerCase()
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 
   // Abayas — both current abayas share the tabbed Outer/Inner guide. Detected
   // by product type first; the new handles (layla, yara) no longer contain the
@@ -91,8 +110,14 @@ export function getSizeGuideData(
     return DAHLIA_LONG_DRESS;
   }
 
+  // Alaïa (former Samar Dress) — its own S/M/L/XL guide. Name is compared in its
+  // accent-stripped form ("alaia"), which also covers the slugified handle.
+  if (name === 'alaia' || handle === 'alaia' || handle === 'samar-dress') {
+    return ALAIA_LONG_DRESS;
+  }
+
   // No size guide found for this product yet.
   return null;
 }
 
-export { ABAYA_OUTER, ABAYA_INNER, DAHLIA_LONG_DRESS };
+export { ABAYA_OUTER, ABAYA_INNER, DAHLIA_LONG_DRESS, ALAIA_LONG_DRESS };
