@@ -15,6 +15,7 @@ const fadeUp = {
 };
 
 export default function HomeClient({ products, configured }: { products: AppProduct[]; configured: boolean }) {
+  const heroSectionRef = useRef<HTMLElement>(null);
   const heroRef    = useRef<HTMLDivElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
 
@@ -40,38 +41,46 @@ export default function HomeClient({ products, configured }: { products: AppProd
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Scroll parallax on hero image
-    if (heroRef.current) {
-      gsap.fromTo(
-        heroRef.current,
-        { yPercent: 0 },
-        { yPercent: 18, ease: 'none', scrollTrigger: { trigger: 'section', start: 'top top', end: 'bottom top', scrub: true } }
+    // gsap.context() scopes every tween/ScrollTrigger created inside it to
+    // heroSectionRef (so the string selectors below only ever match nodes in
+    // this component's own subtree) and records them all for cleanup — a
+    // single ctx.revert() properly kills and reverts every animation created
+    // here, not just ScrollTrigger instances. Prevents orphaned tweens from
+    // stacking up across mounts/unmounts as the user navigates between pages.
+    const ctx = gsap.context(() => {
+      // Scroll parallax on hero image
+      if (heroRef.current) {
+        gsap.fromTo(
+          heroRef.current,
+          { yPercent: 0 },
+          { yPercent: 18, ease: 'none', scrollTrigger: { trigger: 'section', start: 'top top', end: 'bottom top', scrub: true } }
+        );
+      }
+
+      // Curtain reveal
+      if (curtainRef.current) {
+        gsap.set(curtainRef.current, { scaleY: 1 });
+        gsap.to(curtainRef.current, { scaleY: 0, transformOrigin: 'top', duration: 1.1, delay: 0.15, ease: 'power2.inOut' });
+      }
+
+      // Hero entrance animations (elements start hidden via inline style in JSX)
+      gsap.to('.hero-eyebrow', { opacity: 1, y: 0,       duration: 0.8, delay: 0.9,  ease: 'power3.out' });
+      gsap.fromTo('.hero-line',
+        { yPercent: 100, opacity: 0 },
+        { yPercent: 0, opacity: 1, stagger: 0.15, duration: 0.9, delay: 1.05, ease: 'power3.out' }
       );
-    }
+      gsap.to('.hero-subtext', { opacity: 1, y: 0,       duration: 0.8, delay: 1.5,  ease: 'power3.out' });
+      gsap.to('.hero-ctas',    { opacity: 1, y: 0,       duration: 0.8, delay: 1.7,  ease: 'power3.out' });
+      gsap.to('.hero-scroll',  { opacity: 1,             duration: 0.8, delay: 2.2  });
+    }, heroSectionRef);
 
-    // Curtain reveal
-    if (curtainRef.current) {
-      gsap.set(curtainRef.current, { scaleY: 1 });
-      gsap.to(curtainRef.current, { scaleY: 0, transformOrigin: 'top', duration: 1.1, delay: 0.15, ease: 'power2.inOut' });
-    }
-
-    // Hero entrance animations (elements start hidden via inline style in JSX)
-    gsap.to('.hero-eyebrow', { opacity: 1, y: 0,       duration: 0.8, delay: 0.9,  ease: 'power3.out' });
-    gsap.fromTo('.hero-line',
-      { yPercent: 100, opacity: 0 },
-      { yPercent: 0, opacity: 1, stagger: 0.15, duration: 0.9, delay: 1.05, ease: 'power3.out' }
-    );
-    gsap.to('.hero-subtext', { opacity: 1, y: 0,       duration: 0.8, delay: 1.5,  ease: 'power3.out' });
-    gsap.to('.hero-ctas',    { opacity: 1, y: 0,       duration: 0.8, delay: 1.7,  ease: 'power3.out' });
-    gsap.to('.hero-scroll',  { opacity: 1,             duration: 0.8, delay: 2.2  });
-
-    return () => ScrollTrigger.killAll();
+    return () => ctx.revert();
   }, []);
 
   return (
     <div className="page-enter">
       {/* HERO */}
-      <section className="relative h-[100svh] min-h-[560px] overflow-hidden -mt-[124px]">
+      <section ref={heroSectionRef} className="relative h-[100svh] min-h-[560px] overflow-hidden -mt-[124px]">
         {/* Scroll parallax layer (GSAP) */}
         <div ref={heroRef} className="absolute inset-0 will-change-transform">
           {/* Mouse parallax layer (Framer Motion) — separate node so the two transforms never collide */}

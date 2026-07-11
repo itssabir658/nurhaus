@@ -10,6 +10,8 @@ import { NurhausContext } from '@/contexts/NurhausContext';
 import { CartProvider } from '@/contexts/CartContext';
 import type { AppProduct } from '@/lib/shopify/types';
 import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function Providers({
   children,
@@ -29,20 +31,29 @@ export default function Providers({
     // Disable Lenis on mobile to allow native scrolling and address bar hiding
     if (isMobile) return;
 
+    gsap.registerPlugin(ScrollTrigger);
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    const id = requestAnimationFrame(raf);
+    // Keep GSAP's ScrollTrigger in sync with Lenis's virtualized scroll position.
+    // Without this, Lenis and ScrollTrigger each run their own independent
+    // scroll-tracking loop and fight over the same frame — the root cause of
+    // the multi-second freezes on scroll.
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // Drive Lenis off GSAP's shared ticker instead of a second, separate
+    // requestAnimationFrame loop, so there's exactly one scroll-driven
+    // animation frame per tick across the whole app.
+    const update = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(update);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      cancelAnimationFrame(id);
+      gsap.ticker.remove(update);
       lenis.destroy();
     };
   }, []);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -24,13 +24,23 @@ const menuLinks = [
 export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
   const { cart } = useCart();
   const cartCount = cart?.totalQuantity ?? 0;
 
+  // Toggles the header background once the page scrolls past 64px. Uses an
+  // IntersectionObserver against a tiny sentinel instead of a scroll listener —
+  // the observer only fires when the threshold is actually crossed, rather than
+  // running a handler on every single scroll pixel/frame.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 64);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setScrolled(!entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -40,6 +50,11 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
 
   return (
     <>
+      {/* Scroll sentinel — sits in normal document flow (scrolls with the page,
+          unlike the fixed header below) at the 64px threshold. Observed instead
+          of listening to the scroll event directly. */}
+      <div ref={sentinelRef} aria-hidden="true" className="absolute top-16 h-px w-px pointer-events-none" />
+
       {/* Nav is offset 44px below the announcement bar */}
       <header
         className={`fixed top-[44px] inset-x-0 z-50 transition-all duration-500 ${
