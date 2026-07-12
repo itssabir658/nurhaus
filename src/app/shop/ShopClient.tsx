@@ -266,10 +266,6 @@ function ProductCard({ product: p, large = false }: { product: AppProduct; large
         {!p.availableForSale && (
           <span className="absolute top-4 right-4 bg-midnight/80 px-3 py-1 eyebrow text-primary">Sold Out</span>
         )}
-        <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-midnight/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <p className="font-product text-lg text-primary">{p.name}</p>
-          <p className="text-primary/80 text-sm mt-0.5">${p.price.toLocaleString()}</p>
-        </div>
       </div>
       <div className="mt-4">
         <p className="eyebrow mb-1">{p.kind}</p>
