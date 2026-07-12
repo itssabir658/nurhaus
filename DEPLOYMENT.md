@@ -87,12 +87,12 @@ from each product's **Product Type** field in Shopify admin, so set Product Type
 A few editorial pages reference *specific* product handles as part of fixed brand storytelling and
 are **not** Shopify-driven (this is intentional — they're campaign content, not catalog data):
 
-- `src/app/lookbook/page.tsx` — the `SCENES` array links each "look" to a handle like `sahar-abaya`.
+- `src/app/lookbook/page.tsx` — the `SCENES` array links each "look" to a handle like `layla`.
 - `src/app/journal/page.tsx` / `journal/[slug]/page.tsx` — editorial articles, not products.
 
 To keep the lookbook's "Shop this look" links working, either:
-- create products in Shopify with matching handles (`sahar-abaya`, `noor-dress`, `layl-abaya`,
-  `dunya-dress`, `layla-dress`, `zahra-dress`), **or**
+- create products in Shopify with matching handles (`layla`, `amelie`, `yara`,
+  `faye`, `elayna`, `saphira`), **or**
 - edit the `handle` field in `SCENES` to point at your real product handles.
 
 **Variants & sizing**: the size selector reads the variant option named `Size` (case-insensitive).

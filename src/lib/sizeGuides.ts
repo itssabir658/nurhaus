@@ -155,35 +155,34 @@ export function getSizeGuideData(
   }
 
   // Dahlia (former Rana Dress) — its own S/M/L/XL guide.
-  if (name === 'dahlia' || handle === 'dahlia' || handle === 'rana-dress') {
+  if (name === 'dahlia' || handle === 'dahlia') {
     return DAHLIA_LONG_DRESS;
   }
 
   // Amelie (former Noor Dress) — its own S/M/L/XL guide.
-  if (name === 'amelie' || handle === 'amelie' || handle === 'noor-dress') {
+  if (name === 'amelie' || handle === 'amelie') {
     return AMELIE_LONG_DRESS;
   }
 
   // Alaïa (former Samar Dress) — its own S/M/L/XL guide. Name is compared in its
   // accent-stripped form ("alaia"), which also covers the slugified handle.
-  if (name === 'alaia' || handle === 'alaia' || handle === 'samar-dress') {
+  if (name === 'alaia' || handle === 'alaia') {
     return ALAIA_LONG_DRESS;
   }
 
   // Saphira (former Zahra Dress) — its own S/M/L/XL guide.
-  if (name === 'saphira' || handle === 'saphira' || handle === 'zahra-dress') {
+  if (name === 'saphira' || handle === 'saphira') {
     return SAPHIRA_LONG_DRESS;
   }
 
-  // Elayna (former Layla Dress) — its own S/M/L/XL guide. Note the legacy handle
-  // is "layla-dress"; this does not collide with the "Layla" abaya, which is
-  // matched earlier by kind/name rather than by this handle.
-  if (name === 'elayna' || handle === 'elayna' || handle === 'layla-dress') {
+  // Elayna (former Layla Dress) — its own S/M/L/XL guide. The "Elayna" name/handle
+  // does not collide with the "Layla" abaya, which is matched earlier by kind/name.
+  if (name === 'elayna' || handle === 'elayna') {
     return ELAYNA_LONG_DRESS;
   }
 
   // Faye (former Dunya Dress) — its own S/M/L/XL guide.
-  if (name === 'faye' || handle === 'faye' || handle === 'dunya-dress') {
+  if (name === 'faye' || handle === 'faye') {
     return FAYE_LONG_DRESS;
   }
 

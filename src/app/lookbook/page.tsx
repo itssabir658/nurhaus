@@ -13,7 +13,7 @@ const SCENES = [
     label: 'Look 01 — Layla',
     text: 'Dawn.',
     subtext: 'The hour before the day asks anything of you.',
-    piece: { name: 'Layla', price: '$680', handle: 'sahar-abaya' },
+    piece: { name: 'Layla', price: '$680', handle: 'layla' },
     align: 'left',
   },
   {
@@ -21,7 +21,7 @@ const SCENES = [
     label: 'Look 02 — Amelie',
     text: 'Presence.',
     subtext: 'Not seen. Felt.',
-    piece: { name: 'Amelie', price: '$420', handle: 'noor-dress' },
+    piece: { name: 'Amelie', price: '$420', handle: 'amelie' },
     align: 'right',
   },
   {
@@ -29,7 +29,7 @@ const SCENES = [
     label: 'Look 03 — Yara',
     text: 'Night falls differently in good fabric.',
     subtext: '',
-    piece: { name: 'Yara', price: '$720', handle: 'layl-abaya' },
+    piece: { name: 'Yara', price: '$720', handle: 'yara' },
     align: 'center',
   },
   {
@@ -37,7 +37,7 @@ const SCENES = [
     label: 'Look 04 — Faye',
     text: 'Measured.',
     subtext: 'Every seam a decision.',
-    piece: { name: 'Faye', price: '$390', handle: 'dunya-dress' },
+    piece: { name: 'Faye', price: '$390', handle: 'faye' },
     align: 'left',
   },
   {
@@ -45,7 +45,7 @@ const SCENES = [
     label: 'Look 05 — Elayna',
     text: 'The dress that disappears into the room.',
     subtext: 'And takes it with her.',
-    piece: { name: 'Elayna', price: '$455', handle: 'layla-dress' },
+    piece: { name: 'Elayna', price: '$455', handle: 'elayna' },
     align: 'right',
   },
   {
@@ -53,7 +53,7 @@ const SCENES = [
     label: 'Look 06 — Saphira',
     text: 'In light.',
     subtext: 'Always, in measured light.',
-    piece: { name: 'Saphira', price: '$470', handle: 'zahra-dress' },
+    piece: { name: 'Saphira', price: '$470', handle: 'saphira' },
     align: 'center',
   },
 ];
