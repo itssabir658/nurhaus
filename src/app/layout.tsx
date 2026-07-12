@@ -40,6 +40,12 @@ const brolimo = localFont({
   display: 'swap',
 });
 
+const felixti = localFont({
+  src: [{ path: '../../public/fonts/Felixti.ttf', style: 'normal' }],
+  variable: '--font-felixti',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
   title: {
     default: 'NÜR HAUS — Modest Luxury',
@@ -62,7 +68,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${inter.variable} ${figtree.variable} ${manrope.variable} ${brolimo.variable}`}
+      className={`${cormorant.variable} ${inter.variable} ${figtree.variable} ${manrope.variable} ${brolimo.variable} ${felixti.variable}`}
     >
       <body className="bg-primary text-ink font-sans">
         <Providers searchProducts={searchProducts}>{children}</Providers>

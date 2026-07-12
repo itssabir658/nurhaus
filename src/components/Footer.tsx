@@ -50,15 +50,17 @@ export default function Footer() {
               <a
                 href="https://www.instagram.com/nurhausco?igsh=cGs3dDd1end5c3Rs"
                 aria-label="Instagram"
-                className="text-primary/55 hover:text-gold transition-colors duration-300"
+                className="opacity-90 hover:opacity-100 transition-opacity duration-300"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
-                </svg>
+                <Image
+                  src="/instagram-logo.png"
+                  alt="Instagram"
+                  width={18}
+                  height={18}
+                  className="w-[18px] h-[18px] object-contain rounded"
+                />
               </a>
             </div>
           </div>
@@ -116,7 +118,7 @@ export default function Footer() {
       <div aria-hidden="true" className="select-none mt-6 pt-[0.15em]">
         <p
           className="wordmark-emboss text-center text-[19.5vw] leading-[0.82] tracking-[0.02em] whitespace-nowrap"
-          style={{ fontFamily: 'var(--font-display)' }}
+          style={{ fontFamily: 'var(--font-felixti)' }}
         >
           NÜR HAUS
         </p>
