@@ -26,48 +26,44 @@ export default function CartPageClient({
   const handleCheckout = () => {
     if (!cart?.checkoutUrl) return;
 
-    let checkoutUrl = cart.checkoutUrl;
-
-    // Ensure the URL is absolute (has protocol)
-    if (!checkoutUrl.startsWith('http')) {
-      checkoutUrl = `https://${checkoutUrl}`;
-    }
-
-    // Shopify returns checkoutUrl on the store's *primary* domain, which here is
-    // our custom front-end domain (e.g. nurhaus.ca — or localhost in dev). Since
-    // Next.js is hosted on that same domain it would intercept the link and 404.
-    // Rewrite the host to the raw *.myshopify.com domain so the browser hits
-    // Shopify's checkout servers directly.
-    //
-    // The raw domain is read from NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN (inlined into
-    // the client bundle at build time), falling back to the value passed from the
-    // server (SHOPIFY_STORE_DOMAIN) so this still works if the public var is unset.
-    const rawDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || shopifyDomain || '';
-    const myshopifyHost = rawDomain
-      .replace(/^https?:\/\//, '') // strip protocol if present
-      .replace(/\/.*$/, '')        // strip any path
+    // Raw *.myshopify.com host to force the checkout onto. NEXT_PUBLIC_* is
+    // inlined into the client bundle at build time; we fall back to the value
+    // passed from the server (SHOPIFY_STORE_DOMAIN) so this still resolves if the
+    // public var wasn't present at build. Strip any protocol/path just in case.
+    const shopHost = (process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || shopifyDomain || '')
+      .replace(/^https?:\/\//, '')
+      .replace(/\/.*$/, '')
       .trim();
 
-    if (myshopifyHost) {
+    let target = cart.checkoutUrl;
+
+    if (shopHost) {
       try {
-        const url = new URL(checkoutUrl);
-        // Force the raw Shopify host: drop the custom host and any :port, and
-        // upgrade http->https, so both https://nurhaus.ca/... and
-        // http://localhost:3000/... become https://<store>.myshopify.com/...
-        url.protocol = 'https:';
-        url.hostname = myshopifyHost;
-        url.port = '';
-        checkoutUrl = url.toString();
+        // The URL constructor is domain-agnostic: overwriting the hostname forces
+        // the host no matter what Shopify returned — www.nurhaus.ca,
+        // nurhaus.vercel.app, localhost:3000, bare nurhaus.ca, anything.
+        const checkoutUrlObj = new URL(cart.checkoutUrl);
+        checkoutUrlObj.protocol = 'https:';
+        checkoutUrlObj.hostname = shopHost;
+        checkoutUrlObj.port = ''; // drop any :port (e.g. localhost:3000)
+        target = checkoutUrlObj.toString();
       } catch {
-        // Fallback: swap protocol + host (including any :port) via string replacement
-        checkoutUrl = checkoutUrl.replace(/^https?:\/\/[^/]+/, `https://${myshopifyHost}`);
+        // Fallback if checkoutUrl isn't parseable: swap protocol + host outright.
+        target = cart.checkoutUrl.replace(/^https?:\/\/[^/]+/, `https://${shopHost}`);
       }
+    } else {
+      // Guard: without a domain we must NOT set hostname (it would become the
+      // string "undefined"). Leave the URL untouched and flag the misconfig.
+      console.warn(
+        'Checkout domain rewrite skipped: NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN is not set. ' +
+        'Set it (e.g. pzg1g0-q9.myshopify.com) in Vercel and redeploy.'
+      );
     }
 
     setIsRedirecting(true);
-    console.log('Redirecting to:', checkoutUrl);
+    console.log('Redirecting to:', target);
     // Use window.location.href for guaranteed external navigation
-    window.location.href = checkoutUrl;
+    window.location.href = target;
   };
 
   return (
