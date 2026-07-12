@@ -9,7 +9,13 @@ import type { AppProduct } from '@/lib/shopify/types';
 
 const FREE_SHIPPING_THRESHOLD = 500;
 
-export default function CartPageClient({ crossSell }: { crossSell: AppProduct[] }) {
+export default function CartPageClient({
+  crossSell,
+  shopifyDomain,
+}: {
+  crossSell: AppProduct[];
+  shopifyDomain?: string | null;
+}) {
   const { cart, isLoading, isMutating, updateItem, removeItem } = useCart();
   const [isRedirecting, setIsRedirecting] = useState(false);
   const lines = cart?.lines ?? [];
@@ -27,36 +33,39 @@ export default function CartPageClient({ crossSell }: { crossSell: AppProduct[] 
       checkoutUrl = `https://${checkoutUrl}`;
     }
 
-    // Rewrite domain from custom front-end domain to Shopify domain
-    // Shopify's API returns checkout URLs with the custom domain (nurhaus.ca),
-    // but Next.js intercepts these. We need to redirect to the raw Shopify domain (.myshopify.com)
-    const shopifyDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
-    if (shopifyDomain) {
+    // Shopify returns checkoutUrl on the store's *primary* domain, which here is
+    // our custom front-end domain (e.g. nurhaus.ca — or localhost in dev). Since
+    // Next.js is hosted on that same domain it would intercept the link and 404.
+    // Rewrite the host to the raw *.myshopify.com domain so the browser hits
+    // Shopify's checkout servers directly.
+    //
+    // The raw domain is read from NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN (inlined into
+    // the client bundle at build time), falling back to the value passed from the
+    // server (SHOPIFY_STORE_DOMAIN) so this still works if the public var is unset.
+    const rawDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || shopifyDomain || '';
+    const myshopifyHost = rawDomain
+      .replace(/^https?:\/\//, '') // strip protocol if present
+      .replace(/\/.*$/, '')        // strip any path
+      .trim();
+
+    if (myshopifyHost) {
       try {
         const url = new URL(checkoutUrl);
-        const currentHostname = url.hostname;
-
-        // Extract the store name from the Shopify domain (e.g., "nurhaus" from "nurhaus.myshopify.com")
-        const storeName = shopifyDomain.split('.')[0];
-        const shopifyHostname = `${storeName}.myshopify.com`;
-
-        // Replace custom domain with Shopify domain if they differ
-        if (currentHostname !== shopifyHostname) {
-          url.hostname = shopifyHostname;
-          checkoutUrl = url.toString();
-        }
+        // Force the raw Shopify host: drop the custom host and any :port, and
+        // upgrade http->https, so both https://nurhaus.ca/... and
+        // http://localhost:3000/... become https://<store>.myshopify.com/...
+        url.protocol = 'https:';
+        url.hostname = myshopifyHost;
+        url.port = '';
+        checkoutUrl = url.toString();
       } catch {
-        // If URL parsing fails, attempt string replacement as fallback
-        const storeName = shopifyDomain.split('.')[0];
-        const shopifyHostname = `${storeName}.myshopify.com`;
-        checkoutUrl = checkoutUrl.replace(
-          /https?:\/\/[^/]+/,
-          `https://${shopifyHostname}`
-        );
+        // Fallback: swap protocol + host (including any :port) via string replacement
+        checkoutUrl = checkoutUrl.replace(/^https?:\/\/[^/]+/, `https://${myshopifyHost}`);
       }
     }
 
     setIsRedirecting(true);
+    console.log('Redirecting to:', checkoutUrl);
     // Use window.location.href for guaranteed external navigation
     window.location.href = checkoutUrl;
   };
