@@ -428,39 +428,6 @@ export default function ProductClient({
         </div>
       </div>
 
-      {/* Editorial gallery */}
-      {product.images.length > 1 && (
-        <div className="site-max site-px py-20 md:py-32">
-          <p className="eyebrow mb-12">In the Atelier</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="md:col-span-2 aspect-[16/10] overflow-hidden">
-              <Image
-                src={product.images[0]}
-                alt={product.name}
-                width={1200}
-                height={750}
-                loading="lazy"
-                className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-[1400ms] ease-expo"
-              />
-            </div>
-            <div className="space-y-4">
-              {product.images.slice(1, 3).map((img, i) => (
-                <div key={i} className="aspect-[4/5] overflow-hidden">
-                  <Image
-                    src={img}
-                    alt=""
-                    width={600}
-                    height={750}
-                    loading="lazy"
-                    className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-[1400ms] ease-expo"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Recently Viewed */}
       {recentlyViewed.length > 0 && (
         <div className="border-t border-hairline">
