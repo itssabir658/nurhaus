@@ -34,6 +34,12 @@ const manrope = Manrope({
   display: 'swap',
 });
 
+const brolimo = localFont({
+  src: [{ path: '../../public/fonts/BrolimoRegular.ttf', style: 'normal' }],
+  variable: '--font-brolimo',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
   title: {
     default: 'NÜR HAUS — Modest Luxury',
@@ -56,7 +62,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${inter.variable} ${figtree.variable} ${manrope.variable}`}
+      className={`${cormorant.variable} ${inter.variable} ${figtree.variable} ${manrope.variable} ${brolimo.variable}`}
     >
       <body className="bg-primary text-ink font-sans">
         <Providers searchProducts={searchProducts}>{children}</Providers>
