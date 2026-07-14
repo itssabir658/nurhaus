@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Inter, Manrope } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
 import './background.css';
+import './torn-paper.css';
 import Providers from '@/components/Providers';
 import { getProducts, isShopifyConfigured } from '@/lib/shopify';
 

@@ -1,0 +1,103 @@
+/* ============================================================================
+   TORN KRAFT PAPER
+   A warm greige handmade-paper surface with a ragged, fibrous DECKLE / torn
+   edge — the look of a strip of cotton-rag paper ripped by hand. Pure CSS:
+   layered gradients + SVG feTurbulence for the fibre grain, and an SVG
+   feTurbulence + feDisplacementMap mask for the torn edge itself.
+
+   No images. Retina-crisp (the edge is a resolution-independent SVG mask).
+
+   USAGE
+   -----
+     <section class="torn-paper">…</section>              torn TOP edge (default)
+     <section class="torn-paper torn-bottom">…</section>  torn BOTTOM edge
+     <section class="torn-paper torn-both">…</section>     torn top AND bottom
+
+   Give the element top padding ≥ --tear-h so content clears the torn edge
+   (and bottom padding ≥ --tear-h when using .torn-bottom / .torn-both).
+
+   HOW THE EDGE WORKS
+   ------------------
+   The element is masked by two composited layers:
+     1) a fixed-height "tear strip" pinned to the edge — an SVG whose straight
+        rectangle top is pushed into a fibrous rip by feDisplacementMap driven
+        by fractal noise (low horizontal frequency = broad swells; higher
+        vertical frequency + 5 octaves = fine hair-like fibres);
+     2) a solid fill covering the rest of the box.
+   Because the strip is a FIXED pixel height at the edge, the rip never
+   stretches — it looks the same on a 150px band or a 900px section.
+   ============================================================================ */
+
+.torn-paper {
+  /* ---- COLOUR (the paper stock) ---------------------------------------- */
+  --kraft-base:  #D8C7AC;  /* warm greige body                              */
+  --kraft-warm:  #CDB998;  /* warmer patch                                  */
+  --kraft-deep:  #BFAA88;  /* deepest discoloration                         */
+  --kraft-light: #E7DBC7;  /* lifted highlight patch                        */
+
+  /* ---- TEXTURE ---------------------------------------------------------- */
+  --kraft-grain: 0.16;     /* opacity of the fine fibre grain (0.10–0.22)   */
+
+  /* ---- TEAR ------------------------------------------------------------- */
+  --tear-h: 150px;         /* vertical band the rip occupies. Bigger = a
+                              deeper, more dramatic tear. Keep content padding
+                              at least this large on the torn side(s).       */
+
+  position: relative;
+  background-color: var(--kraft-base);
+
+  /* Fibre grain + coarse mottle + gentle uneven discoloration over the base. */
+  background-image:
+    /* fine paper grain — desaturated fractal noise, overlay-blended */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+    /* coarse fibre mottle — soft-light-blended for organic tonal drift */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.16' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+    /* soft discoloration: lighter top-left, deeper bottom-right */
+    radial-gradient(80% 90% at 20% 20%, color-mix(in srgb, var(--kraft-light) 40%, transparent), transparent 60%),
+    radial-gradient(80% 90% at 85% 80%, color-mix(in srgb, var(--kraft-deep) 45%, transparent), transparent 60%),
+    linear-gradient(var(--kraft-base), var(--kraft-base));
+  background-size: 180px 180px, 300px 300px, cover, cover, cover;
+  background-blend-mode: overlay, soft-light, multiply, multiply, normal;
+
+  /* The two torn-edge tiles. Baked at authoring resolution; scale + noise
+     tuned so the rip reads as connected fibre, not detached confetti. */
+  --tear-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='150' viewBox='0 0 1600 150' preserveAspectRatio='none'%3E%3Cfilter id='t' x='-5%25' y='-60%25' width='110%25' height='220%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0065 0.05' numOctaves='5' seed='11'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='46' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Crect x='-60' y='78' width='1720' height='260' fill='%23fff' filter='url(%23t)'/%3E%3C/svg%3E");
+  --tear-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='150' viewBox='0 0 1600 150' preserveAspectRatio='none'%3E%3Cfilter id='b' x='-5%25' y='-60%25' width='110%25' height='220%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0065 0.05' numOctaves='5' seed='4'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='46' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Crect x='-60' y='-188' width='1720' height='260' fill='%23fff' filter='url(%23b)'/%3E%3C/svg%3E");
+  --tear-solid: linear-gradient(#000, #000);
+
+  /* Default: torn TOP, solid everywhere below it. */
+  -webkit-mask:
+    var(--tear-top) top left / 100% var(--tear-h) no-repeat,
+    var(--tear-solid) bottom left / 100% calc(100% - var(--tear-h) + 4px) no-repeat;
+  mask:
+    var(--tear-top) top left / 100% var(--tear-h) no-repeat,
+    var(--tear-solid) bottom left / 100% calc(100% - var(--tear-h) + 4px) no-repeat;
+}
+
+/* Torn BOTTOM edge only. */
+.torn-paper.torn-bottom {
+  -webkit-mask:
+    var(--tear-bottom) bottom left / 100% var(--tear-h) no-repeat,
+    var(--tear-solid) top left / 100% calc(100% - var(--tear-h) + 4px) no-repeat;
+  mask:
+    var(--tear-bottom) bottom left / 100% var(--tear-h) no-repeat,
+    var(--tear-solid) top left / 100% calc(100% - var(--tear-h) + 4px) no-repeat;
+}
+
+/* Torn TOP and BOTTOM: two tear strips with a solid band in the middle. */
+.torn-paper.torn-both {
+  -webkit-mask:
+    var(--tear-top) top left / 100% var(--tear-h) no-repeat,
+    var(--tear-bottom) bottom left / 100% var(--tear-h) no-repeat,
+    var(--tear-solid) center / 100% calc(100% - 2 * var(--tear-h) + 8px) no-repeat;
+  mask:
+    var(--tear-top) top left / 100% var(--tear-h) no-repeat,
+    var(--tear-bottom) bottom left / 100% var(--tear-h) no-repeat,
+    var(--tear-solid) center / 100% calc(100% - 2 * var(--tear-h) + 8px) no-repeat;
+}
+
+/* Progressive enhancement: if the browser lacks CSS mask support the element
+   simply renders as a clean-edged kraft panel — no broken layout. */
+@supports not ((-webkit-mask: linear-gradient(#000,#000)) or (mask: linear-gradient(#000,#000))) {
+  .torn-paper { -webkit-mask: none; mask: none; }
+}
