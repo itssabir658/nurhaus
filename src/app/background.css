@@ -28,32 +28,33 @@
    ============================================================================ */
 
 :root {
-  /* ---- 1. BASE COLOUR ---------------------------------------------------- */
-  --paper-base:    #F8F4EA;  /* warm ivory — the flat paper stock            */
-  --paper-warm:    #F1E7D4;  /* warmer beige for discoloured patches         */
-  --paper-cool:    #F6F2E6;  /* very slightly cooler patch for tonal life    */
-  --paper-deep:    #E9DFC9;  /* deepest discoloration / stain colour         */
-  --paper-edge:    #C8B79A;  /* vignette colour pooling at the corners       */
+  /* ---- 1. BASE COLOUR ---------------------------------------------------- *
+   * Warm greige handmade-kraft palette (matches the torn-paper reference).   */
+  --paper-base:    #D8C7AC;  /* warm greige — the flat paper stock           */
+  --paper-warm:    #CFBB9A;  /* warmer beige for discoloured patches         */
+  --paper-cool:    #DED0B8;  /* slightly lighter/cooler patch for tonal life */
+  --paper-deep:    #BFAA88;  /* deepest discoloration / stain colour         */
+  --paper-edge:    #A6906B;  /* vignette colour pooling at the corners       */
 
   /* ---- 2. PAPER INTENSITY ------------------------------------------------ *
    * Master multiplier (0–1) for the uneven colour variation. 0 = perfectly
-   * flat ivory; 1 = full mottled hand-made character. Feeds the alphas of
-   * the discoloration radial gradients.                                      */
-  --paper-intensity: 0.7;
+   * flat; 1 = full mottled hand-made character. Feeds the alphas of the
+   * discoloration radial gradients.                                          */
+  --paper-intensity: 0.6;
 
   /* ---- 3. GRAIN AMOUNT --------------------------------------------------- *
-   * Opacity of the fine fractal-noise overlay. Keep it whisper-low
-   * (0.02–0.06). Above ~0.08 it starts to look like sandpaper/canvas.        */
-  --paper-grain: 0.035;
+   * Opacity of the fine fractal-noise overlay. Kraft reads with more visible
+   * fibre than ivory; kept in a legible range so text stays crisp on top.    */
+  --paper-grain: 0.09;
 
   /* ---- 4. VIGNETTE STRENGTH ---------------------------------------------- *
    * Opacity of the soft corner darkening. 0 = none; 0.10 ≈ noticeable.       */
-  --paper-vignette: 0.06;
+  --paper-vignette: 0.05;
 
   /* ---- 5. STAIN OPACITY -------------------------------------------------- *
    * Opacity of the faint discoloured blooms. 0 = pristine; 0.08 ≈ visibly
-   * aged. Kept low so it reads as "old cotton", never "dirty" or "coffee".   */
-  --paper-stain: 0.045;
+   * aged. Kept low so it reads as "handmade cotton", never "dirty".          */
+  --paper-stain: 0.04;
 
   /* Speckle density is derived from grain so the two move together, but can
    * be overridden independently if needed.                                   */
@@ -65,6 +66,10 @@
    A single flat fill would look printed, so the body colour is only the
    floor; the ::before layer paints life on top of it.
    ---------------------------------------------------------------------------- */
+html {
+  /* so overscroll / rubber-band gutters show the kraft, not the old ivory */
+  background-color: var(--paper-base);
+}
 body {
   background-color: var(--paper-base);
 }
