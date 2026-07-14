@@ -151,7 +151,7 @@ export default function StoryPage() {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          Present for now. Rare forever.
+          Present for now.<br />Rare forever.
         </motion.h2>
         <motion.div
           variants={fadeUp}
