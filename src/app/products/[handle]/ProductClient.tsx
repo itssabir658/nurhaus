@@ -412,7 +412,7 @@ export default function ProductClient({
                                 <p className="text-sm text-smoke leading-relaxed">{product.description}</p>
                               )
                             ) : (
-                              (key === 'care' ? CARE_COPY : SHIPPING_COPY).split('\n').map((line, i) => (
+                              (key === 'care' ? (product.care ?? CARE_COPY) : SHIPPING_COPY).split('\n').map((line, i) => (
                                 <p key={i} className={`text-sm text-smoke leading-relaxed ${i > 0 ? 'mt-1.5' : ''}`}>{line}</p>
                               ))
                             )}

@@ -85,6 +85,8 @@ export interface AppProduct {
   kind: string;
   description: string;
   descriptionHtml: string;
+  /** Optional per-product care instructions (newline-separated lines). Falls back to a shared default when unset. */
+  care?: string;
   price: number;
   compareAtPrice: number | null;
   currency: string;

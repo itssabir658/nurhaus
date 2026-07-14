@@ -6,6 +6,12 @@ import type { AppProduct, AppVariant } from './shopify/types';
 
 const SIZES = ['S', 'M', 'L', 'XL'];
 
+// Shared fabric (shown in the "Fabric & Details" accordion) and care copy.
+const DRESS_FABRIC_HTML = '<p>Lightweight chiffon with a breathable cotton inner.</p>';
+const ABAYA_FABRIC_HTML = '<p>Lightweight georgette with matching inner included.</p>';
+const DRESS_CARE = 'Dry clean recommended\nSteam only (avoid direct ironing on chiffon)\nIf needed, hand wash in cold water with mild detergent\nDo not tumble dry';
+const ABAYA_CARE = 'Dry clean recommended\nSteam only (avoid direct ironing on georgette)\nIf needed, hand wash in cold water with mild detergent\nDo not tumble dry';
+
 function makeVariants(opts: {
   handle: string;
   price: number;
@@ -32,8 +38,9 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     handle: 'layla',
     name: 'Layla',
     kind: 'Abaya',
-    description: 'Named for the quiet hour before dawn, the Sahar is cut in a fluid double-layered crepe that moves like water and holds its shape with authority. A deep side slit and relaxed silhouette give freedom without sacrifice.',
-    descriptionHtml: '<p>Named for the quiet hour before dawn, the Sahar is cut in a fluid double-layered crepe that moves like water and holds its shape with authority. A deep side slit and relaxed silhouette give freedom without sacrifice.</p>',
+    description: 'Layla features a purple garden-inspired print that feels both classic and fresh. Made from lightweight georgette, it flows beautifully with a soft, graceful drape. It comes with a matching inner for a complete and comfortable look, making it effortless to style for any occasion.',
+    descriptionHtml: ABAYA_FABRIC_HTML,
+    care: ABAYA_CARE,
     price: 680,
     compareAtPrice: null,
     currency: 'USD',
@@ -52,8 +59,9 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     handle: 'amelie',
     name: 'Amelie',
     kind: 'Dress',
-    description: 'The Noor is an exercise in proportion. A modest neckline meets a subtly flared skirt at the knee — the kind of dress that works in every room because it asks nothing of the room.',
-    descriptionHtml: '<p>The Noor is an exercise in proportion. A modest neckline meets a subtly flared skirt at the knee — the kind of dress that works in every room because it asks nothing of the room.</p>',
+    description: 'Amelie makes a statement with its vibrant hot pink shade and elegant frill detailing. Crafted from lightweight chiffon, it offers a beautiful flow and feminine silhouette. Fully lined for comfort and breathability, Amelie is designed for those special occasions when you want a bold yet graceful look.',
+    descriptionHtml: DRESS_FABRIC_HTML,
+    care: DRESS_CARE,
     price: 420,
     compareAtPrice: null,
     currency: 'USD',
@@ -72,8 +80,9 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     handle: 'yara',
     name: 'Yara',
     kind: 'Abaya',
-    description: 'The Layl — named for night — is a study in deep proportion. Cut extra long for full coverage with an open-front drape, structured shoulders, and a silk-chiffon overlay that catches light with each movement.',
-    descriptionHtml: '<p>The Layl — named for night — is a study in deep proportion. Cut extra long for full coverage with an open-front drape, structured shoulders, and a silk-chiffon overlay that catches light with each movement.</p>',
+    description: 'Yara is designed with soft pink florals for a delicate and feminine look. Crafted from lightweight georgette, it offers a smooth, flowy feel while remaining comfortable and easy to wear. Paired with a matching inner, it creates a complete look with minimal effort.',
+    descriptionHtml: ABAYA_FABRIC_HTML,
+    care: ABAYA_CARE,
     price: 720,
     compareAtPrice: null,
     currency: 'USD',
@@ -92,8 +101,9 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     handle: 'faye',
     name: 'Faye',
     kind: 'Dress',
-    description: 'Measured, considered, quietly assured — the Dunya pairs a soft midi silhouette with a structured coat layer, built for the woman moving between meetings and everything after.',
-    descriptionHtml: '<p>Measured, considered, quietly assured — the Dunya pairs a soft midi silhouette with a structured coat layer, built for the woman moving between meetings and everything after.</p>',
+    description: 'Faye captures a soft, feminine charm with its delicate floral design and graceful silhouette. Crafted from lightweight chiffon, it flows beautifully with every movement while the full lining provides comfort and ease. A romantic statement piece designed for special occasions and moments that call for effortless elegance.',
+    descriptionHtml: DRESS_FABRIC_HTML,
+    care: DRESS_CARE,
     price: 390,
     compareAtPrice: null,
     currency: 'USD',
@@ -108,8 +118,9 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     handle: 'elayna',
     name: 'Elayna',
     kind: 'Dress',
-    description: 'The dress that disappears into the room, and takes it with her — minimalist, architectural, cut from a single uninterrupted line of fabric.',
-    descriptionHtml: '<p>The dress that disappears into the room, and takes it with her — minimalist, architectural, cut from a single uninterrupted line of fabric.</p>',
+    description: 'Elayna blends soft blue and pink tones into a beautiful, eye-catching palette. Designed with a graceful flow and crafted from lightweight chiffon, it creates a feminine and elegant look. Fully lined for comfort and breathability, Elayna is the perfect choice for special occasions where you want to feel polished and effortlessly dressed.',
+    descriptionHtml: DRESS_FABRIC_HTML,
+    care: DRESS_CARE,
     price: 455,
     compareAtPrice: null,
     currency: 'USD',
@@ -124,8 +135,9 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     handle: 'saphira',
     name: 'Saphira',
     kind: 'Dress',
-    description: 'In light, always — the Zahra is a two-piece co-ord in fluid mocha crepe, designed to read as one continuous silhouette.',
-    descriptionHtml: '<p>In light, always — the Zahra is a two-piece co-ord in fluid mocha crepe, designed to read as one continuous silhouette.</p>',
+    description: 'Saphira stands out with its deep mixed purple tones that add richness without feeling heavy. Made from lightweight chiffon, it flows effortlessly with movement. Fully lined for comfort, it offers a smooth fit and an easy, refined look.',
+    descriptionHtml: DRESS_FABRIC_HTML,
+    care: DRESS_CARE,
     price: 470,
     compareAtPrice: null,
     currency: 'USD',
@@ -140,8 +152,9 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     handle: 'dahlia',
     name: 'Dahlia',
     kind: 'Dress',
-    description: 'Hand-embroidered detailing along the bodice and sleeve, finished with a fluid silk dupatta — quiet ceremony, made wearable.',
-    descriptionHtml: '<p>Hand-embroidered detailing along the bodice and sleeve, finished with a fluid silk dupatta — quiet ceremony, made wearable.</p>',
+    description: 'Dahlia features a classic black base with soft floral detailing for a timeless look. Made from lightweight chiffon, it falls smoothly and moves with ease. Fully lined for comfort and coverage, it feels breathable and easy to wear throughout the day. A versatile piece you can dress up or keep minimal.',
+    descriptionHtml: DRESS_FABRIC_HTML,
+    care: DRESS_CARE,
     price: 435,
     compareAtPrice: null,
     currency: 'USD',
@@ -156,8 +169,9 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     handle: 'alaia',
     name: 'Alaïa',
     kind: 'Dress',
-    description: 'A long architectural coat-dress in mocha wool blend, belted at the waist — the piece that makes the rest of the wardrobe optional.',
-    descriptionHtml: '<p>A long architectural coat-dress in mocha wool blend, belted at the waist — the piece that makes the rest of the wardrobe optional.</p>',
+    description: 'Alaïa comes in a soft light green shade that feels fresh and understated. Crafted from lightweight chiffon, it has a natural, flowy drape. Fully lined for a comfortable fit, it’s designed to feel light while still looking put together. Simple, clean, and easy to style.',
+    descriptionHtml: DRESS_FABRIC_HTML,
+    care: DRESS_CARE,
     price: 410,
     compareAtPrice: null,
     currency: 'USD',
