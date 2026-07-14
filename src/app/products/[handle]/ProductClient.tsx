@@ -17,7 +17,13 @@ const ACCORDION_LABELS: Record<typeof ACCORDION_ITEMS[number], string> = {
   shipping:    'Shipping & Returns',
 };
 
-const CARE_COPY = 'Dry clean recommended unless otherwise noted on the garment label.\nStore on a padded hanger, away from direct sunlight.\nSteam on low heat, holding the iron 5cm from delicate embellishment.';
+// Fabric & Details and Care content is driven from code (not Shopify) so it
+// renders identically on the live site regardless of the Shopify description
+// field. All dresses are chiffon; both abayas are georgette.
+const DRESS_FABRIC_HTML = '<p>Lightweight chiffon with a breathable cotton inner.</p>';
+const ABAYA_FABRIC_HTML = '<p>Lightweight georgette with matching inner included.</p>';
+const DRESS_CARE = 'Dry clean recommended\nSteam only (avoid direct ironing on chiffon)\nIf needed, hand wash in cold water with mild detergent\nDo not tumble dry';
+const ABAYA_CARE = 'Dry clean recommended\nSteam only (avoid direct ironing on georgette)\nIf needed, hand wash in cold water with mild detergent\nDo not tumble dry';
 const SHIPPING_COPY = 'Complimentary standard shipping on orders over $500\nDelivery in 5–10 business days\nExpress available at checkout (2–3 days)\nStore credit only — no refunds';
 
 const RECENT_STORAGE_KEY = 'nh_recent';
@@ -46,6 +52,12 @@ export default function ProductClient({
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
   const sizeGuideData = getSizeGuideData(product.handle, product.kind, product.name);
+
+  // Fabric & Details and Care are rendered from code (by garment kind) so the
+  // live site matches localhost regardless of the Shopify description field.
+  const isAbaya = product.kind?.toLowerCase().includes('abaya');
+  const fabricHtml = isAbaya ? ABAYA_FABRIC_HTML : DRESS_FABRIC_HTML;
+  const careCopy = isAbaya ? ABAYA_CARE : DRESS_CARE;
 
   const hasSizes = product.sizes.length > 0;
 
@@ -403,16 +415,12 @@ export default function ProductClient({
                         >
                           <div className="pb-6 pr-8">
                             {key === 'description' ? (
-                              product.descriptionHtml ? (
-                                <div
-                                  className="text-sm text-smoke leading-relaxed prose-nurhaus"
-                                  dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-                                />
-                              ) : (
-                                <p className="text-sm text-smoke leading-relaxed">{product.description}</p>
-                              )
+                              <div
+                                className="text-sm text-smoke leading-relaxed prose-nurhaus"
+                                dangerouslySetInnerHTML={{ __html: fabricHtml }}
+                              />
                             ) : (
-                              (key === 'care' ? (product.care ?? CARE_COPY) : SHIPPING_COPY).split('\n').map((line, i) => (
+                              (key === 'care' ? careCopy : SHIPPING_COPY).split('\n').map((line, i) => (
                                 <p key={i} className={`text-sm text-smoke leading-relaxed ${i > 0 ? 'mt-1.5' : ''}`}>{line}</p>
                               ))
                             )}
