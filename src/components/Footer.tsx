@@ -57,9 +57,9 @@ export default function Footer() {
                 <Image
                   src="/instagram-logo.png"
                   alt="Instagram"
-                  width={18}
-                  height={18}
-                  className="w-[18px] h-[18px] object-contain rounded"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6 object-contain rounded-md"
                 />
               </a>
             </div>
@@ -117,7 +117,7 @@ export default function Footer() {
           into the cardstock via a static top-left highlight / bottom-right shadow. */}
       <div aria-hidden="true" className="select-none mt-6 pt-[0.15em]">
         <p
-          className="wordmark-emboss text-center text-[19.5vw] leading-[0.82] tracking-[0.02em] whitespace-nowrap"
+          className="wordmark-emboss text-center text-[17vw] leading-[0.82] tracking-[0.02em] whitespace-nowrap"
           style={{ fontFamily: 'var(--font-felixti)' }}
         >
           NÜR HAUS
