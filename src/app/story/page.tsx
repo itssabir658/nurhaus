@@ -151,7 +151,7 @@ export default function StoryPage() {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          Eight pieces. All of them worth it.
+          Present for now. Rare forever.
         </motion.h2>
         <motion.div
           variants={fadeUp}
