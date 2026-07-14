@@ -7,30 +7,13 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { AppProduct } from '@/lib/shopify/types';
+import { getProductDescriptor } from '@/lib/productDescriptors';
 import ShopifySetupNotice from '@/components/ShopifySetupNotice';
 
 const fadeUp = {
   hidden:  { opacity: 0, y: 36 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
 };
-
-// Per-product descriptor shown as the card eyebrow, keyed by product name
-// (accent-stripped so "Alaïa" matches "alaia"). Falls back to the garment kind.
-const PRODUCT_DESCRIPTORS: Record<string, string> = {
-  dahlia:  'Black Floral Dress',
-  alaia:   'Light Green Dress',
-  saphira: 'Dark Mixed Purple Dress',
-  elayna:  'Light Blue & Pink Dress',
-  faye:    'Peach Floral Dress',
-  amelie:  'Hot Pink Frill Dress',
-  layla:   'Purple Garden Abaya',
-  yara:    'Pink Floral Abaya',
-};
-
-function productDescriptor(name: string, fallback: string): string {
-  const key = name.toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g, '');
-  return PRODUCT_DESCRIPTORS[key] ?? fallback;
-}
 
 export default function HomeClient({ products, configured }: { products: AppProduct[]; configured: boolean }) {
   const heroSectionRef = useRef<HTMLElement>(null);
@@ -227,7 +210,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                       />
                     )}
                   </div>
-                  <p className="eyebrow mb-1.5">{productDescriptor(p.name, p.kind)}</p>
+                  <p className="eyebrow mb-1.5">{getProductDescriptor(p.name, p.kind)}</p>
                   <div className="flex items-baseline justify-between">
                     <span className="font-product text-xl">{p.name}</span>
                     <span className="text-sm text-smoke">${p.price.toLocaleString()}</span>

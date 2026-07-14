@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import type { AppProduct } from '@/lib/shopify/types';
+import { getProductDescriptor } from '@/lib/productDescriptors';
 import ShopifySetupNotice from '@/components/ShopifySetupNotice';
 
 const fadeUp = {
@@ -268,7 +269,7 @@ function ProductCard({ product: p, large = false }: { product: AppProduct; large
         )}
       </div>
       <div className="mt-4">
-        <p className="eyebrow mb-1">{p.kind}</p>
+        <p className="eyebrow mb-1">{getProductDescriptor(p.name, p.kind)}</p>
         <div className="flex items-baseline justify-between">
           <span className={`font-product ${large ? 'text-2xl' : 'text-xl'}`}>{p.name}</span>
           <span className="text-sm text-smoke">${p.price.toLocaleString()}</span>
