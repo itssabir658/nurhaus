@@ -112,7 +112,7 @@ export default function StoryPage() {
             viewport={{ once: true }}
           >
             <Image
-              src="https://images.unsplash.com/photo-1752794673269-dc356838c5fd?auto=format&fit=crop&w=900&q=80"
+              src="/founder-image.jpeg"
               alt="The founder"
               width={900}
               height={1200}
