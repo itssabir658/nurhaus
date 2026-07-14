@@ -105,7 +105,7 @@ export default function StoryPage() {
       <section className="bg-secondary/25">
         <div className="site-max site-px py-24 md:py-40 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-28 items-center">
           <motion.div
-            className="aspect-[3/4] overflow-hidden order-last md:order-first"
+            className="aspect-[1012/1800] overflow-hidden order-last md:order-first"
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -114,8 +114,8 @@ export default function StoryPage() {
             <Image
               src="/founder-image.jpeg"
               alt="The founder"
-              width={900}
-              height={1200}
+              width={1012}
+              height={1800}
               loading="lazy"
               className="w-full h-full object-cover"
             />
