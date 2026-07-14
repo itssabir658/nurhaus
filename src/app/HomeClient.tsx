@@ -14,6 +14,24 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
 };
 
+// Per-product descriptor shown as the card eyebrow, keyed by product name
+// (accent-stripped so "Alaïa" matches "alaia"). Falls back to the garment kind.
+const PRODUCT_DESCRIPTORS: Record<string, string> = {
+  dahlia:  'Black Floral Dress',
+  alaia:   'Light Green Dress',
+  saphira: 'Dark Mixed Purple Dress',
+  elayna:  'Light Blue & Pink Dress',
+  faye:    'Peach Floral Dress',
+  amelie:  'Hot Pink Frill Dress',
+  layla:   'Purple Garden Abaya',
+  yara:    'Pink Floral Abaya',
+};
+
+function productDescriptor(name: string, fallback: string): string {
+  const key = name.toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  return PRODUCT_DESCRIPTORS[key] ?? fallback;
+}
+
 export default function HomeClient({ products, configured }: { products: AppProduct[]; configured: boolean }) {
   const heroSectionRef = useRef<HTMLElement>(null);
   const heroRef    = useRef<HTMLDivElement>(null);
@@ -209,7 +227,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                       />
                     )}
                   </div>
-                  <p className="eyebrow mb-1.5">{p.kind} · {String(i + 1).padStart(2, '0')}</p>
+                  <p className="eyebrow mb-1.5">{productDescriptor(p.name, p.kind)}</p>
                   <div className="flex items-baseline justify-between">
                     <span className="font-product text-xl">{p.name}</span>
                     <span className="text-sm text-smoke">${p.price.toLocaleString()}</span>
@@ -244,7 +262,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                           />
                         )}
                       </div>
-                      <p className="eyebrow mb-1.5">Abaya - {String(index + 1).padStart(2, '0')}</p>
+                      <p className="eyebrow mb-1.5">{productDescriptor(product.name, product.kind)}</p>
                       <div className="flex items-baseline justify-between">
                         <span className="font-product text-xl">{product.name}</span>
                         <span className="text-sm text-smoke">${product.price.toLocaleString()}</span>
