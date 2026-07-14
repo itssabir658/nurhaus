@@ -1,0 +1,16 @@
+{
+  "name": "shopify-admin-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local MCP server wrapping the Shopify Admin GraphQL API for use with Claude Code.",
+  "bin": {
+    "shopify-admin-mcp": "index.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  }
+}
