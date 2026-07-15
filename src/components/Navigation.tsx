@@ -21,12 +21,38 @@ const menuLinks = [
   { label: 'Contact',     href: '/contact' },
 ];
 
+// Editorial slideshow in the menu overlay — auto-advances only, no manual controls.
+const MENU_SLIDES = [
+  '/menu-slides/1.jpg',
+  '/menu-slides/2.jpg',
+  '/menu-slides/3.jpg',
+  '/menu-slides/4.jpg',
+  '/menu-slides/5.jpg',
+  '/menu-slides/6.jpg',
+  '/menu-slides/7.jpg',
+  '/menu-slides/8.jpg',
+];
+
 export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuSlide, setMenuSlide] = useState(0);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const { cart } = useCart();
   const cartCount = cart?.totalQuantity ?? 0;
+
+  // Advances the menu-overlay slideshow automatically while it's open. Resets to
+  // the first slide on close so it doesn't resume mid-cycle next time.
+  useEffect(() => {
+    if (!menuOpen) {
+      setMenuSlide(0);
+      return;
+    }
+    const id = setInterval(() => {
+      setMenuSlide((i) => (i + 1) % MENU_SLIDES.length);
+    }, 4500);
+    return () => clearInterval(id);
+  }, [menuOpen]);
 
   // Toggles the header background once the page scrolls past 64px. Uses an
   // IntersectionObserver against a tiny sentinel instead of a scroll listener —
@@ -143,10 +169,10 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-[80] bg-midnight flex flex-col"
+            className="fixed inset-0 z-[80] bg-midnight overflow-hidden"
           >
-            {/* Header row */}
-            <div className="site-px h-20 flex items-center justify-between flex-shrink-0 mt-[44px]">
+            {/* Header row — floats above the editorial image instead of pushing it down */}
+            <div className="absolute top-0 inset-x-0 z-10 site-px h-20 flex items-center justify-between mt-[44px]">
               <Link href="/" onClick={() => setMenuOpen(false)} aria-label="NÜR HAUS home">
                 <Image
                   src="/nurhaus-logo.png"
@@ -167,10 +193,10 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
               </button>
             </div>
 
-            {/* Two-column: links + editorial image */}
-            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 overflow-hidden min-h-0">
+            {/* Two-column: links + editorial image — full height, edge to edge */}
+            <div className="h-full grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
               {/* Links column */}
-              <div className="flex flex-col justify-center site-px pb-12 lg:pb-16">
+              <div className="flex flex-col justify-center site-px pt-[124px] pb-12 lg:pb-16">
                 <nav className="space-y-1">
                   {menuLinks.map((l, i) => (
                     <motion.div
@@ -201,15 +227,30 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
                 </motion.div>
               </div>
 
-              {/* Editorial image — desktop only */}
+              {/* Editorial image — desktop only, auto-advancing slideshow (no manual controls) */}
               <div className="hidden lg:block relative overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1762605135332-8a7ce1403187?auto=format&fit=crop&w=900&q=85"
-                  alt="NÜR HAUS Limited Collection"
-                  fill
-                  sizes="50vw"
-                  className="object-cover object-center"
-                />
+                <AnimatePresence mode="sync">
+                  <motion.div
+                    key={menuSlide}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0, scale: 1.06 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      opacity: { duration: 1.8, ease: [0.22, 1, 0.36, 1] },
+                      scale: { duration: 4.5, ease: 'linear' },
+                    }}
+                  >
+                    <Image
+                      src={MENU_SLIDES[menuSlide]}
+                      alt="NÜR HAUS Limited Collection"
+                      fill
+                      sizes="50vw"
+                      priority={menuSlide === 0}
+                      className="object-cover object-center"
+                    />
+                  </motion.div>
+                </AnimatePresence>
                 <div className="absolute inset-0 bg-midnight/35" />
                 <motion.div
                   className="absolute bottom-16 left-12 right-12"
