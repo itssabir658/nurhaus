@@ -7,8 +7,8 @@ export default async function ProductPage({ params }: { params: { handle: string
   const liveProduct = isShopifyConfigured ? await getProductByHandle(params.handle).catch(() => null) : null;
 
   if (liveProduct) {
-    const others = await getProducts({ first: 8 }).catch(() => []);
-    const related = others.filter((p) => p.handle !== liveProduct.handle).slice(0, 4);
+    const others = await getProducts({ first: 100 }).catch(() => []);
+    const related = others.filter((p) => p.handle !== liveProduct.handle);
     return <ProductClient product={liveProduct} related={related} isDemo={false} />;
   }
 
@@ -17,6 +17,6 @@ export default async function ProductPage({ params }: { params: { handle: string
   const demoProduct = getDemoProductByHandle(params.handle);
   if (!demoProduct) notFound();
 
-  const demoRelated = DEMO_PRODUCTS.filter((p) => p.handle !== demoProduct.handle).slice(0, 4);
+  const demoRelated = DEMO_PRODUCTS.filter((p) => p.handle !== demoProduct.handle);
   return <ProductClient product={demoProduct} related={demoRelated} isDemo={true} />;
 }

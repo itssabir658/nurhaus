@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import type { AppProduct } from '@/lib/shopify/types';
 
-const FREE_SHIPPING_THRESHOLD = 500;
+const FREE_SHIPPING_THRESHOLD = 250;
 
 export default function CartPageClient({
   crossSell,

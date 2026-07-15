@@ -43,9 +43,9 @@ const DAHLIA_LONG_DRESS: SizeGuideData = {
   ],
 };
 
-// Amelie Long Dress size guide (XS is offered in the source chart but omitted here)
+// Amélie Long Dress size guide (XS is offered in the source chart but omitted here)
 const AMELIE_LONG_DRESS: SizeGuideData = {
-  name: 'Amelie Long Dress',
+  name: 'Amélie Long Dress',
   columns: ['Size', 'Length', 'Body Length', 'Waist', 'Chest', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
   rows: [
     { size: 'S', length: '56', bodyLength: '14', waist: '19.5', chest: '19.5', sleeves: '25', armhole: '10', shoulder: '15', flare: '70' },

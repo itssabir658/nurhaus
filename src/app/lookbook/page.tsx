@@ -18,10 +18,10 @@ const SCENES = [
   },
   {
     image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=1600&q=85',
-    label: 'Look 02 — Amelie',
+    label: 'Look 02 — Amélie',
     text: 'Presence.',
     subtext: 'Not seen. Felt.',
-    piece: { name: 'Amelie', price: '$420', handle: 'amelie' },
+    piece: { name: 'Amélie', price: '$420', handle: 'amelie' },
     align: 'right',
   },
   {

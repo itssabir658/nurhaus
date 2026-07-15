@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SHIPPING_OPTIONS = [
-  { name: 'Standard',   time: '5–10 business days', price: 'Complimentary on orders over $500', note: 'Orders under $500 — $12' },
+  { name: 'Standard',   time: '5–10 business days', price: 'Complimentary on orders above $250', note: 'Orders under $250 — $12' },
   { name: 'Express',    time: '2–3 business days',  price: '$28',   note: 'Available at checkout' },
   { name: 'Overnight',  time: 'Next business day',  price: '$48',   note: 'Order before 12pm EST' },
 ];
@@ -12,9 +12,6 @@ const SHIPPING_OPTIONS = [
 const REGIONS = [
   { region: 'Canada',         time: '2–5 days',   express: 'Next day' },
   { region: 'United States',  time: '3–6 days',   express: '1–2 days' },
-  { region: 'Europe',         time: '6–10 days',  express: '3–4 days' },
-  { region: 'Middle East',    time: '6–10 days',  express: '3–4 days' },
-  { region: 'Rest of World',  time: '8–14 days',  express: '4–6 days' },
 ];
 
 const RETURN_STEPS = [

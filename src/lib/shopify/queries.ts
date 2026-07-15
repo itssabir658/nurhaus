@@ -29,6 +29,20 @@ const VARIANT_FRAGMENT = `
     image {
       ...ImageFragment
     }
+    storeAvailability(first: 1) {
+      edges {
+        node {
+          available
+          pickUpTime
+          location {
+            name
+            address {
+              formatted
+            }
+          }
+        }
+      }
+    }
   }
 `;
 

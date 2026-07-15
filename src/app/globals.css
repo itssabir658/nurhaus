@@ -172,6 +172,22 @@ img, video { display: block; max-width: 100%; }
   40%, 60% { transform: translateX(4px); }
 }
 
+/* ============================================================
+   RELATED PRODUCTS MARQUEE
+   ============================================================ */
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marqueeScroll var(--marquee-duration, 40s) linear infinite;
+}
+
+.marquee-row:hover .marquee-track {
+  animation-play-state: paused;
+}
+
 .animate-shake {
   animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }

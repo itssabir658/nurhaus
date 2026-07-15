@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const INITIAL_WISHLIST = [
   { name: 'Layla',  category: 'Abaya', price: '$680', handle: 'layla',  image: 'https://images.unsplash.com/photo-1760083545495-b297b1690672?auto=format&fit=crop&w=600&q=80', inStock: true  },
-  { name: 'Amelie',   category: 'Dress', price: '$420', handle: 'amelie',   image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=600&q=80', inStock: true  },
+  { name: 'Amélie',   category: 'Dress', price: '$420', handle: 'amelie',   image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=600&q=80', inStock: true  },
   { name: 'Yara',   category: 'Abaya', price: '$720', handle: 'yara',   image: 'https://images.unsplash.com/photo-1772474500365-c2c520545f44?auto=format&fit=crop&w=600&q=80', inStock: false },
   { name: 'Faye',  category: 'Dress', price: '$390', handle: 'faye',  image: 'https://images.unsplash.com/photo-1764179690247-df7f4014def7?auto=format&fit=crop&w=600&q=80', inStock: true  },
 ];

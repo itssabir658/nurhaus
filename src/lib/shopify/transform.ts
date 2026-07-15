@@ -7,6 +7,7 @@ import type {
   AppVariant,
   AppCart,
   AppCartLine,
+  AppPickupInfo,
 } from './types';
 
 function toVariant(v: ShopifyVariant): AppVariant {
@@ -19,6 +20,21 @@ function toVariant(v: ShopifyVariant): AppVariant {
     image: v.image?.url ?? null,
     selectedOptions: v.selectedOptions,
   };
+}
+
+/** Reads the first available in-store pickup location off any variant that has one. */
+function extractPickup(p: ShopifyProduct): AppPickupInfo | null {
+  for (const { node: v } of p.variants.edges) {
+    const edge = v.storeAvailability?.edges.find((e) => e.node.available);
+    if (edge) {
+      return {
+        locationName: edge.node.location.name,
+        address: edge.node.location.address.formatted.join(', '),
+        pickupTime: edge.node.pickUpTime,
+      };
+    }
+  }
+  return null;
 }
 
 /** Pulls the "Size" option's values across all variants, in first-seen order, deduped. */
@@ -56,6 +72,7 @@ export function toAppProduct(p: ShopifyProduct): AppProduct {
     variants,
     availableForSale: p.availableForSale,
     tags: p.tags,
+    pickup: extractPickup(p),
   };
 }
 

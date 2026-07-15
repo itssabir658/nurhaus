@@ -103,19 +103,16 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
             <div className="site-max site-px h-14 flex items-center justify-between gap-6">
               {/* Categories */}
               <div className="flex gap-1">
-                {categories.map((c) => (
-                  <button
-                    key={c}
-                    onClick={() => setActiveCategory(c)}
-                    className={`px-4 py-1.5 text-[0.7rem] tracking-[0.18em] uppercase font-medium transition-all duration-300 ${
-                      activeCategory === c
-                        ? 'bg-ink text-primary'
-                        : 'text-smoke hover:text-ink'
-                    }`}
-                  >
-                    {c}
-                  </button>
-                ))}
+                <button
+                  onClick={() => setActiveCategory('All')}
+                  className={`px-4 py-1.5 text-[0.7rem] tracking-[0.18em] uppercase font-medium transition-all duration-300 ${
+                    activeCategory === 'All'
+                      ? 'bg-ink text-primary'
+                      : 'text-smoke hover:text-ink'
+                  }`}
+                >
+                  All
+                </button>
               </div>
 
               <div className="flex items-center gap-4">
@@ -206,8 +203,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
               </div>
               <div className="flex-1 overflow-y-auto px-8 py-8 space-y-10">
                 {[
-                  { label: 'Category', opts: categories.filter((c) => c !== 'All') },
-                  { label: 'Size',     opts: ['S', 'M', 'L', 'XL'] },
+                  { label: 'Size', opts: ['S', 'M', 'L', 'XL'] },
                   /* Colour filter hidden for now */
                 ].map((group) => (
                   <div key={group.label}>
@@ -216,7 +212,6 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                       {group.opts.map((opt) => (
                         <button
                           key={opt}
-                          onClick={() => group.label === 'Category' && setActiveCategory(opt)}
                           className="px-3 py-1.5 border border-hairline text-sm text-smoke hover:border-accent hover:text-ink transition-all duration-300"
                         >
                           {opt}
@@ -258,7 +253,7 @@ function ProductCard({ product: p, large = false }: { product: AppProduct; large
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             loading="lazy"
-            className="object-cover group-hover:scale-105 transition-transform duration-[1200ms] ease-expo"
+            className="object-contain group-hover:scale-105 transition-transform duration-[1200ms] ease-expo"
           />
         )}
         {p.tags.includes('new') && (

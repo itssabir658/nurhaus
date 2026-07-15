@@ -17,6 +17,15 @@ export interface ShopifySelectedOption {
   value: string;
 }
 
+export interface ShopifyStoreAvailability {
+  available: boolean;
+  pickUpTime: string;
+  location: {
+    name: string;
+    address: { formatted: string[] };
+  };
+}
+
 export interface ShopifyVariant {
   id: string;
   title: string;
@@ -25,6 +34,7 @@ export interface ShopifyVariant {
   selectedOptions: ShopifySelectedOption[];
   price: ShopifyMoney;
   image: ShopifyImage | null;
+  storeAvailability?: { edges: { node: ShopifyStoreAvailability }[] };
 }
 
 export interface ShopifyProductOption {
@@ -78,6 +88,12 @@ export interface AppVariant {
   selectedOptions: ShopifySelectedOption[];
 }
 
+export interface AppPickupInfo {
+  locationName: string;
+  address: string;
+  pickupTime: string;
+}
+
 export interface AppProduct {
   id: string;
   handle: string;
@@ -95,6 +111,8 @@ export interface AppProduct {
   variants: AppVariant[];
   availableForSale: boolean;
   tags: string[];
+  /** In-store pickup location, when the store has local pickup enabled for this product. */
+  pickup?: AppPickupInfo | null;
 }
 
 export interface AppCartLine {

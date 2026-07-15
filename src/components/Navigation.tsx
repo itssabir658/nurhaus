@@ -16,8 +16,8 @@ const links = [
 ];
 
 const menuLinks = [
-  { label: 'Our Story',   href: '/story' },
   { label: 'Collection',  href: '/shop' },
+  { label: 'Our Story',   href: '/story' },
   { label: 'Contact',     href: '/contact' },
 ];
 
@@ -219,14 +219,14 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
                 >
                   <p className="eyebrow-light mb-4">Limited Collection</p>
                   <h3 className="font-display text-primary text-[2.4rem] leading-tight mb-7">
-                    Now Available.
+                    Chapter Ⅰ
                   </h3>
                   <Link
                     href="/shop"
                     onClick={() => setMenuOpen(false)}
                     className="inline-flex items-center gap-3 text-primary/80 hover:text-primary text-sm border-b border-primary/30 hover:border-primary pb-1 transition-all duration-400"
                   >
-                    Explore Collection <span className="text-base">→</span>
+                    Now Available <span className="text-base">→</span>
                   </Link>
                 </motion.div>
               </div>

@@ -10,7 +10,7 @@ interface CartDrawerProps {
   onClose: () => void;
 }
 
-const SHIPPING_THRESHOLD = 500;
+const SHIPPING_THRESHOLD = 250;
 
 export default function CartDrawer({ open, onClose }: CartDrawerProps) {
   const { cart, isLoading, isMutating, updateItem, removeItem } = useCart();

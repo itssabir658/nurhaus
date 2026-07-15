@@ -205,7 +205,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                         width={600}
                         height={800}
                         loading={i < 3 ? 'eager' : 'lazy'}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     )}
                   </div>
@@ -222,9 +222,6 @@ export default function HomeClient({ products, configured }: { products: AppProd
 
         {products.filter((p) => p.kind === 'Abaya').length > 0 && (
           <div className="mt-16 md:mt-28">
-            <motion.p className="eyebrow mb-6" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-              The Abayas
-            </motion.p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full justify-between">
               {products
                 .filter((p) => p.kind === 'Abaya')
@@ -240,7 +237,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                             width={800}
                             height={1067}
                             loading="lazy"
-                            className={`w-full h-full object-cover ${index === 0 ? 'object-[30%_50%]' : 'object-[70%_50%]'}`}
+                            className="w-full h-full object-contain"
                           />
                         )}
                       </div>

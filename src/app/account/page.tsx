@@ -21,7 +21,7 @@ const ORDERS = [
 
 const WISHLIST = [
   { name: 'Layla', price: '$680', handle: 'layla',   image: 'https://images.unsplash.com/photo-1760083545495-b297b1690672?auto=format&fit=crop&w=600&q=80' },
-  { name: 'Amelie',  price: '$420', handle: 'amelie',    image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=600&q=80' },
+  { name: 'Amélie',  price: '$420', handle: 'amelie',    image: 'https://images.unsplash.com/photo-1762605135318-f34a993cbcf0?auto=format&fit=crop&w=600&q=80' },
   { name: 'Yara', price: '$720', handle: 'yara',    image: 'https://images.unsplash.com/photo-1772474500365-c2c520545f44?auto=format&fit=crop&w=600&q=80' },
 ];
 

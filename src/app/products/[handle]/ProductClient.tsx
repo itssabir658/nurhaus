@@ -24,7 +24,7 @@ const DRESS_FABRIC_HTML = '<p>Lightweight chiffon with a breathable cotton inner
 const ABAYA_FABRIC_HTML = '<p>Lightweight georgette with matching inner included.</p>';
 const DRESS_CARE = 'Dry clean recommended\nSteam only (avoid direct ironing on chiffon)\nIf needed, hand wash in cold water with mild detergent\nDo not tumble dry';
 const ABAYA_CARE = 'Dry clean recommended\nSteam only (avoid direct ironing on georgette)\nIf needed, hand wash in cold water with mild detergent\nDo not tumble dry';
-const SHIPPING_COPY = 'Complimentary standard shipping on orders over $500\nDelivery in 5–10 business days\nExpress available at checkout (2–3 days)\nStore credit only — no refunds';
+const SHIPPING_COPY = 'Complimentary standard shipping on orders above $250\nDelivery in 5–10 business days\nExpress available at checkout (2–3 days)\nStore credit only — no refunds';
 
 const RECENT_STORAGE_KEY = 'nh_recent';
 
@@ -178,7 +178,7 @@ export default function ProductClient({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="aspect-[4/5] overflow-hidden bg-secondary/20"
+              className="overflow-hidden bg-secondary/20 flex items-center justify-center"
             >
               {product.images[activeImage] && (
                 <Image
@@ -187,7 +187,7 @@ export default function ProductClient({
                   width={1000}
                   height={1250}
                   priority={activeImage === 0}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               )}
             </motion.div>
@@ -298,18 +298,6 @@ export default function ProductClient({
                 </div>
               )}
 
-              {/* Limited stock indicator — only when Shopify reports real inventory numbers */}
-              {!productSoldOut && selectedVariant?.availableForSale && selectedVariant.quantityAvailable !== null && selectedVariant.quantityAvailable <= 8 && (
-                <motion.p
-                  className="text-sm text-smoke mb-6"
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  Only <span className="text-ink font-medium">{selectedVariant.quantityAvailable} piece{selectedVariant.quantityAvailable === 1 ? '' : 's'}</span> remaining in this size.
-                </motion.p>
-              )}
-
               {/* Quantity */}
               {!productSoldOut && !variantSoldOut && (
                 <div className="mb-8">
@@ -379,10 +367,30 @@ export default function ProductClient({
                 )}
               </div>
 
+              {/* In-store pickup */}
+              {product.pickup && (
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(product.pickup.address)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 border border-hairline p-4 flex items-start gap-3 hover:border-accent transition-colors duration-300 group"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-smoke group-hover:text-ink transition-colors flex-shrink-0 mt-0.5">
+                    <path d="M12 21s-7-6.5-7-11.5a7 7 0 1 1 14 0C19 14.5 12 21 12 21Z" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="12" cy="9.5" r="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <div>
+                    <p className="text-xs text-ink font-medium underline underline-offset-2">Pickup available at {product.pickup.locationName}</p>
+                    <p className="text-xs text-smoke mt-1">{product.pickup.address}</p>
+                    <p className="text-xs text-smoke mt-1">{product.pickup.pickupTime}</p>
+                  </div>
+                </a>
+              )}
+
               {/* Trust signals */}
               <div className="mt-8 pt-8 border-t border-hairline space-y-3">
                 {[
-                  { icon: '✦', text: 'Complimentary shipping on orders over $500' },
+                  { icon: '✦', text: 'Complimentary shipping on orders above $250' },
                   { icon: '✦', text: 'Store credit only — no refunds' },
                   { icon: '✦', text: 'Each piece finished by hand in our atelier' },
                 ].map((item) => (
@@ -420,9 +428,11 @@ export default function ProductClient({
                                 dangerouslySetInnerHTML={{ __html: fabricHtml }}
                               />
                             ) : (
-                              (key === 'care' ? careCopy : SHIPPING_COPY).split('\n').map((line, i) => (
-                                <p key={i} className={`text-sm text-smoke leading-relaxed ${i > 0 ? 'mt-1.5' : ''}`}>{line}</p>
-                              ))
+                              <div className="text-sm text-smoke leading-relaxed prose-nurhaus">
+                                {(key === 'care' ? careCopy : SHIPPING_COPY).split('\n').map((line, i) => (
+                                  <p key={i} className={i > 0 ? 'mt-1.5' : ''}>{line}</p>
+                                ))}
+                              </div>
                             )}
                           </div>
                         </motion.div>
@@ -474,32 +484,28 @@ export default function ProductClient({
         </div>
       )}
 
-      {/* Related products */}
+      {/* Related products — continuous auto-sliding marquee of every other product */}
       {related.length > 0 && (
         <div className="border-t border-hairline">
-          <div className="site-max site-px py-20">
+          <div className="site-max site-px pt-20">
             <p className="eyebrow mb-3">You May Also Consider</p>
             <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-12">The Collection</h2>
-            <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
-              {related.map((p, i) => (
-                <motion.div
-                  key={p.handle}
-                  className="flex-shrink-0 w-[260px] md:w-[300px] snap-start"
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <Link href={`/products/${p.handle}`} className="group block">
-                    <div className="aspect-[3/4] overflow-hidden bg-secondary/20 mb-4 product-card-img">
-                      {p.images[0] && (
-                        <Image src={p.images[0]} alt={p.name} width={300} height={400} loading="lazy" className="w-full h-full object-cover" />
-                      )}
-                    </div>
-                    <p className="font-product text-lg group-hover:text-accent transition-colors">{p.name}</p>
-                    <p className="text-sm text-smoke mt-1">${p.price.toLocaleString()}</p>
-                  </Link>
-                </motion.div>
+          </div>
+          <div className="marquee-row overflow-hidden pb-20">
+            <div
+              className="marquee-track flex gap-6 w-max"
+              style={{ ['--marquee-duration' as string]: `${related.length * 5}s` }}
+            >
+              {[...related, ...related].map((p, i) => (
+                <Link key={`${p.handle}-${i}`} href={`/products/${p.handle}`} className="group block flex-shrink-0 w-[260px] md:w-[300px]">
+                  <div className="aspect-[3/4] overflow-hidden bg-secondary/20 mb-4 product-card-img">
+                    {p.images[0] && (
+                      <Image src={p.images[0]} alt={p.name} width={300} height={400} loading="lazy" className="w-full h-full object-cover" />
+                    )}
+                  </div>
+                  <p className="font-product text-lg group-hover:text-accent transition-colors">{p.name}</p>
+                  <p className="text-sm text-smoke mt-1">${p.price.toLocaleString()}</p>
+                </Link>
               ))}
             </div>
           </div>
