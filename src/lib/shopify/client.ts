@@ -60,7 +60,14 @@ export async function shopifyFetch<T>({ query, variables, revalidate }: ShopifyF
 
   if (json.errors?.length) {
     console.error('Shopify GraphQL errors:', JSON.stringify(json.errors, null, 2));
-    throw new Error(json.errors.map((e) => e.message).join('; '));
+    // GraphQL returns partial data alongside field-level errors (e.g. a field the
+    // access token isn't scoped for, like quantityAvailable/storeAvailability).
+    // Only treat the request as failed when there's no usable data at all —
+    // discarding a whole product list over one denied field would silently fall
+    // back to the demo catalog even though real products exist.
+    if (!json.data) {
+      throw new Error(json.errors.map((e) => e.message).join('; '));
+    }
   }
 
   return json.data as T;

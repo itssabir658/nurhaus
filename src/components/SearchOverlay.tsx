@@ -18,8 +18,14 @@ export default function SearchOverlay({ open, onClose, products }: SearchOverlay
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Strip diacritics so "amelie" still matches "Amélie" — mirrors the same
+  // accent-insensitive matching used by the size guide and product descriptors.
+  const normalize = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
   const results = query.length > 1
-    ? products.filter((p) => p.name.toLowerCase().includes(query.toLowerCase()))
+    ? products.filter((p) =>
+        normalize(p.name).includes(normalize(query)) || normalize(p.kind).includes(normalize(query))
+      )
     : [];
 
   useEffect(() => {
@@ -79,7 +85,7 @@ export default function SearchOverlay({ open, onClose, products }: SearchOverlay
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search the collection…"
-                className="flex-1 bg-transparent font-display text-3xl md:text-4xl text-ink placeholder:text-muted/50 outline-none"
+                className="flex-1 bg-transparent font-display text-3xl md:text-4xl text-ink placeholder:text-muted/50 outline-none focus-visible:outline-none"
               />
               {query && (
                 <button onClick={() => setQuery('')} className="text-muted hover:text-smoke transition-colors">

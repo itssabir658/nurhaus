@@ -370,7 +370,7 @@ export default function ProductClient({
               {/* In-store pickup */}
               {product.pickup && (
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(product.pickup.address)}`}
+                  href="https://maps.app.goo.gl/VcRKfcW5pRLEzkSr8"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-6 border border-hairline p-4 flex items-start gap-3 hover:border-accent transition-colors duration-300 group"
