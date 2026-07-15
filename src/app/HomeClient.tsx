@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
@@ -18,25 +18,6 @@ export default function HomeClient({ products, configured }: { products: AppProd
   const heroSectionRef = useRef<HTMLElement>(null);
   const heroRef    = useRef<HTMLDivElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
-
-  // Mouse-follow parallax for the hero image — desktop only, spring-smoothed so it never costs a re-render.
-  const mvX = useMotionValue(0);
-  const mvY = useMotionValue(0);
-  const springX = useSpring(mvX, { stiffness: 40, damping: 18, mass: 0.6 });
-  const springY = useSpring(mvY, { stiffness: 40, damping: 18, mass: 0.6 });
-  const heroImgX = useTransform(springX, [-1, 1], [-16, 16]);
-  const heroImgY = useTransform(springY, [-1, 1], [-12, 12]);
-
-  useEffect(() => {
-    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (!isFinePointer) return;
-    const handleMove = (e: MouseEvent) => {
-      mvX.set((e.clientX / window.innerWidth) * 2 - 1);
-      mvY.set((e.clientY / window.innerHeight) * 2 - 1);
-    };
-    window.addEventListener('mousemove', handleMove);
-    return () => window.removeEventListener('mousemove', handleMove);
-  }, [mvX, mvY]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -83,20 +64,17 @@ export default function HomeClient({ products, configured }: { products: AppProd
       <section ref={heroSectionRef} className="relative h-[100svh] min-h-[560px] overflow-hidden -mt-[124px]">
         {/* Scroll parallax layer (GSAP) */}
         <div ref={heroRef} className="absolute inset-0 will-change-transform">
-          {/* Mouse parallax layer (Framer Motion) — separate node so the two transforms never collide */}
-          <motion.div
-            className="absolute inset-0 scale-[1.08] sm:scale-110"
-            style={{ x: heroImgX, y: heroImgY }}
-          >
-            <Image
-              src="https://images.unsplash.com/photo-1762376268273-645db555eaf9?auto=format&fit=crop&w=1800&q=85"
-              alt="Nürhaus model in an abaya beneath an arched, sheer-curtained doorway"
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-center"
+          <div className="absolute inset-0 scale-[1.08] sm:scale-110">
+            <video
+              src="/video/hero.mp4"
+              poster="/video/hero-poster.jpg"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover object-center"
             />
-          </motion.div>
+          </div>
           <div className="absolute inset-0 bg-gradient-to-t from-midnight/65 via-midnight/15 to-midnight/25" />
         </div>
 
