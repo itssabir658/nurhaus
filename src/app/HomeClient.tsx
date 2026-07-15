@@ -7,7 +7,6 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { AppProduct } from '@/lib/shopify/types';
-import { getProductDescriptor } from '@/lib/productDescriptors';
 import ShopifySetupNotice from '@/components/ShopifySetupNotice';
 
 const fadeUp = {
@@ -210,7 +209,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                       />
                     )}
                   </div>
-                  <p className="eyebrow mb-1.5">{getProductDescriptor(p.name, p.kind)}</p>
+                  <p className="eyebrow mb-1.5">{p.kind}</p>
                   <div className="flex items-baseline justify-between">
                     <span className="font-product text-xl">{p.name}</span>
                     <span className="text-sm text-smoke">${p.price.toLocaleString()}</span>
@@ -245,7 +244,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                           />
                         )}
                       </div>
-                      <p className="eyebrow mb-1.5">{productDescriptor(product.name, product.kind)}</p>
+                      <p className="eyebrow mb-1.5">{product.kind}</p>
                       <div className="flex items-baseline justify-between">
                         <span className="font-product text-xl">{product.name}</span>
                         <span className="text-sm text-smoke">${product.price.toLocaleString()}</span>
