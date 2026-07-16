@@ -387,6 +387,23 @@ export default function ProductClient({
                 </a>
               )}
 
+              {/* Pop-Up location (static banner, always visible) */}
+              <a
+                href="https://maps.app.goo.gl/VcRKfcW5pRLEzkSr8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 border border-hairline p-4 flex items-start gap-3 hover:border-accent transition-colors duration-300 group"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-smoke group-hover:text-ink transition-colors flex-shrink-0 mt-0.5">
+                  <path d="M12 21s-7-6.5-7-11.5a7 7 0 1 1 14 0C19 14.5 12 21 12 21Z" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="12" cy="9.5" r="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <div>
+                  <p className="text-xs text-ink font-medium underline underline-offset-2">Pop Up — July 26, 12–3PM</p>
+                  <p className="text-xs text-smoke mt-1">3-530 Speers Rd, Oakville Ontario L6K 2E5, Canada</p>
+                </div>
+              </a>
+
               {/* Trust signals */}
               <div className="mt-8 pt-8 border-t border-hairline space-y-3">
                 {[
