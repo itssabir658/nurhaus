@@ -1,179 +1,138 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-const SHIPPING_OPTIONS = [
-  { name: 'Standard',   time: '5–10 business days', price: 'Complimentary on orders above $250', note: 'Orders under $250 — $12' },
-  { name: 'Express',    time: '2–3 business days',  price: '$28',   note: 'Available at checkout' },
-  { name: 'Overnight',  time: 'Next business day',  price: '$48',   note: 'Order before 12pm EST' },
-];
-
-const REGIONS = [
-  { region: 'Canada',         time: '2–5 days',   express: 'Next day' },
-  { region: 'United States',  time: '3–6 days',   express: '1–2 days' },
-];
-
-const RETURN_STEPS = [
-  { step: '01', title: 'Request',      body: 'Email sales@nurhaus.ca within 5 days of receiving your order. Include your order number and reason.' },
-  { step: '02', title: 'Package',      body: 'Place the item in its original packaging with all tags attached. Items must be unworn and in original condition.' },
-  { step: '03', title: 'Ship',         body: 'Ship the item back to us using a tracked service. Return shipping is arranged and paid by you.' },
-  { step: '04', title: 'Store Credit', body: 'Once your item is received and inspected, store credit is issued within 5–7 business days. We do not offer refunds.' },
-];
-
-const FAQS = [
-  { q: 'Can I exchange an item for a different size?', a: 'Yes. Request an exchange through sales@nurhaus.ca within 5 days, subject to availability. Shipping costs for exchanges are the customer’s responsibility.' },
-  { q: 'What if my order arrives damaged?', a: 'Please photograph the item and packaging immediately and email us within 48 hours. We will arrange a replacement or store credit.' },
-  { q: 'Do you offer refunds?', a: 'We do not offer refunds. Eligible unworn items with all tags attached may be returned within 5 days for store credit only.' },
-  { q: 'Are returns free?', a: 'No. Return and exchange shipping is the customer’s responsibility for all orders, domestic and international.' },
-];
-
-const fadeUp = { hidden: { opacity: 0, y: 28 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22,1,0.36,1] } } };
+const fadeUp = { hidden: { opacity: 0, y: 28 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } };
 
 export default function ShippingPage() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
   return (
     <div className="page-enter">
       {/* Header */}
       <div className="site-max site-px pt-16 pb-12 border-b border-hairline">
-        <motion.p className="eyebrow mb-4" variants={fadeUp} initial="hidden" animate="visible">Shipping & Returns</motion.p>
+        <motion.p className="eyebrow mb-4" variants={fadeUp} initial="hidden" animate="visible">
+          Refund Policy
+        </motion.p>
         <motion.h1
           className="font-display text-[3rem] md:text-[5rem] leading-tight tracking-tight"
-          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.9, ease: [0.22,1,0.36,1] }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         >
-          Delivered with<br /><em>the same care.</em>
+          Fair, from<br /><em>start to finish.</em>
         </motion.h1>
       </div>
 
-      <div className="site-max site-px py-20 md:py-32 space-y-24 md:space-y-40">
+      <div className="site-max site-px py-20 md:py-32">
+        <div className="max-w-2xl space-y-16 md:space-y-20">
 
-        {/* Shipping options */}
-        <section>
-          <motion.p className="eyebrow mb-10" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>Delivery Options</motion.p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {SHIPPING_OPTIONS.map((opt, i) => (
-              <motion.div
-                key={opt.name}
-                className="border border-hairline p-8 hover:border-accent transition-colors duration-400"
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.7 }}
-              >
-                <p className="eyebrow mb-5">{opt.name}</p>
-                <p className="font-display text-2xl mb-3">{opt.time}</p>
-                <p className="text-sm text-ink mb-1">{opt.price}</p>
-                <p className="text-xs text-muted">{opt.note}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* Worldwide delivery table */}
-        <section>
-          <motion.p className="eyebrow mb-4" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>Worldwide Delivery</motion.p>
-          <motion.h2
-            className="font-display text-3xl md:text-4xl tracking-tight mb-10"
-            variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-          >
-            We ship to over 60 countries.
-          </motion.h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-hairline">
-                  <th className="text-left py-4 pr-8 eyebrow font-medium">Region</th>
-                  <th className="text-left py-4 pr-8 eyebrow font-medium">Standard</th>
-                  <th className="text-left py-4 eyebrow font-medium">Express</th>
-                </tr>
-              </thead>
-              <tbody>
-                {REGIONS.map((r, i) => (
-                  <motion.tr
-                    key={r.region}
-                    className="border-b border-hairline/60 hover:bg-secondary/20 transition-colors"
-                    initial={{ opacity: 0, x: -12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.06, duration: 0.6 }}
-                  >
-                    <td className="py-5 pr-8 font-medium text-ink">{r.region}</td>
-                    <td className="py-5 pr-8 text-smoke">{r.time}</td>
-                    <td className="py-5 text-smoke">{r.express}</td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="text-xs text-muted mt-4">All times are estimates from dispatch. Customs delays may affect delivery.</p>
-        </section>
-
-        {/* Returns process */}
-        <section>
-          <motion.p className="eyebrow mb-4" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>Returns</motion.p>
-          <motion.h2
-            className="font-display text-3xl md:text-4xl tracking-tight mb-3"
-            variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-          >
-            Store credit only.
-          </motion.h2>
           <motion.p
-            className="text-smoke text-sm mb-12 max-w-lg"
-            variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="text-smoke text-base leading-relaxed"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
-            We do not offer refunds. Eligible unworn items with all tags attached may be returned within 5 days of delivery for store credit only.
+            Thank you for shopping with Nür Haus. We appreciate your support and strive to provide you with the best products and services. If for any reason you&rsquo;re not completely satisfied with your purchase, we&rsquo;re here to help. As a small business, we have established the following policies to ensure a smooth and fair process for both our customers and our team.
           </motion.p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {RETURN_STEPS.map((step, i) => (
-              <motion.div
-                key={step.step}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.7 }}
-              >
-                <p className="font-display text-5xl text-hairline mb-4">{step.step}</p>
-                <p className="eyebrow mb-3">{step.title}</p>
-                <p className="text-sm text-smoke leading-relaxed">{step.body}</p>
+          {/* Cancellation Policy */}
+          <section>
+            <motion.h2
+              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Cancellation Policy
+            </motion.h2>
+            <motion.p
+              className="text-smoke text-sm leading-relaxed"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Customers have a 30-minute window after placing their order to cancel. If you wish to cancel, please contact us at{' '}
+              <a href="mailto:sales@nurhaus.ca" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">sales@nurhaus.ca</a>, along with your order number, within this time frame. After 30 minutes, the order will begin processing and cannot be canceled.
+            </motion.p>
+          </section>
+
+          {/* Exchange Policy */}
+          <section>
+            <motion.h2
+              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Exchange Policy
+            </motion.h2>
+            <motion.p
+              className="text-smoke text-sm leading-relaxed mb-10"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              The fastest way to ensure you get what you want is to return the item you have, and once the return is accepted, place a separate order for the new item.
+            </motion.p>
+
+            <div className="space-y-8">
+              <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                <p className="eyebrow mb-3">Exchange Period</p>
+                <p className="text-smoke text-sm leading-relaxed">
+                  Products can be exchanged within 7 days of the original purchase date. Unfortunately, we cannot accept exchanges beyond this period.
+                </p>
+                <p className="text-smoke text-sm leading-relaxed mt-3">
+                  Please note that shipping charges for exchanges are the responsibility of the customer and will not be covered by Nür Haus.
+                </p>
               </motion.div>
-            ))}
-          </div>
-        </section>
 
-        {/* FAQ */}
-        <section>
-          <motion.p className="eyebrow mb-4" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>Common Questions</motion.p>
-          <div className="max-w-2xl space-y-0 border-t border-hairline">
-            {FAQS.map((faq, i) => (
-              <div key={i} className="border-b border-hairline">
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between py-6 text-left gap-4"
-                >
-                  <span className="font-display text-lg text-ink">{faq.q}</span>
-                  <span className={`text-muted transition-transform duration-400 text-xl leading-none flex-shrink-0 ${openFaq === i ? 'rotate-45' : ''}`}>+</span>
-                </button>
-                <AnimatePresence initial={false}>
-                  {openFaq === i && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.45, ease: [0.22,1,0.36,1] }}
-                      className="overflow-hidden"
-                    >
-                      <p className="text-sm text-smoke leading-relaxed pb-6 max-w-xl">{faq.a}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </div>
-        </section>
+              <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                <p className="eyebrow mb-3">Condition of Products</p>
+                <p className="text-smoke text-sm leading-relaxed">
+                  To be eligible for an exchange, the product must be in its original, unused condition. The product should include all original tags, packaging, and accessories.
+                </p>
+              </motion.div>
 
+              <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                <p className="eyebrow mb-3">Proof of Purchase</p>
+                <p className="text-smoke text-sm leading-relaxed">
+                  A receipt or proof of purchase is required for all exchanges. This helps us verify the transaction and process your exchange efficiently.
+                </p>
+              </motion.div>
+
+              <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                <p className="eyebrow mb-3">Exchange Process</p>
+                <p className="text-smoke text-sm leading-relaxed">
+                  To initiate an exchange, please contact us at{' '}
+                  <a href="mailto:sales@nurhaus.ca" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">sales@nurhaus.ca</a> along with your order number. Our team will review your order to ensure it meets the exchange criteria. Once approved, you may select a replacement item of equal or lesser value. If the replacement item is of a higher value, you will be required to pay the price difference.
+                </p>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* Sale Items */}
+          <section>
+            <motion.h2
+              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Sale Items
+            </motion.h2>
+            <motion.p
+              className="text-smoke text-sm leading-relaxed"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Items marked as &ldquo;Sale&rdquo; are not eligible for exchange.
+            </motion.p>
+          </section>
+
+          {/* Closing */}
+          <motion.div
+            className="border-t border-hairline pt-12"
+            variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+          >
+            <p className="text-smoke text-sm leading-relaxed mb-6">
+              We appreciate your understanding and cooperation with our policies. Your satisfaction is important to us, and we will do our best to assist you. If you have any questions or concerns, please don&rsquo;t hesitate to contact us.
+            </p>
+            <p className="text-sm text-ink">
+              Email:{' '}
+              <a href="mailto:sales@nurhaus.ca" className="underline underline-offset-2 hover:text-accent transition-colors">sales@nurhaus.ca</a>
+            </p>
+          </motion.div>
+
+        </div>
       </div>
     </div>
   );

@@ -1,13 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { AppProduct } from '@/lib/shopify/types';
 import ShopifySetupNotice from '@/components/ShopifySetupNotice';
+import EditorialHero from '@/components/EditorialHero';
 
 const fadeUp = {
   hidden:  { opacity: 0, y: 36 },
@@ -15,116 +13,9 @@ const fadeUp = {
 };
 
 export default function HomeClient({ products, configured }: { products: AppProduct[]; configured: boolean }) {
-  const heroSectionRef = useRef<HTMLElement>(null);
-  const heroRef    = useRef<HTMLDivElement>(null);
-  const curtainRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // gsap.context() scopes every tween/ScrollTrigger created inside it to
-    // heroSectionRef (so the string selectors below only ever match nodes in
-    // this component's own subtree) and records them all for cleanup — a
-    // single ctx.revert() properly kills and reverts every animation created
-    // here, not just ScrollTrigger instances. Prevents orphaned tweens from
-    // stacking up across mounts/unmounts as the user navigates between pages.
-    const ctx = gsap.context(() => {
-      // Scroll parallax on hero image
-      if (heroRef.current) {
-        gsap.fromTo(
-          heroRef.current,
-          { yPercent: 0 },
-          { yPercent: 18, ease: 'none', scrollTrigger: { trigger: 'section', start: 'top top', end: 'bottom top', scrub: true } }
-        );
-      }
-
-      // Curtain reveal
-      if (curtainRef.current) {
-        gsap.set(curtainRef.current, { scaleY: 1 });
-        gsap.to(curtainRef.current, { scaleY: 0, transformOrigin: 'top', duration: 1.1, delay: 0.15, ease: 'power2.inOut' });
-      }
-
-      // Hero entrance animations (elements start hidden via inline style in JSX)
-      gsap.to('.hero-eyebrow', { opacity: 1, y: 0,       duration: 0.8, delay: 0.9,  ease: 'power3.out' });
-      gsap.fromTo('.hero-line',
-        { yPercent: 100, opacity: 0 },
-        { yPercent: 0, opacity: 1, stagger: 0.15, duration: 0.9, delay: 1.05, ease: 'power3.out' }
-      );
-      gsap.to('.hero-subtext', { opacity: 1, y: 0,       duration: 0.8, delay: 1.5,  ease: 'power3.out' });
-      gsap.to('.hero-ctas',    { opacity: 1, y: 0,       duration: 0.8, delay: 1.7,  ease: 'power3.out' });
-      gsap.to('.hero-scroll',  { opacity: 1,             duration: 0.8, delay: 2.2  });
-    }, heroSectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <div className="page-enter">
-      {/* HERO */}
-      <section ref={heroSectionRef} className="relative h-[100svh] min-h-[560px] overflow-hidden -mt-[124px]">
-        {/* Scroll parallax layer (GSAP) */}
-        <div ref={heroRef} className="absolute inset-0 will-change-transform">
-          <div className="absolute inset-0 scale-[1.08] sm:scale-110">
-            <video
-              src="/video/hero.mp4"
-              poster="/video/hero-poster.jpg"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover object-center"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-midnight/65 via-midnight/15 to-midnight/25" />
-        </div>
-
-        {/* Cinematic curtain reveal */}
-        <div
-          ref={curtainRef}
-          className="absolute inset-0 z-30 bg-primary pointer-events-none"
-          style={{ transformOrigin: 'top' }}
-        />
-
-        {/* Headline + Subtext + CTAs — pinned to bottom, centered */}
-        <div className="absolute bottom-6 sm:bottom-8 md:bottom-12 left-0 right-0 z-10 px-6 md:px-12 xl:px-20 flex flex-col items-center text-center">
-          <h1 className="font-hero font-[350] uppercase text-primary leading-[0.95] tracking-[0.005em] sm:tracking-[0.015em] lg:tracking-[0.02em] text-[clamp(2.25rem,1.25rem+4vw,6.5rem)] md:whitespace-nowrap mb-0 md:mb-1">
-            <div className="overflow-hidden pb-[0.1em]">
-              <span className="hero-line block" style={{ opacity: 0 }}>
-                Modest Silhouettes,
-              </span>
-            </div>
-          </h1>
-          <p className="font-hero italic font-normal text-primary text-[clamp(1.4rem,1.1rem+1.2vw,1.875rem)] tracking-[0.1em] mb-4 md:mb-6 lg:mb-8">
-            <span className="overflow-hidden pb-[0.1em] block">
-              <span className="hero-line block" style={{ opacity: 0 }}>
-                Thoughtfully Made.
-              </span>
-            </span>
-          </p>
-          <p className="hero-subtext text-primary/75 text-sm md:text-base max-w-md md:max-w-none md:whitespace-nowrap mb-6" style={{ opacity: 0, transform: 'translateY(12px)' }}>
-            Small-batch abayas and dresses &mdash; light, easy, and made with intention.
-          </p>
-          <div className="hero-ctas flex gap-3 sm:gap-4" style={{ opacity: 0, transform: 'translateY(12px)' }}>
-            <Link
-              href="/shop"
-              className="inline-flex items-center justify-center gap-2 text-primary text-[0.7rem] sm:text-[0.8rem] tracking-[0.05em] sm:tracking-[0.08em] uppercase font-medium pb-1 border-b border-primary hover:text-gold hover:border-gold transition-colors duration-400"
-            >
-              Shop Now
-            </Link>
-          </div>
-        </div>
-
-        {/* Scroll cue */}
-        <div className="hero-scroll absolute bottom-8 right-6 md:right-10 z-10 hidden sm:flex flex-col items-center gap-2 text-primary/60" style={{ opacity: 0 }}>
-          <span className="text-[0.62rem] tracking-[0.18em] uppercase" style={{ writingMode: 'vertical-rl' }}>Scroll</span>
-          <motion.span
-            className="block w-px h-10 bg-primary/40"
-            animate={{ scaleY: [0, 1, 0] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ transformOrigin: 'top' }}
-          />
-        </div>
-      </section>
+      <EditorialHero />
 
       {/* COLLECTION PREVIEW */}
       <section className="site-max site-px py-14 md:py-44">

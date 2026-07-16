@@ -38,10 +38,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="col-span-3 md:col-span-2 flex flex-col justify-between">
             <div>
-              <p
-                className="text-sm text-primary/55 leading-relaxed max-w-[220px] italic"
-                style={{ fontFamily: 'var(--font-brolimo)' }}
-              >
+              <p className="text-sm text-primary/55 leading-relaxed max-w-[220px]">
                 Modest luxury, in measured light. Made in small batches, for women who dress with intention.
               </p>
             </div>
