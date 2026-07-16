@@ -138,7 +138,7 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     handle: 'elayna',
     name: 'Elayna',
     kind: 'Dress',
-    description: 'Elayna blends soft blue and pink tones into a beautiful, eye-catching palette. Designed with a graceful flow and crafted from lightweight chiffon, it creates a feminine and elegant look. Fully lined for comfort and breathability, Elayna is the perfect choice for special occasions where you want to feel polished and effortlessly dressed.',
+    description: 'Elayna blends soft blue and hint of pink tones into a beautiful, eye-catching palette. Designed with a graceful flow and crafted from lightweight chiffon, it creates a feminine and elegant look. Fully lined for comfort and breathability, Elayna is the perfect choice for special occasions where you want to feel polished and effortlessly dressed.',
     descriptionHtml: DRESS_FABRIC_HTML,
     care: DRESS_CARE,
     price: 455,

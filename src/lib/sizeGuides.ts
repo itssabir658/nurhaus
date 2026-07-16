@@ -11,83 +11,83 @@ export interface SizeGuideData {
 // Abaya shared size guide data
 const ABAYA_OUTER: SizeGuideData = {
   name: 'Abaya (Outer)',
-  columns: ['Size', 'Length', 'Chest', 'Shoulder', 'Sleeves', 'Wrist Opening', 'Armhole', 'Flare'],
+  columns: ['Size', 'Length', 'Chest', 'Shoulder', 'Sleeves', 'Wrist Opening'],
   rows: [
-    { size: '54', length: '54', chest: '23', shoulder: '16.5', sleeves: '25', wristOpening: '10', armhole: '12', flare: '36' },
-    { size: '56', length: '56', chest: '24', shoulder: '16.5', sleeves: '25', wristOpening: '10', armhole: '12', flare: '36' },
-    { size: '58', length: '58', chest: '25', shoulder: '16.5', sleeves: '25', wristOpening: '10', armhole: '12', flare: '36' },
-    { size: '60', length: '60', chest: '25', shoulder: '17', sleeves: '25', wristOpening: '10', armhole: '13', flare: '40' },
+    { size: '54', length: '54', chest: '23', shoulder: '16.5', sleeves: '25', wristOpening: '10' },
+    { size: '56', length: '56', chest: '24', shoulder: '16.5', sleeves: '25', wristOpening: '10' },
+    { size: '58', length: '58', chest: '25', shoulder: '16.5', sleeves: '25', wristOpening: '10' },
+    { size: '60', length: '60', chest: '25', shoulder: '17', sleeves: '25', wristOpening: '10' },
   ],
 };
 
 const ABAYA_INNER: SizeGuideData = {
   name: 'Abaya (Inner)',
-  columns: ['Size', 'Length', 'Body Length', 'Chest', 'Waist', 'Neck Back', 'Neck Front', 'Sleeves Opening', 'Shoulder', 'Sleeves', 'Armhole', 'Flare'],
+  columns: ['Size', 'Length', 'Chest', 'Waist', 'Neck Back', 'Neck Front', 'Sleeves Opening', 'Shoulder', 'Sleeves'],
   rows: [
-    { size: '54', length: '52', bodyLength: '14', chest: '22', waist: '22', neckBack: '3.5', neckFront: '5', sleevesOpening: '10', shoulder: '15', sleeves: '8', armhole: '11.5', flare: '45' },
-    { size: '56', length: '54', bodyLength: '14', chest: '23', waist: '23', neckBack: '3.5', neckFront: '5', sleevesOpening: '10', shoulder: '15', sleeves: '8', armhole: '11.5', flare: '45' },
-    { size: '58', length: '56', bodyLength: '14', chest: '23', waist: '23', neckBack: '3.5', neckFront: '5', sleevesOpening: '10', shoulder: '15', sleeves: '8', armhole: '11.5', flare: '45' },
-    { size: '60', length: '58', bodyLength: '14', chest: '24', waist: '24', neckBack: '3.5', neckFront: '6', sleevesOpening: '10', shoulder: '16', sleeves: '8', armhole: '11.5', flare: '45' },
+    { size: '54', length: '52', chest: '22', waist: '22', neckBack: '3.5', neckFront: '5', sleevesOpening: '10', shoulder: '15', sleeves: '8' },
+    { size: '56', length: '54', chest: '23', waist: '23', neckBack: '3.5', neckFront: '5', sleevesOpening: '10', shoulder: '15', sleeves: '8' },
+    { size: '58', length: '56', chest: '23', waist: '23', neckBack: '3.5', neckFront: '5', sleevesOpening: '10', shoulder: '15', sleeves: '8' },
+    { size: '60', length: '58', chest: '24', waist: '24', neckBack: '3.5', neckFront: '6', sleevesOpening: '10', shoulder: '16', sleeves: '8' },
   ],
 };
 
 // Dahlia Long Dress size guide
 const DAHLIA_LONG_DRESS: SizeGuideData = {
   name: 'Dahlia Long Dress',
-  columns: ['Size', 'Length', 'Body Length', 'Chest', 'Waist', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
+  columns: ['Size', 'Length', 'Chest', 'Waist', 'Sleeves', 'Shoulder'],
   rows: [
-    { size: 'S', length: '55', bodyLength: '14', chest: '19.5', waist: '19.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
-    { size: 'M', length: '55', bodyLength: '14', chest: '20.5', waist: '20.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
-    { size: 'L', length: '56', bodyLength: '14', chest: '22', waist: '22', sleeves: '24', armhole: '11', shoulder: '16', flare: '65' },
-    { size: 'XL', length: '56', bodyLength: '14', chest: '23', waist: '23', sleeves: '24', armhole: '12', shoulder: '16.5', flare: '70' },
+    { size: 'S', length: '55', chest: '19.5', waist: '19.5', sleeves: '24', shoulder: '15' },
+    { size: 'M', length: '55', chest: '20.5', waist: '20.5', sleeves: '24', shoulder: '15' },
+    { size: 'L', length: '56', chest: '22', waist: '22', sleeves: '24', shoulder: '16' },
+    { size: 'XL', length: '56', chest: '23', waist: '23', sleeves: '24', shoulder: '16.5' },
   ],
 };
 
 // Amélie Long Dress size guide (XS is offered in the source chart but omitted here)
 const AMELIE_LONG_DRESS: SizeGuideData = {
   name: 'Amélie Long Dress',
-  columns: ['Size', 'Length', 'Body Length', 'Waist', 'Chest', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
+  columns: ['Size', 'Length', 'Waist', 'Chest', 'Sleeves', 'Shoulder'],
   rows: [
-    { size: 'S', length: '56', bodyLength: '14', waist: '19.5', chest: '19.5', sleeves: '25', armhole: '10', shoulder: '15', flare: '70' },
-    { size: 'M', length: '57', bodyLength: '14', waist: '20.5', chest: '20.5', sleeves: '25', armhole: '10', shoulder: '15', flare: '70' },
-    { size: 'L', length: '57', bodyLength: '14', waist: '22', chest: '22', sleeves: '25', armhole: '11', shoulder: '16', flare: '70' },
-    { size: 'XL', length: '57', bodyLength: '14', waist: '23', chest: '23', sleeves: '25', armhole: '12', shoulder: '16.5', flare: '70' },
+    { size: 'S', length: '56', waist: '19.5', chest: '19.5', sleeves: '25', shoulder: '15' },
+    { size: 'M', length: '57', waist: '20.5', chest: '20.5', sleeves: '25', shoulder: '15' },
+    { size: 'L', length: '57', waist: '22', chest: '22', sleeves: '25', shoulder: '16' },
+    { size: 'XL', length: '57', waist: '23', chest: '23', sleeves: '25', shoulder: '16.5' },
   ],
 };
 
 // Alaïa Long Dress size guide (XS is offered in the source chart but omitted here)
 const ALAIA_LONG_DRESS: SizeGuideData = {
   name: 'Alaïa Long Dress',
-  columns: ['Size', 'Length', 'Body Length', 'Waist', 'Chest', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
+  columns: ['Size', 'Length', 'Waist', 'Chest', 'Sleeves', 'Shoulder'],
   rows: [
-    { size: 'S', length: '55', bodyLength: '14', waist: '19.5', chest: '19.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
-    { size: 'M', length: '55', bodyLength: '14', waist: '20.5', chest: '20.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
-    { size: 'L', length: '55', bodyLength: '14', waist: '22', chest: '22', sleeves: '24', armhole: '11', shoulder: '16', flare: '65' },
-    { size: 'XL', length: '55', bodyLength: '14', waist: '23', chest: '23', sleeves: '24', armhole: '12', shoulder: '16.5', flare: '70' },
+    { size: 'S', length: '55', waist: '19.5', chest: '19.5', sleeves: '24', shoulder: '15' },
+    { size: 'M', length: '55', waist: '20.5', chest: '20.5', sleeves: '24', shoulder: '15' },
+    { size: 'L', length: '55', waist: '22', chest: '22', sleeves: '24', shoulder: '16' },
+    { size: 'XL', length: '55', waist: '23', chest: '23', sleeves: '24', shoulder: '16.5' },
   ],
 };
 
 // Saphira Long Dress size guide (XS is offered in the source chart but omitted here)
 const SAPHIRA_LONG_DRESS: SizeGuideData = {
   name: 'Saphira Long Dress',
-  columns: ['Size', 'Length', 'Body Length', 'Waist', 'Chest', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
+  columns: ['Size', 'Length', 'Waist', 'Chest', 'Sleeves', 'Shoulder'],
   rows: [
-    { size: 'S', length: '54', bodyLength: '14', waist: '19.5', chest: '19.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
-    { size: 'M', length: '54', bodyLength: '14', waist: '20.5', chest: '20.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
-    { size: 'L', length: '55', bodyLength: '14', waist: '22', chest: '22', sleeves: '24', armhole: '11', shoulder: '16', flare: '65' },
-    { size: 'XL', length: '55', bodyLength: '14', waist: '23', chest: '23', sleeves: '24', armhole: '12', shoulder: '16.5', flare: '70' },
+    { size: 'S', length: '54', waist: '19.5', chest: '19.5', sleeves: '24', shoulder: '15' },
+    { size: 'M', length: '54', waist: '20.5', chest: '20.5', sleeves: '24', shoulder: '15' },
+    { size: 'L', length: '55', waist: '22', chest: '22', sleeves: '24', shoulder: '16' },
+    { size: 'XL', length: '55', waist: '23', chest: '23', sleeves: '24', shoulder: '16.5' },
   ],
 };
 
 // Elayna Long Dress size guide (XS is offered in the source chart but omitted here)
 const ELAYNA_LONG_DRESS: SizeGuideData = {
   name: 'Elayna Long Dress',
-  columns: ['Size', 'Length', 'Body Length', 'Waist', 'Chest', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
+  columns: ['Size', 'Length', 'Waist', 'Chest', 'Sleeves', 'Shoulder'],
   rows: [
-    { size: 'S', length: '56', bodyLength: '14', waist: '19.5', chest: '19.5', sleeves: '25', armhole: '10', shoulder: '15', flare: '70' },
-    { size: 'M', length: '57', bodyLength: '14', waist: '20.5', chest: '20.5', sleeves: '25', armhole: '10', shoulder: '15', flare: '70' },
-    { size: 'L', length: '57', bodyLength: '14', waist: '22', chest: '22', sleeves: '25', armhole: '11', shoulder: '16', flare: '70' },
-    { size: 'XL', length: '57', bodyLength: '14', waist: '23', chest: '23', sleeves: '25', armhole: '12', shoulder: '16.5', flare: '70' },
+    { size: 'S', length: '56', waist: '19.5', chest: '19.5', sleeves: '25', shoulder: '15' },
+    { size: 'M', length: '57', waist: '20.5', chest: '20.5', sleeves: '25', shoulder: '15' },
+    { size: 'L', length: '57', waist: '22', chest: '22', sleeves: '25', shoulder: '16' },
+    { size: 'XL', length: '57', waist: '23', chest: '23', sleeves: '25', shoulder: '16.5' },
   ],
 };
 
@@ -96,12 +96,12 @@ const ELAYNA_LONG_DRESS: SizeGuideData = {
 // each dress can be edited independently.
 const FAYE_LONG_DRESS: SizeGuideData = {
   name: 'Faye Long Dress',
-  columns: ['Size', 'Length', 'Body Length', 'Waist', 'Chest', 'Sleeves', 'Armhole', 'Shoulder', 'Flare'],
+  columns: ['Size', 'Length', 'Waist', 'Chest', 'Sleeves', 'Shoulder'],
   rows: [
-    { size: 'S', length: '55', bodyLength: '14', waist: '19.5', chest: '19.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
-    { size: 'M', length: '55', bodyLength: '14', waist: '20.5', chest: '20.5', sleeves: '24', armhole: '10', shoulder: '15', flare: '65' },
-    { size: 'L', length: '56', bodyLength: '14', waist: '22', chest: '22', sleeves: '24', armhole: '11', shoulder: '16', flare: '65' },
-    { size: 'XL', length: '56', bodyLength: '14', waist: '23', chest: '23', sleeves: '24', armhole: '12', shoulder: '16.5', flare: '70' },
+    { size: 'S', length: '55', waist: '19.5', chest: '19.5', sleeves: '24', shoulder: '15' },
+    { size: 'M', length: '55', waist: '20.5', chest: '20.5', sleeves: '24', shoulder: '15' },
+    { size: 'L', length: '56', waist: '22', chest: '22', sleeves: '24', shoulder: '16' },
+    { size: 'XL', length: '56', waist: '23', chest: '23', sleeves: '24', shoulder: '16.5' },
   ],
 };
 

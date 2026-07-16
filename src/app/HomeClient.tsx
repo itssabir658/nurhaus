@@ -31,7 +31,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
               whileInView="visible"
               viewport={{ once: true }}
             >
-              Handcrafted modest luxury,<br />exclusive to eight pieces.
+              Designed with care, rooted in modesty.
             </motion.h2>
           </div>
           <Link href="/shop" className="hidden md:inline-flex items-center gap-2 eyebrow text-accent hover:text-ink transition-colors duration-300">
