@@ -33,7 +33,7 @@ export default function SizeGuideModal({ isOpen, onClose, productName, guide }: 
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: '100%', opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-primary w-full md:max-w-5xl md:max-h-[80vh] rounded-t-2xl md:rounded-xl overflow-hidden flex flex-col"
+            className="bg-primary w-full md:max-w-5xl md:max-h-[80vh] rounded-2xl md:rounded-xl overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -73,51 +73,56 @@ export default function SizeGuideModal({ isOpen, onClose, productName, guide }: 
 
             {/* Table */}
             <div className="flex-1 overflow-y-auto px-2 py-6 md:px-6">
-              <table className="w-full text-sm table-fixed">
-                <thead>
-                  <tr className="border-b border-hairline">
-                    {currentGuide.columns.map((col) => (
-                      <th key={col} className={`py-4 px-2 md:px-3 eyebrow text-ink font-medium ${
-                        col.toLowerCase() === 'size' ? 'text-left' : 'text-center'
-                      }`}>
-                        {col}
-                      </th>
+              <div className="overflow-x-auto">
+                <table
+                  className="w-full text-sm table-fixed"
+                  style={{ minWidth: `${currentGuide.columns.length * 90}px` }}
+                >
+                  <thead>
+                    <tr className="border-b border-hairline">
+                      {currentGuide.columns.map((col) => (
+                        <th key={col} className={`py-4 px-3 eyebrow text-ink font-medium ${
+                          col.toLowerCase() === 'size' ? 'text-left' : 'text-center'
+                        }`}>
+                          {col}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentGuide.rows.map((row, i) => (
+                      <motion.tr
+                        key={i}
+                        className="border-b border-hairline/60 hover:bg-secondary/20 transition-colors duration-200"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: i * 0.02 }}
+                      >
+                        {currentGuide.columns.map((col) => {
+                          const colKey = col.toLowerCase().replace(/\s+/g, '');
+                          const camelCaseKey = col
+                            .toLowerCase()
+                            .split(' ')
+                            .map((word, i) => i === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
+                            .join('');
+                          const value = row[colKey] ?? row[camelCaseKey] ?? row[col] ?? '—';
+                          const isSize = col.toLowerCase() === 'size';
+                          return (
+                            <td
+                              key={col}
+                              className={`py-4 px-3 text-smoke ${
+                                isSize ? 'text-left font-display text-lg font-medium text-ink' : 'text-center'
+                              }`}
+                            >
+                              {value}
+                            </td>
+                          );
+                        })}
+                      </motion.tr>
                     ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {currentGuide.rows.map((row, i) => (
-                    <motion.tr
-                      key={i}
-                      className="border-b border-hairline/60 hover:bg-secondary/20 transition-colors duration-200"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: i * 0.02 }}
-                    >
-                      {currentGuide.columns.map((col) => {
-                        const colKey = col.toLowerCase().replace(/\s+/g, '');
-                        const camelCaseKey = col
-                          .toLowerCase()
-                          .split(' ')
-                          .map((word, i) => i === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
-                          .join('');
-                        const value = row[colKey] ?? row[camelCaseKey] ?? row[col] ?? '—';
-                        const isSize = col.toLowerCase() === 'size';
-                        return (
-                          <td
-                            key={col}
-                            className={`py-4 px-2 md:px-3 text-smoke ${
-                              isSize ? 'text-left font-display text-lg font-medium text-ink' : 'text-center'
-                            }`}
-                          >
-                            {value}
-                          </td>
-                        );
-                      })}
-                    </motion.tr>
-                  ))}
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
 
               <p className="text-xs text-muted mt-8 leading-relaxed">
                 * All measurements are in inches. If you are between sizes, we recommend sizing up.
