@@ -10,11 +10,10 @@ import SizeGuideModal from '@/components/SizeGuideModal';
 import { getSizeGuideData } from '@/lib/sizeGuides';
 import type { AppProduct } from '@/lib/shopify/types';
 
-const ACCORDION_ITEMS = ['description', 'care', 'shipping'] as const;
+const ACCORDION_ITEMS = ['description', 'care'] as const;
 const ACCORDION_LABELS: Record<typeof ACCORDION_ITEMS[number], string> = {
   description: 'Fabric & Details',
   care:        'Care Instructions',
-  shipping:    'Shipping & Returns',
 };
 
 // Fabric & Details and Care content is driven from code (not Shopify) so it
@@ -24,7 +23,6 @@ const DRESS_FABRIC_HTML = '<p>Lightweight chiffon with a breathable cotton inner
 const ABAYA_FABRIC_HTML = '<p>Lightweight georgette with matching inner included.</p>';
 const DRESS_CARE = 'Dry clean recommended\nSteam only (avoid direct ironing on chiffon)\nIf needed, hand wash in cold water with mild detergent\nDo not tumble dry';
 const ABAYA_CARE = 'Dry clean recommended\nSteam only (avoid direct ironing on georgette)\nIf needed, hand wash in cold water with mild detergent\nDo not tumble dry';
-const SHIPPING_COPY = 'Complimentary standard shipping on orders above $250\nDelivery in 5–10 business days\nExpress available at checkout (2–3 days)\nStore credit only — no refunds';
 
 const RECENT_STORAGE_KEY = 'nh_recent';
 
@@ -408,8 +406,7 @@ export default function ProductClient({
               <div className="mt-8 pt-8 border-t border-hairline space-y-3">
                 {[
                   { icon: '✦', text: 'Complimentary shipping on orders above $250' },
-                  { icon: '✦', text: 'Store credit only — no refunds' },
-                  { icon: '✦', text: 'Each piece finished by hand in our atelier' },
+                  { icon: '✦', text: 'Each piece finished by hand' },
                 ].map((item) => (
                   <p key={item.text} className="text-xs text-smoke flex items-start gap-3">
                     <span className="text-gold flex-shrink-0 mt-px">{item.icon}</span>
@@ -446,7 +443,7 @@ export default function ProductClient({
                               />
                             ) : (
                               <div className="text-sm text-smoke leading-relaxed prose-nurhaus">
-                                {(key === 'care' ? careCopy : SHIPPING_COPY).split('\n').map((line, i) => (
+                                {careCopy.split('\n').map((line, i) => (
                                   <p key={i} className={i > 0 ? 'mt-1.5' : ''}>{line}</p>
                                 ))}
                               </div>

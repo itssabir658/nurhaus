@@ -207,7 +207,7 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     handle: "alaia",
     name: "Alaia",
     kind: "Dress",
-    description: "Alaia comes in a soft light green shade that feels fresh and understated. Crafted from lightweight chiffon, it has a natural, flowy drape. Fully lined for a comfortable fit, it is designed to feel light while still looking put together. Simple, clean, and easy to style.",
+    description: "Alaia comes in a soft shade and understated. Crafted from lightweight chiffon, it has a natural, flowy drape. Fully lined for a comfortable fit, it is designed to feel light while still looking put together. Simple, clean, and easy to style.",
     descriptionHtml: DRESS_FABRIC_HTML,
     care: DRESS_CARE,
     price: 410,
