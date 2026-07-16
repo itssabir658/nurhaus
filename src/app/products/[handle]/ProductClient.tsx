@@ -429,11 +429,11 @@ export default function ProductClient({
                           <div className="pb-6 pr-8">
                             {key === 'description' ? (
                               <div
-                                className="text-sm text-smoke leading-relaxed prose-nurhaus"
+                                className="!text-xs text-smoke leading-relaxed prose-nurhaus"
                                 dangerouslySetInnerHTML={{ __html: fabricHtml }}
                               />
                             ) : (
-                              <div className="text-sm text-smoke leading-relaxed prose-nurhaus">
+                              <div className="!text-xs text-smoke leading-relaxed prose-nurhaus">
                                 {careCopy.split('\n').map((line, i) => (
                                   <p key={i} className={i > 0 ? 'mt-1.5' : ''}>{line}</p>
                                 ))}
