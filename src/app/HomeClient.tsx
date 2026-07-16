@@ -66,7 +66,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                 transition={{ delay: (i % 3) * 0.1 } as any}
               >
                 <Link href={`/products/${p.handle}`} className="product-card group block">
-                  <div className="product-card-img aspect-[3/4] mb-5">
+                  <div className="product-card-img mb-5">
                     {p.images[0] && (
                       <Image
                         src={p.images[0]}
@@ -74,7 +74,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                         width={600}
                         height={800}
                         loading={i < 3 ? 'eager' : 'lazy'}
-                        className="w-full h-full object-contain"
+                        className="w-full h-auto aspect-auto"
                       />
                     )}
                   </div>
@@ -98,7 +98,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                 .map((product, index) => (
                   <motion.div key={product.handle} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className={`max-w-lg ${index === 1 ? 'justify-self-end' : ''}`}>
                     <Link href={`/products/${product.handle}`} className="product-card group block">
-                      <div className="product-card-img aspect-[3/4] mb-5">
+                      <div className="product-card-img mb-5">
                         {product.images[0] && (
                           <Image
                             src={product.images[0]}
@@ -106,7 +106,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                             width={800}
                             height={1067}
                             loading="lazy"
-                            className="w-full h-full object-contain"
+                            className="w-full h-auto aspect-auto"
                           />
                         )}
                       </div>

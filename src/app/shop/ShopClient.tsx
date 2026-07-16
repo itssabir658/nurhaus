@@ -245,15 +245,16 @@ export default function ShopClient(props: { products: AppProduct[]; categories: 
 function ProductCard({ product: p, large = false }: { product: AppProduct; large?: boolean }) {
   return (
     <Link href={`/products/${p.handle}`} className="product-card group block">
-      <div className={`product-card-img relative ${large ? 'aspect-[4/5]' : 'aspect-[3/4]'}`}>
+      <div className="product-card-img relative">
         {p.images[0] && (
           <Image
             src={p.images[0]}
             alt={p.name}
-            fill
+            width={large ? 800 : 600}
+            height={large ? 1000 : 800}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             loading="lazy"
-            className="object-contain group-hover:scale-105 transition-transform duration-[1200ms] ease-expo"
+            className="w-full h-auto aspect-auto group-hover:scale-105 transition-transform duration-[1200ms] ease-expo"
           />
         )}
         {p.tags.includes('new') && (
