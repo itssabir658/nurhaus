@@ -47,8 +47,8 @@ export default function ShippingPage() {
               className="text-smoke text-sm leading-relaxed"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              Customers have a 30-minute window after placing their order to cancel. If you wish to cancel, please contact us at{' '}
-              <a href="mailto:sales@nurhaus.ca" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">sales@nurhaus.ca</a>, along with your order number, within this time frame. After 30 minutes, the order will begin processing and cannot be canceled.
+              Customers have a 1-hour window after placing their order to cancel. If you wish to cancel, please contact us at{' '}
+              <a href="mailto:sales@nurhaus.ca" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">sales@nurhaus.ca</a>, along with your order number, within this time frame. After 1 hour, the order will begin processing and cannot be canceled.
             </motion.p>
           </section>
 

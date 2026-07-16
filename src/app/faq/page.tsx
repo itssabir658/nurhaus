@@ -11,7 +11,7 @@ const CATEGORIES = [
     faqs: [
       { q: 'How do I place an order?', a: 'Browse the collection, select your size and add to cart. You can checkout as a guest or create an account for faster future purchases. We accept all major credit cards, PayPal, and Apple Pay.' },
       { q: 'Can I change or cancel my order after placing it?', a: 'Orders can be amended or cancelled within 1 hour of placement by emailing sales@nurhaus.ca with your order number. After this window, the order moves to fulfilment and changes may not be possible.' },
-      { q: 'Do you offer gift wrapping?', a: 'All NÜR HAUS orders arrive in our signature packaging. For gifting, you can add a handwritten note at checkout at no additional cost.' },
+      { q: 'Do you offer gift wrapping?', a: 'All NÜR HAUS orders arrive in our signature packaging.' },
       { q: 'Is my payment information secure?', a: 'Yes. We use SSL encryption and never store your card details. All payments are processed through PCI-compliant third-party providers.' },
     ],
   },
@@ -19,8 +19,8 @@ const CATEGORIES = [
     id: 'shipping',
     label: 'Shipping',
     faqs: [
-      { q: 'How long does delivery take?', a: 'Standard delivery takes 5–10 business days internationally. Express (2–3 days) and Overnight options are available at checkout. Canadian orders typically arrive within 2–5 days on standard.' },
-      { q: 'Do you ship worldwide?', a: 'Yes. We ship to over 60 countries. Shipping rates and delivery times vary by destination and are calculated at checkout.' },
+      { q: 'How long does delivery take?', a: 'See checkout page for delivery options and timelines.' },
+      { q: 'Do you ship worldwide?', a: 'Currently delivering to USA and Canada only.' },
       { q: 'Will I be charged customs duties?', a: 'Customs duties and import taxes may apply depending on your country. These are not included in the product price and are the responsibility of the recipient. We cannot predict or control these charges.' },
       { q: 'How do I track my order?', a: 'You will receive a tracking email as soon as your order is dispatched. You can also track your order in your account under Order History.' },
     ],
@@ -29,8 +29,7 @@ const CATEGORIES = [
     id: 'returns',
     label: 'Returns',
     faqs: [
-      { q: 'What is your returns policy?', a: 'We do not offer refunds. Eligible unworn items in original condition with all tags attached may be returned within 5 days of delivery for store credit only. Please email sales@nurhaus.ca with your order number to begin.' },
-      { q: 'Do you offer refunds?', a: 'No. All returns are issued as store credit only — never a refund to your original payment method. Store credit never expires and can be used on any future order.' },
+      { q: 'What is your returns policy?', a: 'We offer refund within 1 hour of order placement. Eligible unworn items in original condition with all tags attached may be returned within 5 days of delivery for store credit only. Please email sales@nurhaus.ca with your order number to begin.' },
       { q: 'How is my store credit issued?', a: 'Once your returned item is received and inspected, store credit is issued within 5–7 business days and sent to you by email as a code to use at checkout.' },
       { q: 'Can I exchange for a different size?', a: 'Yes. We offer exchanges within 5 days. Email sales@nurhaus.ca with your order number and preferred size. Exchanges are subject to availability.' },
     ],
@@ -41,15 +40,6 @@ const CATEGORIES = [
     faqs: [
       { q: 'How do your pieces fit?', a: 'Our pieces are designed with a relaxed, modest silhouette. They are generally true to size. If you are between sizes, we recommend sizing up. Full measurement details are on our Size Guide page.' },
       { q: 'Do you offer custom sizing?', a: 'We do not currently offer made-to-measure but our size range covers S–XL. If you need specific measurement guidance, our team is happy to help via email.' },
-    ],
-  },
-  {
-    id: 'care',
-    label: 'Care',
-    faqs: [
-      { q: 'How should I care for my NÜR HAUS pieces?', a: 'Care instructions are printed on the garment label. All of our pieces are dry-clean only. Detailed care guidance is included in the product packaging.' },
-      { q: 'Can I iron my pieces?', a: 'Our pieces should be steamed only — please do not iron them directly. Steam on a low setting, keeping the steamer away from any printed or embroidered sections.' },
-      { q: 'What fabric are your pieces made from?', a: 'We use a range of premium natural and blended fabrics including silk crepe, fine wool, structured cotton, and chiffon. The exact fabric composition is listed on each product page.' },
     ],
   },
 ];
@@ -173,7 +163,6 @@ export default function FAQPage() {
           <p className="font-display text-2xl md:text-3xl tracking-tight mb-8">Still have a question?</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact" className="btn-primary">Contact Us</Link>
-            <a href="https://wa.me/16479386284" className="btn-outline">WhatsApp</a>
           </div>
         </div>
       </div>
