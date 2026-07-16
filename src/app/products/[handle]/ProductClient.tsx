@@ -259,13 +259,15 @@ export default function ProductClient({
                             v.selectedOptions.some((o) => o.name.toLowerCase() === 'size' && o.value === s)
                           );
                           const disabled = variantForSize ? !variantForSize.availableForSale : false;
+                          const isSelected = selectedSize === s;
+                          const maxedOut = isSelected && atMaxQty;
                           return (
                             <button
                               key={s}
                               disabled={disabled}
                               onClick={() => setSelectedSize(s)}
                               className={`w-12 h-12 border text-sm font-medium transition-all duration-300 relative ${
-                                selectedSize === s
+                                isSelected
                                   ? 'border-ink bg-ink text-primary'
                                   : disabled
                                     ? 'border-hairline text-muted/50 opacity-50 cursor-not-allowed'
@@ -273,9 +275,9 @@ export default function ProductClient({
                               }`}
                             >
                               {s}
-                              {disabled && (
+                              {(disabled || maxedOut) && (
                                 <span className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                                  <span className="w-[140%] h-px bg-muted rotate-45" />
+                                  <span className={`w-[140%] h-px rotate-45 ${maxedOut ? 'bg-primary' : 'bg-muted'}`} />
                                 </span>
                               )}
                             </button>
@@ -325,9 +327,6 @@ export default function ProductClient({
                       </button>
                     </div>
                   </div>
-                  {atMaxQty && (
-                    <p className="text-xs text-muted mt-2">Maximum stock reached.</p>
-                  )}
                 </div>
               )}
 
