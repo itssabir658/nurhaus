@@ -11,10 +11,8 @@ const FREE_SHIPPING_THRESHOLD = 250;
 
 export default function CartPageClient({
   crossSell,
-  shopifyDomain,
 }: {
   crossSell: AppProduct[];
-  shopifyDomain?: string | null;
 }) {
   const { cart, isLoading, isMutating, updateItem, removeItem } = useCart();
   const [isRedirecting, setIsRedirecting] = useState(false);
@@ -26,44 +24,12 @@ export default function CartPageClient({
   const handleCheckout = () => {
     if (!cart?.checkoutUrl) return;
 
-    // Raw *.myshopify.com host to force the checkout onto. NEXT_PUBLIC_* is
-    // inlined into the client bundle at build time; we fall back to the value
-    // passed from the server (SHOPIFY_STORE_DOMAIN) so this still resolves if the
-    // public var wasn't present at build. Strip any protocol/path just in case.
-    const shopHost = (process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || shopifyDomain || '')
-      .replace(/^https?:\/\//, '')
-      .replace(/\/.*$/, '')
-      .trim();
-
-    let target = cart.checkoutUrl;
-
-    if (shopHost) {
-      try {
-        // The URL constructor is domain-agnostic: overwriting the hostname forces
-        // the host no matter what Shopify returned — www.nurhaus.ca,
-        // nurhaus.vercel.app, localhost:3000, bare nurhaus.ca, anything.
-        const checkoutUrlObj = new URL(cart.checkoutUrl);
-        checkoutUrlObj.protocol = 'https:';
-        checkoutUrlObj.hostname = shopHost;
-        checkoutUrlObj.port = ''; // drop any :port (e.g. localhost:3000)
-        target = checkoutUrlObj.toString();
-      } catch {
-        // Fallback if checkoutUrl isn't parseable: swap protocol + host outright.
-        target = cart.checkoutUrl.replace(/^https?:\/\/[^/]+/, `https://${shopHost}`);
-      }
-    } else {
-      // Guard: without a domain we must NOT set hostname (it would become the
-      // string "undefined"). Leave the URL untouched and flag the misconfig.
-      console.warn(
-        'Checkout domain rewrite skipped: NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN is not set. ' +
-        'Set it (e.g. pzg1g0-q9.myshopify.com) in Vercel and redeploy.'
-      );
-    }
-
+    // cart.checkoutUrl is already the full, absolute URL Shopify issued for this
+    // checkout session (host + path + key) — hand off to it as-is. Rewriting the
+    // hostname to a custom domain here is unsafe: it silently 404s unless that
+    // domain is verified/connected as the shop's checkout domain in Shopify Admin.
     setIsRedirecting(true);
-    console.log('Redirecting to:', target);
-    // Use window.location.href for guaranteed external navigation
-    window.location.href = target;
+    window.location.href = cart.checkoutUrl;
   };
 
   return (
