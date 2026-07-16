@@ -66,6 +66,10 @@ export default function ProductClient({
   const productSoldOut = !product.availableForSale;
   const variantSoldOut = hasSizes && selectedSize ? !selectedVariant?.availableForSale : false;
 
+  // Checked independently of Shopify's product-level availableForSale flag, which can
+  // lag behind real variant inventory — this reflects the actual per-size stock.
+  const allSizesSoldOut = hasSizes && product.variants.length > 0 && product.variants.every((v) => !v.availableForSale);
+
   // Shopify reports quantityAvailable only when inventory tracking is on for this variant;
   // null means untracked/unlimited, so there's no cap to enforce.
   const maxQty = selectedVariant?.quantityAvailable ?? null;
@@ -243,42 +247,50 @@ export default function ProductClient({
                       </button>
                     )}
                   </div>
-                  <div className={`flex flex-wrap gap-2 ${sizeError ? 'animate-shake' : ''}`}>
-                    {product.sizes.map((s) => {
-                      const variantForSize = product.variants.find((v) =>
-                        v.selectedOptions.some((o) => o.name.toLowerCase() === 'size' && o.value === s)
-                      );
-                      const disabled = variantForSize ? !variantForSize.availableForSale : false;
-                      return (
-                        <button
-                          key={s}
-                          disabled={disabled}
-                          onClick={() => setSelectedSize(s)}
-                          className={`w-12 h-12 border text-sm font-medium transition-all duration-300 relative ${
-                            selectedSize === s
-                              ? 'border-ink bg-ink text-primary'
-                              : disabled
-                                ? 'border-hairline text-muted/50 cursor-not-allowed'
-                                : 'border-hairline text-smoke hover:border-accent hover:text-ink'
-                          }`}
-                        >
-                          {s}
-                          {disabled && (
-                            <span className="absolute inset-0 flex items-center justify-center">
-                              <span className="w-full h-px bg-muted/50 rotate-45" />
-                            </span>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {!selectedSize && (
-                    <p className={`text-xs mt-2 transition-colors duration-200 ${sizeError ? 'text-red-500 font-medium' : 'text-muted'}`}>
-                      Please select a size
-                    </p>
-                  )}
-                  {variantSoldOut && (
-                    <p className="text-xs text-smoke mt-2">This size is currently sold out.</p>
+                  {allSizesSoldOut ? (
+                    <div className="w-full border border-hairline px-5 py-3 flex items-center justify-center">
+                      <p className="text-xs text-muted uppercase tracking-[0.15em]">Sold Out</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className={`flex flex-wrap gap-2 ${sizeError ? 'animate-shake' : ''}`}>
+                        {product.sizes.map((s) => {
+                          const variantForSize = product.variants.find((v) =>
+                            v.selectedOptions.some((o) => o.name.toLowerCase() === 'size' && o.value === s)
+                          );
+                          const disabled = variantForSize ? !variantForSize.availableForSale : false;
+                          return (
+                            <button
+                              key={s}
+                              disabled={disabled}
+                              onClick={() => setSelectedSize(s)}
+                              className={`w-12 h-12 border text-sm font-medium transition-all duration-300 relative ${
+                                selectedSize === s
+                                  ? 'border-ink bg-ink text-primary'
+                                  : disabled
+                                    ? 'border-hairline text-muted/50 opacity-50 cursor-not-allowed'
+                                    : 'border-hairline text-smoke hover:border-accent hover:text-ink'
+                              }`}
+                            >
+                              {s}
+                              {disabled && (
+                                <span className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                                  <span className="w-[140%] h-px bg-muted rotate-45" />
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {!selectedSize && (
+                        <p className={`text-xs mt-2 transition-colors duration-200 ${sizeError ? 'text-red-500 font-medium' : 'text-muted'}`}>
+                          Please select a size
+                        </p>
+                      )}
+                      {variantSoldOut && (
+                        <p className="text-xs text-smoke mt-2">This size is currently sold out.</p>
+                      )}
+                    </>
                   )}
                 </div>
               )}
@@ -387,7 +399,7 @@ export default function ProductClient({
 
               {/* Pop-Up location (static banner, always visible) */}
               <a
-                href="https://maps.app.goo.gl/VcRKfcW5pRLEzkSr8"
+                href="https://www.google.com/maps/search/?api=1&query=3-530+Speers+Rd%2C+Oakville+Ontario+L6K+2E5%2C+Canada"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 border border-hairline p-4 flex items-start gap-3 hover:border-accent transition-colors duration-300 group"

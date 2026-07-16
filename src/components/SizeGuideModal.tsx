@@ -73,11 +73,11 @@ export default function SizeGuideModal({ isOpen, onClose, productName, guide }: 
 
             {/* Table */}
             <div className="flex-1 overflow-y-auto px-2 py-6 md:px-6">
-              <table className="w-full text-sm">
+              <table className="w-full text-sm table-fixed">
                 <thead>
                   <tr className="border-b border-hairline">
                     {currentGuide.columns.map((col) => (
-                      <th key={col} className={`py-4 px-2 md:px-3 eyebrow text-ink font-medium whitespace-nowrap ${
+                      <th key={col} className={`py-4 px-2 md:px-3 eyebrow text-ink font-medium ${
                         col.toLowerCase() === 'size' ? 'text-left' : 'text-center'
                       }`}>
                         {col}
