@@ -377,26 +377,6 @@ export default function ProductClient({
                 )}
               </div>
 
-              {/* In-store pickup */}
-              {product.pickup && (
-                <a
-                  href="https://maps.app.goo.gl/VcRKfcW5pRLEzkSr8"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-6 border border-hairline p-4 flex items-start gap-3 hover:border-accent transition-colors duration-300 group"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-smoke group-hover:text-ink transition-colors flex-shrink-0 mt-0.5">
-                    <path d="M12 21s-7-6.5-7-11.5a7 7 0 1 1 14 0C19 14.5 12 21 12 21Z" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="12" cy="9.5" r="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  <div>
-                    <p className="text-xs text-ink font-medium underline underline-offset-2">Pickup available at {product.pickup.locationName}</p>
-                    <p className="text-xs text-smoke mt-1">{product.pickup.address}</p>
-                    <p className="text-xs text-smoke mt-1">{product.pickup.pickupTime}</p>
-                  </div>
-                </a>
-              )}
-
               {/* Pop-Up location (static banner, always visible) */}
               <a
                 href="https://www.google.com/maps/search/?api=1&query=3-530+Speers+Rd%2C+Oakville+Ontario+L6K+2E5%2C+Canada"
