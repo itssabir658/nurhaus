@@ -238,7 +238,7 @@ export default function EditorialHero() {
         <div className="relative w-[45%] lg:w-[40%] flex items-center site-px">
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-repeat opacity-[0.07] pointer-events-none"
+            className="absolute inset-0 bg-repeat opacity-[0.4] mix-blend-multiply pointer-events-none"
             style={{ backgroundImage: "url('/patterns/floral-line-art.jpg')", backgroundSize: '440px' }}
           />
           <div className="relative z-10">
@@ -264,7 +264,7 @@ export default function EditorialHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[#2E241E]/70 text-base leading-relaxed max-w-xs mb-10"
+              className="text-[#463A30] text-base leading-relaxed max-w-xs mb-10"
             >
               Small-batch abayas and dresses — light, easy, and made with intention.
             </motion.p>
@@ -312,48 +312,48 @@ export default function EditorialHero() {
       </div>
 
       {/* ============ MOBILE (< md) — text-first, swipeable peek gallery ============ */}
-      <div className="md:hidden flex flex-col justify-center min-h-[calc(100svh-124px)] site-px py-8">
-        {/* Text block gets the floral watermark behind it; the photo track below is left untouched. */}
-        <div className="relative">
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-repeat opacity-[0.18] pointer-events-none"
-            style={{ backgroundImage: "url('/patterns/floral-line-art.jpg')", backgroundSize: '260px' }}
-          />
-          <div className="relative z-10">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="font-display text-[#2E241E] text-[clamp(2rem,9vw,2.75rem)] leading-[1.15] tracking-tight mb-4"
-            >
-              Modest Silhouettes, Thoughtfully Made.
-            </motion.h1>
+      <div className="md:hidden relative flex flex-col justify-center min-h-[calc(100svh-124px)] site-px py-8">
+        {/* Floral watermark spans the full hero canvas (nav edge down through the photo
+            track's height); the opaque photos simply paint over it, giving a clean edge
+            without needing to clip the pattern layer itself. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-repeat opacity-[0.4] mix-blend-multiply pointer-events-none"
+          style={{ backgroundImage: "url('/patterns/floral-line-art.jpg')", backgroundSize: '260px' }}
+        />
+        <div className="relative z-10">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="font-display text-[#2E241E] text-[clamp(2rem,9vw,2.75rem)] leading-[1.15] tracking-tight mb-4"
+          >
+            Modest Silhouettes, Thoughtfully Made.
+          </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[#2E241E]/70 text-[15px] font-medium leading-relaxed max-w-[90%] mb-6"
-            >
-              Small-batch abayas and dresses — light, easy, and made with intention.
-            </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="text-[#463A30] text-[15px] font-medium leading-relaxed max-w-[90%] mb-6"
+          >
+            Small-batch abayas and dresses — light, easy, and made with intention.
+          </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-8"
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-8"
+          >
+            <Link
+              href="/shop"
+              className="flex items-center justify-center gap-3 w-full h-[52px] rounded-full border border-[#2E241E] text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] active:bg-[#2E241E] active:text-white transition-colors duration-300"
             >
-              <Link
-                href="/shop"
-                className="flex items-center justify-center gap-3 w-full h-[52px] rounded-full border border-[#2E241E] text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] active:bg-[#2E241E] active:text-white transition-colors duration-300"
-              >
-                Shop Now
-                <span>→</span>
-              </Link>
-            </motion.div>
-          </div>
+              Shop Now
+              <span>→</span>
+            </Link>
+          </motion.div>
         </div>
 
         <motion.div
@@ -361,7 +361,7 @@ export default function EditorialHero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="-mx-6 flex gap-3 overflow-x-auto px-6 pb-1 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          className="relative z-10 -mx-6 flex gap-3 overflow-x-auto px-6 pb-1 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
           {IMAGES.map((img, i) => (
             <div
