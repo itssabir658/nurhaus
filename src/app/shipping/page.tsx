@@ -35,86 +35,92 @@ export default function ShippingPage() {
             Thank you for shopping with Nür Haus. We appreciate your support and strive to provide you with the best products and services. If for any reason you&rsquo;re not completely satisfied with your purchase, we&rsquo;re here to help. As a small business, we have established the following policies to ensure a smooth and fair process for both our customers and our team.
           </motion.p>
 
-          {/* Cancellation Policy */}
+          {/* Cancellations */}
           <section>
             <motion.h2
               className="font-display text-2xl md:text-3xl tracking-tight mb-5"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              Cancellation Policy
+              Cancellations
             </motion.h2>
             <motion.p
-              className="text-smoke text-sm leading-relaxed"
+              className="text-smoke text-sm leading-relaxed mb-4"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              Customers have a 1-hour window after placing their order to cancel. If you wish to cancel, please contact us at{' '}
-              <a href="mailto:nurhausca@gmail.com" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">nurhausca@gmail.com</a>, along with your order number, within this time frame. After 1 hour, the order will begin processing and cannot be canceled.
+              Changed your mind? No problem! If you need to cancel your order, we are happy to help as long as it is within a 1-hour window of placing it.
             </motion.p>
+            <motion.ul
+              className="space-y-3 list-disc list-outside pl-5"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">How to cancel:</strong> Simply email us at{' '}
+                <a href="mailto:nurhausca@gmail.com" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">nurhausca@gmail.com</a> with your order number.
+              </li>
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">Please note:</strong> We work quickly to prepare your items, so once that 1-hour window has passed, your order begins processing and can no longer be canceled.
+              </li>
+            </motion.ul>
           </section>
 
-          {/* Exchange Policy */}
+          {/* Exchanges */}
           <section>
             <motion.h2
               className="font-display text-2xl md:text-3xl tracking-tight mb-5"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              Exchange Policy
+              Exchanges
             </motion.h2>
             <motion.p
-              className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
+              className="text-smoke text-sm leading-relaxed mb-4"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              The fastest way to ensure you get what you want is to return the item you have, and once the return is accepted, make a separate purchase for the new item.
+              We want you to absolutely love your N&uuml;r Haus purchase! If something isn&rsquo;t quite right, here is everything you need to know about swapping it out:
             </motion.p>
+            <motion.ul
+              className="space-y-3 list-disc list-outside pl-5 mb-16 md:mb-20"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">The Quickest Method:</strong> For the fastest turnaround, we recommend returning your original item and placing a brand-new order for the item you want once the return is accepted.
+              </li>
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">Timeframe:</strong> You have 5 days from your original purchase date to request an exchange.
+              </li>
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">Item Condition:</strong> Please make sure the product is completely unused and in its original condition, with all tags, packaging, and accessories still attached.
+              </li>
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">Proof of Purchase:</strong> Keep your receipt! We will need your proof of purchase to quickly verify and process your exchange.
+              </li>
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">Shipping Costs:</strong> Please be aware that shipping charges for exchanges are covered by the customer.
+              </li>
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">Sale Items:</strong> Any items marked as &ldquo;Sale&rdquo; are final sale and are not eligible for exchange.
+              </li>
+            </motion.ul>
             <motion.h3
               className="font-display text-2xl md:text-3xl tracking-tight mb-5"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              Exchange Period
+              Easy Exchange Process
             </motion.h3>
-            <motion.p
-              className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
+            <motion.ol
+              className="space-y-3 list-decimal list-outside pl-5"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              Products can be exchanged within 5 days of the original purchase date. Unfortunately, we cannot accept exchanges beyond this period. Please note that shipping charges for exchanges are the responsibility of the customer and will not be covered by N&uuml;r Haus.
-            </motion.p>
-            <motion.h3
-              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
-              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              Condition of Products
-            </motion.h3>
-            <motion.p
-              className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
-              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              To be eligible for an exchange, the product must be in its original, unused condition. The product should include all original tags, packaging, and accessories.
-            </motion.p>
-            <motion.h3
-              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
-              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              Proof of Purchase
-            </motion.h3>
-            <motion.p
-              className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
-              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              A receipt or proof of purchase is required for all exchanges. This helps us verify the transaction and process your exchange efficiently.
-            </motion.p>
-            <motion.h3
-              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
-              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              Exchange Process
-            </motion.h3>
-            <motion.p
-              className="text-smoke text-sm leading-relaxed"
-              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              To initiate an exchange, please contact us at{' '}
-              <a href="mailto:nurhausca@gmail.com" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">nurhausca@gmail.com</a> along with your order number. Our team will check the order details to ensure it meets the exchange criteria. Once approved, you can select an exchange product of equal or lesser value. If the new product is of higher value, you will be required to pay the difference.
-            </motion.p>
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">Reach Out:</strong> Send an email to{' '}
+                <a href="mailto:nurhausca@gmail.com" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">nurhausca@gmail.com</a> with your order number to get started.
+              </li>
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">Quick Review:</strong> Our team will take a look at your order details to ensure it meets the exchange criteria.
+              </li>
+              <li className="text-smoke text-sm leading-relaxed">
+                <strong className="text-ink font-medium">Pick Something New:</strong> Once approved, you can select a new product of equal or lesser value! If your new choice is a little more expensive, you will just need to cover the price difference.
+              </li>
+            </motion.ol>
           </section>
 
           {/* Sale Items */}
