@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
-import { resend } from '@/lib/resend';
+import { getResend } from '@/lib/resend';
+
+// Not statically optimizable anyway (POST handler), but explicit for clarity
+// and in case this route ever grows a GET.
+export const dynamic = 'force-dynamic';
 
 const STORE_EMAIL = 'nurhausca@gmail.com';
 
@@ -23,7 +27,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
 
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await getResend().emails.send({
     from: 'onboarding@resend.dev',
     to: STORE_EMAIL,
     replyTo: email,
