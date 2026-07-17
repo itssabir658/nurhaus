@@ -83,10 +83,10 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
 
       {/* Nav is offset 44px below the announcement bar */}
       <header
-        className={`fixed top-[44px] inset-x-0 z-50 transition-all duration-500 ${
+        className={`fixed top-[44px] inset-x-0 z-50 backdrop-blur-md transition-all duration-500 ${
           scrolled
-            ? 'bg-primary/90 backdrop-blur-md border-b border-hairline'
-            : 'bg-transparent'
+            ? 'bg-primary/90 border-b border-hairline'
+            : 'bg-primary/50'
         }`}
       >
         <nav className="site-max site-px h-20 flex items-center justify-between gap-8">

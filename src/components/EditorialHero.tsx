@@ -231,17 +231,33 @@ export default function EditorialHero() {
   }, [reducedMotion]);
 
   return (
-    <section className="relative bg-[#F8F5F0] overflow-hidden">
+    <section className="relative -mt-[124px] pt-[124px] bg-white overflow-hidden">
+      {/* Full-bleed floral watermark — spans the entire hero canvas including the
+          area behind the fixed nav (the -mt/pt trick above pulls this section's own
+          box up to the true page top, y=0, instead of starting below the nav). A
+          different source image is used per breakpoint (landscape vs portrait crop). */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+        <Image
+          src="/patterns/floral-desktop.png"
+          alt=""
+          fill
+          priority
+          className="hidden md:block object-cover opacity-40"
+        />
+        <Image
+          src="/patterns/floral-mobile.png"
+          alt=""
+          fill
+          priority
+          className="md:hidden object-cover opacity-40"
+        />
+      </div>
+
       {/* ============ DESKTOP / TABLET (md+) ============ */}
-      <div className="hidden md:flex md:h-[calc(100vh-124px)] md:min-h-[560px]">
+      <div className="relative z-10 hidden md:flex md:h-[calc(100vh-124px)] md:min-h-[560px]">
         {/* Left — editorial copy */}
-        <div className="relative w-[45%] lg:w-[40%] flex items-center site-px">
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-repeat opacity-[0.4] mix-blend-multiply pointer-events-none"
-            style={{ backgroundImage: "url('/patterns/floral-line-art.jpg')", backgroundSize: '440px' }}
-          />
-          <div className="relative z-10">
+        <div className="flex items-center site-px w-[45%] lg:w-[40%]">
+          <div>
             <motion.h1
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -276,7 +292,7 @@ export default function EditorialHero() {
             >
               <Link
                 href="/shop"
-                className="group inline-flex items-center gap-3 rounded-full border border-[#2E241E] px-7 py-3.5 text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] transition-colors duration-300 hover:bg-[#2E241E] hover:text-white"
+                className="group inline-flex items-center gap-3 rounded-full border border-[#2E241E]/40 bg-white/30 backdrop-blur-md shadow-sm px-7 py-3.5 text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] transition-colors duration-300 hover:bg-[#2E241E] hover:text-white"
               >
                 Shop Now
                 <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
@@ -312,16 +328,8 @@ export default function EditorialHero() {
       </div>
 
       {/* ============ MOBILE (< md) — text-first, swipeable peek gallery ============ */}
-      <div className="md:hidden relative flex flex-col justify-center min-h-[calc(100svh-124px)] site-px py-8">
-        {/* Floral watermark spans the full hero canvas (nav edge down through the photo
-            track's height); the opaque photos simply paint over it, giving a clean edge
-            without needing to clip the pattern layer itself. */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-repeat opacity-[0.4] mix-blend-multiply pointer-events-none"
-          style={{ backgroundImage: "url('/patterns/floral-line-art.jpg')", backgroundSize: '260px' }}
-        />
-        <div className="relative z-10">
+      <div className="relative z-10 md:hidden flex flex-col justify-center min-h-[calc(100svh-124px)] site-px py-8">
+        <div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -348,7 +356,7 @@ export default function EditorialHero() {
           >
             <Link
               href="/shop"
-              className="flex items-center justify-center gap-3 w-full h-[52px] rounded-full border border-[#2E241E] text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] active:bg-[#2E241E] active:text-white transition-colors duration-300"
+              className="flex items-center justify-center gap-3 w-full h-[52px] rounded-full border border-[#2E241E]/40 bg-white/30 backdrop-blur-md shadow-sm text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] active:bg-[#2E241E] active:text-white transition-colors duration-300"
             >
               Shop Now
               <span>→</span>
