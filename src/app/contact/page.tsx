@@ -11,14 +11,30 @@ const fadeUp = {
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
 
   const update = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
+    setSending(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error('Request failed');
+      setSent(true);
+    } catch {
+      setError("Something went wrong — please try again, or email us directly at nurhausca@gmail.com.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -201,8 +217,12 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <button type="submit" className="btn-primary w-full">
-                    Send Message
+                  {error && (
+                    <p className="text-sm text-red-600">{error}</p>
+                  )}
+
+                  <button type="submit" disabled={sending} className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed">
+                    {sending ? 'Sending…' : 'Send Message'}
                   </button>
                 </motion.form>
               )}
