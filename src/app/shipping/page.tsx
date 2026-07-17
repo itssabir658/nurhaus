@@ -47,7 +47,7 @@ export default function ShippingPage() {
               className="text-smoke text-sm leading-relaxed mb-4"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              Changed your mind? No problem! If you need to cancel your order, we are happy to help as long as it is within a 1-hour window of placing it.
+              Changed your mind? No problem! If you need to cancel your order, we are happy to help as long as it is within a 30 minutes window of placing it.
             </motion.p>
             <motion.ul
               className="space-y-3 list-disc list-outside pl-5"
@@ -58,7 +58,7 @@ export default function ShippingPage() {
                 <a href="mailto:nurhausca@gmail.com" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">nurhausca@gmail.com</a> with your order number.
               </li>
               <li className="text-smoke text-sm leading-relaxed">
-                <strong className="text-ink font-medium">Please note:</strong> We work quickly to prepare your items, so once that 1-hour window has passed, your order begins processing and can no longer be canceled.
+                <strong className="text-ink font-medium">Please note:</strong> We work quickly to prepare your items, so once that 30 minutes window has passed, your order begins processing and can no longer be canceled.
               </li>
             </motion.ul>
           </section>
