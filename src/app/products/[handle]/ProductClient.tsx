@@ -45,6 +45,7 @@ export default function ProductClient({
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isBuyingNow, setIsBuyingNow]     = useState(false);
   const [sizeError, setSizeError]         = useState(false);
+  const [soldOutTap, setSoldOutTap]       = useState(false);
   const [qtyShake, setQtyShake]           = useState(false);
   const [demoNotice, setDemoNotice]       = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<AppProduct[]>([]);
@@ -102,6 +103,13 @@ export default function ProductClient({
   const triggerSizeError = () => {
     setSizeError(true);
     window.setTimeout(() => setSizeError(false), 600);
+  };
+
+  // Fires when the shopper taps a sold-out size — surfaces a message instead
+  // of selecting it, so a sold-out size can never render in the "selected" state.
+  const triggerSoldOutTap = () => {
+    setSoldOutTap(true);
+    window.setTimeout(() => setSoldOutTap(false), 2400);
   };
 
   // Fires when the shopper tries to push qty past the selected size's remaining stock.
@@ -266,45 +274,54 @@ export default function ProductClient({
                     </div>
                   ) : (
                     <>
-                      <div className={`flex flex-wrap gap-2 ${sizeError ? 'animate-shake' : ''}`}>
+                      <div className={`flex flex-wrap gap-3 ${sizeError ? 'animate-shake' : ''}`}>
                         {product.sizes.map((s) => {
                           const variantForSize = product.variants.find((v) =>
                             v.selectedOptions.some((o) => o.name.toLowerCase() === 'size' && o.value === s)
                           );
                           const disabled = variantForSize ? !variantForSize.availableForSale : false;
                           const isSelected = selectedSize === s;
-                          const maxedOut = isSelected && atMaxQty;
                           return (
-                            <button
-                              key={s}
-                              disabled={disabled}
-                              onClick={() => setSelectedSize(s)}
-                              className={`w-12 h-12 border text-sm font-medium transition-all duration-300 relative ${
-                                isSelected
-                                  ? 'border-ink bg-ink text-primary'
-                                  : disabled
-                                    ? 'border-ink bg-ink/80 text-primary/30 cursor-not-allowed'
-                                    : 'border-hairline text-smoke hover:border-accent hover:text-ink'
-                              }`}
-                            >
-                              {s}
-                              {(disabled || maxedOut) && (
-                                <span className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                                  <span className="w-[140%] h-px rotate-45 bg-primary/70" />
-                                </span>
-                              )}
-                            </button>
+                            <div key={s} className="flex flex-col items-center gap-1">
+                              <button
+                                type="button"
+                                aria-selected={isSelected}
+                                aria-disabled={disabled}
+                                onClick={() => {
+                                  if (disabled) {
+                                    triggerSoldOutTap();
+                                    return;
+                                  }
+                                  setSoldOutTap(false);
+                                  setSelectedSize(s);
+                                }}
+                                className={`w-12 h-12 text-sm font-medium transition-all duration-300 ${
+                                  isSelected
+                                    ? 'bg-ink border-2 border-ink text-primary shadow-sm'
+                                    : disabled
+                                      ? 'bg-hairline/60 border border-hairline text-smoke opacity-60 cursor-not-allowed'
+                                      : 'bg-primary border border-hairline text-ink hover:bg-ink hover:border-ink hover:text-primary'
+                                }`}
+                              >
+                                {s}
+                              </button>
+                              <span
+                                aria-hidden={!disabled}
+                                className={`text-[9px] uppercase tracking-[0.1em] text-muted transition-opacity duration-200 ${disabled ? 'opacity-100' : 'opacity-0'}`}
+                              >
+                                Sold Out
+                              </span>
+                            </div>
                           );
                         })}
                       </div>
-                      {!selectedSize && (
-                        <p className={`text-xs mt-2 transition-colors duration-200 ${sizeError ? 'text-red-500 font-medium' : 'text-muted'}`}>
+                      {soldOutTap ? (
+                        <p className="text-xs mt-1 text-smoke">This size is currently sold out.</p>
+                      ) : !selectedSize ? (
+                        <p className={`text-xs mt-1 transition-colors duration-200 ${sizeError ? 'text-red-500 font-medium' : 'text-muted'}`}>
                           Please select a size
                         </p>
-                      )}
-                      {variantSoldOut && (
-                        <p className="text-xs text-smoke mt-2">This size is currently sold out.</p>
-                      )}
+                      ) : null}
                     </>
                   )}
                 </div>
