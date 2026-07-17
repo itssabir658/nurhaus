@@ -64,7 +64,7 @@ export default function ShippingPage() {
               className="text-smoke text-sm leading-relaxed"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              Items marked as &ldquo;Sale&rdquo; are not eligible for exchange.
+              Items marked as &ldquo;Sale&rdquo; are final sale.
             </motion.p>
           </section>
 
