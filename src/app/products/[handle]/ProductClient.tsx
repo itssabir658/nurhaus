@@ -194,16 +194,16 @@ export default function ProductClient({
               )}
             </motion.div>
             {product.images.length > 1 && (
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {product.images.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveImage(i)}
-                    className={`aspect-[3/4] overflow-hidden transition-all duration-300 ${
+                    className={`w-full aspect-[3/4] overflow-hidden transition-all duration-300 ${
                       activeImage === i ? 'ring-1 ring-ink ring-offset-2' : 'opacity-60 hover:opacity-90'
                     }`}
                   >
-                    <Image src={img} alt="" width={300} height={400} className="w-full h-full object-cover" />
+                    <Image src={img} alt="" width={500} height={667} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>

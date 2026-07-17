@@ -54,7 +54,7 @@ export default function ContactPage() {
                 <p className="eyebrow mb-5">Reach Us</p>
                 <div className="space-y-5">
                   {[
-                    { label: 'Email', value: 'sales@nurhaus.ca', href: 'mailto:sales@nurhaus.ca' },
+                    { label: 'Email', value: 'nurhausca@gmail.com', href: 'mailto:nurhausca@gmail.com' },
                   ].map((item) => (
                     <div key={item.label}>
                       <p className="text-xs text-muted tracking-widest uppercase mb-1">{item.label}</p>
@@ -81,7 +81,13 @@ export default function ContactPage() {
                 <p className="eyebrow mb-5">Follow</p>
                 <div className="flex gap-6">
                   {['Instagram'].map((s) => (
-                    <a key={s} href="#" className="text-sm text-smoke hover:text-ink transition-colors duration-300 relative group">
+                    <a
+                      key={s}
+                      href="https://www.instagram.com/nurhausco/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-smoke hover:text-ink transition-colors duration-300 relative group"
+                    >
                       {s}
                       <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-accent group-hover:w-full transition-all duration-400" />
                     </a>

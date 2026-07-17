@@ -48,7 +48,7 @@ export default function ShippingPage() {
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
               Customers have a 1-hour window after placing their order to cancel. If you wish to cancel, please contact us at{' '}
-              <a href="mailto:sales@nurhaus.ca" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">sales@nurhaus.ca</a>, along with your order number, within this time frame. After 1 hour, the order will begin processing and cannot be canceled.
+              <a href="mailto:nurhausca@gmail.com" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">nurhausca@gmail.com</a>, along with your order number, within this time frame. After 1 hour, the order will begin processing and cannot be canceled.
             </motion.p>
           </section>
 
@@ -78,7 +78,7 @@ export default function ShippingPage() {
             </p>
             <p className="text-sm text-ink">
               Email:{' '}
-              <a href="mailto:sales@nurhaus.ca" className="underline underline-offset-2 hover:text-accent transition-colors">sales@nurhaus.ca</a>
+              <a href="mailto:nurhausca@gmail.com" className="underline underline-offset-2 hover:text-accent transition-colors">nurhausca@gmail.com</a>
             </p>
           </motion.div>
 

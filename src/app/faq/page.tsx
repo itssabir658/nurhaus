@@ -10,7 +10,7 @@ const CATEGORIES = [
     label: 'Orders',
     faqs: [
       { q: 'How do I place an order?', a: 'Browse the collection, select your size and add to cart. You can checkout as a guest or create an account for faster future purchases. We accept all major credit cards, PayPal, and Apple Pay.' },
-      { q: 'Can I change or cancel my order after placing it?', a: 'Orders can be amended or cancelled within 1 hour of placement by emailing sales@nurhaus.ca with your order number. After this window, the order moves to fulfilment and changes may not be possible.' },
+      { q: 'Can I change or cancel my order after placing it?', a: 'Orders can be amended or cancelled within 1 hour of placement by emailing nurhausca@gmail.com with your order number. After this window, the order moves to fulfilment and changes may not be possible.' },
       { q: 'Do you offer gift wrapping?', a: 'All NÜR HAUS orders arrive in our signature packaging.' },
       { q: 'Is my payment information secure?', a: 'Yes. We use SSL encryption and never store your card details. All payments are processed through PCI-compliant third-party providers.' },
     ],
@@ -29,9 +29,9 @@ const CATEGORIES = [
     id: 'returns',
     label: 'Returns',
     faqs: [
-      { q: 'What is your returns policy?', a: 'We offer refund within 1 hour of order placement. Eligible unworn items in original condition with all tags attached may be returned within 5 days of delivery for store credit only. Please email sales@nurhaus.ca with your order number to begin.' },
+      { q: 'What is your returns policy?', a: 'We offer refund within 1 hour of order placement. Eligible unworn items in original condition with all tags attached may be returned within 5 days of delivery for store credit only. Please email nurhausca@gmail.com with your order number to begin.' },
       { q: 'How is my store credit issued?', a: 'Once your returned item is received and inspected, store credit is issued within 5–7 business days and sent to you by email as a code to use at checkout.' },
-      { q: 'Can I exchange for a different size?', a: 'Yes. We offer exchanges within 5 days. Email sales@nurhaus.ca with your order number and preferred size. Exchanges are subject to availability.' },
+      { q: 'Can I exchange for a different size?', a: 'Yes. We offer exchanges within 5 days. Email nurhausca@gmail.com with your order number and preferred size. Exchanges are subject to availability.' },
     ],
   },
   {
