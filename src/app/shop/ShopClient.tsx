@@ -14,16 +14,113 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
 };
 
+// Shop hero — same auto-rotating, breathing-zoom gallery mechanic as the
+// homepage EditorialHero, but composed differently: a single full-bleed grid
+// behind a dark gradient + overlaid text, instead of a split text/gallery
+// layout, so the two heroes read as siblings rather than duplicates.
+const HERO_IMAGES = [
+  { src: '/shop-hero/1.jpg', alt: 'Alaïa' },
+  { src: '/shop-hero/2.jpg', alt: 'Dahlia' },
+  { src: '/shop-hero/3.jpg', alt: 'Saphira' },
+  { src: '/shop-hero/4.jpg', alt: 'Elayna' },
+  { src: '/shop-hero/5.jpg', alt: 'Faye' },
+  { src: '/shop-hero/6.jpg', alt: 'Amélie' },
+  { src: '/shop-hero/7.jpg', alt: 'Layla' },
+  { src: '/shop-hero/8.jpg', alt: 'Yara' },
+];
+const HERO_ROTATE_MS = 4200;
+const HERO_SWAP_TRANSITION = { duration: 1.1, ease: [0.22, 0.61, 0.36, 1] as const };
+
+// Deterministic — swaps exactly one of the 4 visible slots per tick, cycling
+// through all 8 source images.
+function heroColumnsForTick(tick: number): number[] {
+  const cols = [0, 1, 2, 3];
+  for (let t = 0; t < tick; t++) {
+    cols[t % 4] = (4 + t) % HERO_IMAGES.length;
+  }
+  return cols;
+}
+
+function HeroBreathingImage({ img, priority, breatheDelay, reducedMotion }: {
+  img: { src: string; alt: string };
+  priority?: boolean;
+  breatheDelay: number;
+  reducedMotion: boolean;
+}) {
+  return (
+    <motion.div
+      className="relative w-full h-full"
+      animate={reducedMotion ? undefined : { scale: [1, 1.08, 1] }}
+      transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: breatheDelay }}
+    >
+      <Image src={img.src} alt={img.alt} fill sizes="25vw" priority={priority} className="object-cover" />
+    </motion.div>
+  );
+}
+
+function HeroGalleryColumn({ imgIndex, colIndex, reducedMotion }: { imgIndex: number; colIndex: number; reducedMotion: boolean }) {
+  return (
+    <div className="relative h-full overflow-hidden">
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={imgIndex}
+          className="absolute inset-0"
+          initial={{ opacity: 0, scale: 1.08 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={HERO_SWAP_TRANSITION}
+        >
+          <HeroBreathingImage
+            img={HERO_IMAGES[imgIndex]}
+            priority={colIndex === 0}
+            breatheDelay={colIndex * 2.5}
+            reducedMotion={reducedMotion}
+          />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function ShopContent({ products, categories, configured }: { products: AppProduct[]; categories: string[]; configured: boolean }) {
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState('All');
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortBy, setSortBy] = useState('Featured');
+  const [heroColumns, setHeroColumns] = useState([0, 1, 2, 3]);
+  const [heroMobileIndex, setHeroMobileIndex] = useState(0);
+  const [heroReducedMotion, setHeroReducedMotion] = useState(false);
 
   useEffect(() => {
     const cat = searchParams.get('category');
     if (cat && categories.includes(cat)) setActiveCategory(cat);
   }, [searchParams, categories]);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setHeroReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setHeroReducedMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  useEffect(() => {
+    if (heroReducedMotion) return;
+    const startTime = Date.now();
+    const id = setInterval(() => {
+      const tick = Math.floor((Date.now() - startTime) / HERO_ROTATE_MS);
+      setHeroColumns(heroColumnsForTick(tick));
+    }, HERO_ROTATE_MS);
+    return () => clearInterval(id);
+  }, [heroReducedMotion]);
+
+  useEffect(() => {
+    if (heroReducedMotion) return;
+    const id = setInterval(() => {
+      setHeroMobileIndex((i) => (i + 1) % HERO_IMAGES.length);
+    }, HERO_ROTATE_MS);
+    return () => clearInterval(id);
+  }, [heroReducedMotion]);
 
   const filtered = [...products]
     .filter((p) => (activeCategory === 'All' ? true : p.kind === activeCategory))
@@ -37,14 +134,34 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
     <div className="page-enter">
       {/* Hero */}
       <section className="relative h-[82svh] md:h-[70vh] overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1762376268273-645db555eaf9?auto=format&fit=crop&w=1800&q=80"
-          alt="Shop the Nürhaus collection"
-          fill
-          sizes="100vw"
-          priority
-          className="object-cover object-center"
-        />
+        {/* Desktop/tablet — 4-column rotating, breathing-zoom grid */}
+        <div className="hidden md:grid grid-cols-4 absolute inset-0">
+          {heroColumns.map((imgIndex, colIndex) => (
+            <HeroGalleryColumn key={colIndex} imgIndex={imgIndex} colIndex={colIndex} reducedMotion={heroReducedMotion} />
+          ))}
+        </div>
+        {/* Mobile — single crossfading image, cycling through the same pool */}
+        <div className="md:hidden absolute inset-0 overflow-hidden">
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={heroMobileIndex}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2 }}
+            >
+              <Image
+                src={HERO_IMAGES[heroMobileIndex].src}
+                alt={HERO_IMAGES[heroMobileIndex].alt}
+                fill
+                priority={heroMobileIndex === 0}
+                sizes="100vw"
+                className="object-cover"
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
         <div className="absolute inset-0 bg-gradient-to-b from-midnight/10 via-midnight/30 to-midnight/60" />
         <div className="relative z-10 h-full site-max site-px flex flex-col justify-end pb-6 md:pb-12">
           <motion.div
