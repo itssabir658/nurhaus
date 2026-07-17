@@ -242,14 +242,14 @@ export default function EditorialHero() {
           alt=""
           fill
           priority
-          className="hidden md:block object-cover opacity-40"
+          className="hidden md:block object-cover opacity-10"
         />
         <Image
           src="/patterns/floral-mobile.png"
           alt=""
           fill
           priority
-          className="md:hidden object-cover opacity-40"
+          className="md:hidden object-cover opacity-10"
         />
       </div>
 
@@ -292,7 +292,7 @@ export default function EditorialHero() {
             >
               <Link
                 href="/shop"
-                className="group inline-flex items-center gap-3 rounded-full border border-[#2E241E]/40 bg-white/30 backdrop-blur-md shadow-sm px-7 py-3.5 text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] transition-colors duration-300 hover:bg-[#2E241E] hover:text-white"
+                className="group inline-flex items-center gap-3 rounded-full border border-[#2E241E]/40 bg-white/20 backdrop-blur-xl shadow-sm px-7 py-3.5 text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] transition-colors duration-300 hover:bg-[#2E241E] hover:text-white"
               >
                 Shop Now
                 <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
@@ -356,7 +356,7 @@ export default function EditorialHero() {
           >
             <Link
               href="/shop"
-              className="flex items-center justify-center gap-3 w-full h-[52px] rounded-full border border-[#2E241E]/40 bg-white/30 backdrop-blur-md shadow-sm text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] active:bg-[#2E241E] active:text-white transition-colors duration-300"
+              className="flex items-center justify-center gap-3 w-full h-[52px] rounded-full border border-[#2E241E]/40 bg-white/20 backdrop-blur-xl shadow-sm text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] active:bg-[#2E241E] active:text-white transition-colors duration-300"
             >
               Shop Now
               <span>→</span>
