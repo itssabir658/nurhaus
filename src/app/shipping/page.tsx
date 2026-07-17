@@ -52,6 +52,71 @@ export default function ShippingPage() {
             </motion.p>
           </section>
 
+          {/* Exchange Policy */}
+          <section>
+            <motion.h2
+              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Exchange Policy
+            </motion.h2>
+            <motion.p
+              className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              The fastest way to ensure you get what you want is to return the item you have, and once the return is accepted, make a separate purchase for the new item.
+            </motion.p>
+            <motion.h3
+              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Exchange Period
+            </motion.h3>
+            <motion.p
+              className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Products can be exchanged within 5 days of the original purchase date. Unfortunately, we cannot accept exchanges beyond this period. Please note that shipping charges for exchanges are the responsibility of the customer and will not be covered by N&uuml;r Haus.
+            </motion.p>
+            <motion.h3
+              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Condition of Products
+            </motion.h3>
+            <motion.p
+              className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              To be eligible for an exchange, the product must be in its original, unused condition. The product should include all original tags, packaging, and accessories.
+            </motion.p>
+            <motion.h3
+              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Proof of Purchase
+            </motion.h3>
+            <motion.p
+              className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              A receipt or proof of purchase is required for all exchanges. This helps us verify the transaction and process your exchange efficiently.
+            </motion.p>
+            <motion.h3
+              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              Exchange Process
+            </motion.h3>
+            <motion.p
+              className="text-smoke text-sm leading-relaxed"
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              To initiate an exchange, please contact us at{' '}
+              <a href="mailto:nurhausca@gmail.com" className="text-ink underline underline-offset-2 hover:text-accent transition-colors">nurhausca@gmail.com</a> along with your order number. Our team will check the order details to ensure it meets the exchange criteria. Once approved, you can select an exchange product of equal or lesser value. If the new product is of higher value, you will be required to pay the difference.
+            </motion.p>
+          </section>
+
           {/* Sale Items */}
           <section>
             <motion.h2

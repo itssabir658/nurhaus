@@ -11,8 +11,8 @@ const houseLinks = [
   { label: 'Contact',   href: '/contact' },
 ];
 const careLinks  = [
-  { label: 'FAQ',             href: '/faq' },
-  { label: 'Shipping & Returns', href: '/shipping' },
+  { label: 'Refund Policy', href: '/shipping' },
+  { label: 'Shipping Policy', href: '/shipping-policy' },
 ];
 
 export default function Footer() {
@@ -93,7 +93,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <p className="eyebrow-light mb-5">Care</p>
+            <p className="eyebrow-light mb-5">Policies</p>
             <ul className="space-y-3">
               {careLinks.map((l) => (
                 <li key={l.href}>

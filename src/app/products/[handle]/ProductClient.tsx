@@ -45,6 +45,7 @@ export default function ProductClient({
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isBuyingNow, setIsBuyingNow]     = useState(false);
   const [sizeError, setSizeError]         = useState(false);
+  const [qtyShake, setQtyShake]           = useState(false);
   const [demoNotice, setDemoNotice]       = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<AppProduct[]>([]);
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
@@ -101,6 +102,12 @@ export default function ProductClient({
   const triggerSizeError = () => {
     setSizeError(true);
     window.setTimeout(() => setSizeError(false), 600);
+  };
+
+  // Fires when the shopper tries to push qty past the selected size's remaining stock.
+  const triggerQtyShake = () => {
+    setQtyShake(true);
+    window.setTimeout(() => setQtyShake(false), 300);
   };
 
   const handleAddToCart = async () => {
@@ -276,14 +283,14 @@ export default function ProductClient({
                                 isSelected
                                   ? 'border-ink bg-ink text-primary'
                                   : disabled
-                                    ? 'border-hairline text-muted/50 opacity-50 cursor-not-allowed'
+                                    ? 'border-ink bg-ink/80 text-primary/30 cursor-not-allowed'
                                     : 'border-hairline text-smoke hover:border-accent hover:text-ink'
                               }`}
                             >
                               {s}
                               {(disabled || maxedOut) && (
                                 <span className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                                  <span className={`w-[140%] h-px rotate-45 ${maxedOut ? 'bg-primary' : 'bg-muted'}`} />
+                                  <span className="w-[140%] h-px rotate-45 bg-primary/70" />
                                 </span>
                               )}
                             </button>
@@ -321,13 +328,19 @@ export default function ProductClient({
                 <div className="mb-8">
                   <div className="flex items-center gap-4">
                     <p className="eyebrow">Qty</p>
-                    <div className="flex items-center border border-hairline">
+                    <div className={`flex items-center border border-hairline ${qtyShake ? 'animate-shake-subtle' : ''}`}>
                       <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-10 h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center text-lg">−</button>
                       <span className="w-10 text-center text-sm">{qty}</span>
                       <button
-                        onClick={() => setQty((q) => (maxQty !== null ? Math.min(q + 1, maxQty) : q + 1))}
-                        disabled={atMaxQty}
-                        className="w-10 h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-smoke"
+                        onClick={() => {
+                          if (atMaxQty) {
+                            triggerQtyShake();
+                            return;
+                          }
+                          setQty((q) => (maxQty !== null ? Math.min(q + 1, maxQty) : q + 1));
+                        }}
+                        aria-disabled={atMaxQty}
+                        className={`w-10 h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center ${atMaxQty ? 'opacity-30 cursor-not-allowed hover:text-smoke' : ''}`}
                       >
                         +
                       </button>
