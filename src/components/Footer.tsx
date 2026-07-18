@@ -22,7 +22,7 @@ export default function Footer() {
       <div className="h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
 
       {/* Brand + links */}
-      <div className="site-max site-px pt-6 pb-16 md:pb-20">
+      <div className="site-max site-px pt-6 pb-6 md:pb-8">
         {/* Logo — above the grid so description aligns with column headings */}
         <Link href="/" aria-label="NÜR HAUS home" className="inline-block mb-10">
           <img
@@ -108,6 +108,20 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+
+        {/* Signature credit — sits in the footer's existing bottom whitespace,
+            so it never grows the footer or reads as its own section. */}
+        <p className="mt-6 md:mt-8 text-center md:text-left text-[11px] tracking-[0.1em] text-primary/55">
+          Designed &amp; Developed by{' '}
+          <a
+            href="https://www.itssabir.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-primary transition-colors duration-300"
+          >
+            Sabir
+          </a>
+        </p>
       </div>
 
       {/* Embossed wordmark — full-width, flush to footer bottom, carved
