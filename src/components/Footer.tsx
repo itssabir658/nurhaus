@@ -117,7 +117,7 @@ export default function Footer() {
             href="https://www.itssabir.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-primary transition-colors duration-300"
+            className="signature-pulse text-primary transition-opacity duration-300"
           >
             Sabir
           </a>
