@@ -253,6 +253,30 @@ img, video { display: block; max-width: 100%; }
 }
 
 /* ============================================================
+   SIGNATURE LINK PULSE
+   A slow, gentle opacity breathe on the footer credit's "Sabir"
+   link — signals it's clickable without a hard on/off blink.
+   ============================================================ */
+@keyframes signature-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+.signature-pulse {
+  animation: signature-pulse 2.6s ease-in-out infinite;
+}
+.signature-pulse:hover,
+.signature-pulse:focus-visible {
+  animation-play-state: paused;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .signature-pulse {
+    animation: none;
+    opacity: 0.55;
+  }
+}
+
+/* ============================================================
    SCROLLBAR
    ============================================================ */
 ::-webkit-scrollbar { width: 3px; }
