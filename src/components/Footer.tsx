@@ -25,7 +25,7 @@ export default function Footer() {
       <div className="site-max site-px pt-6 pb-6 md:pb-8">
         {/* Logo — above the grid so description aligns with column headings */}
         <Link href="/" aria-label="NÜR HAUS home" className="inline-block mb-10">
-          <img
+          <Image
             src="/nurhaus-logo.svg"
             alt="NÜR HAUS"
             width={64}
