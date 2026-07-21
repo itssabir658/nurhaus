@@ -236,22 +236,23 @@ export default function EditorialHero() {
           area behind the fixed nav (the -mt/pt trick above pulls this section's own
           box up to the true page top, y=0, instead of starting below the nav). A
           different source image is used per breakpoint (landscape vs portrait crop).
-          Source PNGs have transparent backgrounds with dark line work, shown at
-          partial opacity directly (no `invert`) against the off-white section bg. */}
+          Source PNGs have transparent backgrounds with dark line work; `invert`
+          flips the lines to white (transparency is unaffected by the filter),
+          giving a barely-there ghosted watermark at 30% opacity on the page background. */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
         <Image
           src="/patterns/floral-desktop.png"
           alt=""
           fill
           priority
-          className="hidden md:block object-cover opacity-40"
+          className="hidden md:block object-cover opacity-30 invert"
         />
         <Image
           src="/patterns/floral-mobile.png"
           alt=""
           fill
           priority
-          className="md:hidden object-cover opacity-40"
+          className="md:hidden object-cover opacity-30 invert"
         />
       </div>
 
