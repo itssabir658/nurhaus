@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useNurhaus } from '@/contexts/NurhausContext';
 import { useCart } from '@/contexts/CartContext';
+import { useGeo } from '@/contexts/GeoContext';
 import SizeGuideModal from '@/components/SizeGuideModal';
 import { getSizeGuideData } from '@/lib/sizeGuides';
 import type { AppProduct } from '@/lib/shopify/types';
@@ -37,6 +38,7 @@ export default function ProductClient({
 }) {
   const { openWaitlist, openCart } = useNurhaus();
   const { addItem } = useCart();
+  const { isUSVisitor, isCanadaVisitor } = useGeo();
 
   const [activeImage, setActiveImage]     = useState(0);
   const [selectedSize, setSelectedSize]   = useState('');
@@ -424,10 +426,16 @@ export default function ProductClient({
                 </div>
               </div>
 
-              {/* Trust signals */}
+              {/* Trust signals — the $250 free-shipping promo doesn't apply to US orders,
+                  and calls out "across Canada" specifically for CA visitors */}
               <div className="mt-8 pt-8 border-t border-hairline space-y-3">
                 {[
-                  { icon: '✦', text: 'Complimentary shipping on orders above $250' },
+                  ...(isUSVisitor ? [] : [{
+                    icon: '✦',
+                    text: isCanadaVisitor
+                      ? 'Complimentary shipping across Canada on orders above $250'
+                      : 'Complimentary shipping on orders above $250',
+                  }]),
                   { icon: '✦', text: 'Each piece finished by hand' },
                 ].map((item) => (
                   <p key={item.text} className="text-xs text-smoke flex items-start gap-3">

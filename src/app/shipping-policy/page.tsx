@@ -1,10 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useGeo } from '@/contexts/GeoContext';
 
 const fadeUp = { hidden: { opacity: 0, y: 28 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } };
 
 export default function ShippingPolicyPage() {
+  const { isUSVisitor } = useGeo();
+
   return (
     <div className="page-enter">
       {/* Header */}
@@ -33,30 +36,36 @@ export default function ShippingPolicyPage() {
             >
               Shipping Within Canada &amp; US
             </motion.h2>
-            <motion.h3
-              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
-              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              Free Shipping (Canada)
-            </motion.h3>
-            <motion.p
-              className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
-              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              We offer complimentary shipping on all Canadian orders over $250 CAD (before taxes and discounts).
-            </motion.p>
-            <motion.h3
-              className="font-display text-2xl md:text-3xl tracking-tight mb-5"
-              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              Shipping Rates
-            </motion.h3>
-            <motion.p
-              className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
-              variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              Orders below the free shipping threshold will have shipping charges calculated at checkout.
-            </motion.p>
+            {/* Free shipping / rates messaging is tied to the $250 CAD promo, which
+                doesn't apply to US orders */}
+            {!isUSVisitor && (
+              <>
+                <motion.h3
+                  className="font-display text-2xl md:text-3xl tracking-tight mb-5"
+                  variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+                >
+                  Free Shipping (Canada)
+                </motion.h3>
+                <motion.p
+                  className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
+                  variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+                >
+                  We offer complimentary shipping on all Canadian orders over $250 CAD (before taxes and discounts).
+                </motion.p>
+                <motion.h3
+                  className="font-display text-2xl md:text-3xl tracking-tight mb-5"
+                  variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+                >
+                  Shipping Rates
+                </motion.h3>
+                <motion.p
+                  className="text-smoke text-sm leading-relaxed mb-16 md:mb-20"
+                  variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+                >
+                  Orders below the free shipping threshold will have shipping charges calculated at checkout.
+                </motion.p>
+              </>
+            )}
             <motion.h3
               className="font-display text-2xl md:text-3xl tracking-tight mb-5"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
+import { useGeo } from '@/contexts/GeoContext';
 import type { AppProduct } from '@/lib/shopify/types';
 
 const FREE_SHIPPING_THRESHOLD = 250;
@@ -15,6 +16,7 @@ export default function CartPageClient({
   crossSell: AppProduct[];
 }) {
   const { cart, isLoading, isMutating, updateItem, removeItem } = useCart();
+  const { isUSVisitor } = useGeo();
   const [isRedirecting, setIsRedirecting] = useState(false);
   const lines = cart?.lines ?? [];
   const subtotal = cart?.subtotal ?? 0;
@@ -62,26 +64,28 @@ export default function CartPageClient({
         </div>
       ) : (
         <div className="site-max site-px py-12">
-          {/* Shipping progress */}
-          <div className="mb-10 p-5 border border-hairline">
-            <div className="flex items-center justify-between mb-3 text-sm">
-              <p className="text-smoke">
-                {remaining > 0
-                  ? <><span className="text-ink font-medium">${remaining.toLocaleString()}</span> away from complimentary shipping</>
-                  : <span className="text-accent">You have complimentary shipping.</span>
-                }
-              </p>
-              <span className="text-xs text-muted">${FREE_SHIPPING_THRESHOLD} threshold</span>
+          {/* Shipping progress — the $250 free-shipping promo doesn't apply to US orders */}
+          {!isUSVisitor && (
+            <div className="mb-10 p-5 border border-hairline">
+              <div className="flex items-center justify-between mb-3 text-sm">
+                <p className="text-smoke">
+                  {remaining > 0
+                    ? <><span className="text-ink font-medium">${remaining.toLocaleString()}</span> away from complimentary shipping</>
+                    : <span className="text-accent">You have complimentary shipping.</span>
+                  }
+                </p>
+                <span className="text-xs text-muted">${FREE_SHIPPING_THRESHOLD} threshold</span>
+              </div>
+              <div className="h-px bg-hairline relative overflow-hidden">
+                <motion.div
+                  className="h-full bg-accent absolute left-0 top-0"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ duration: 0.8, ease: [0.22,1,0.36,1] }}
+                />
+              </div>
             </div>
-            <div className="h-px bg-hairline relative overflow-hidden">
-              <motion.div
-                className="h-full bg-accent absolute left-0 top-0"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.8, ease: [0.22,1,0.36,1] }}
-              />
-            </div>
-          </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-12 lg:gap-20">
             {/* Items */}

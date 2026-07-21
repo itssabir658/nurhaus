@@ -1,8 +1,14 @@
 'use client';
 
-const MESSAGE = 'Complimentary Shipping on Orders Above $250';
+import { useGeo } from '@/contexts/GeoContext';
+
+const DEFAULT_MESSAGE = 'Complimentary Shipping on Orders Above $250';
+const CANADA_MESSAGE = 'Complimentary Shipping Across Canada on Orders Above $250';
 
 export default function AnnouncementBar() {
+  const { isCanadaVisitor } = useGeo();
+  const MESSAGE = isCanadaVisitor ? CANADA_MESSAGE : DEFAULT_MESSAGE;
+
   return (
     <div
       className="fixed top-0 left-0 right-0 z-[55] flex items-center justify-center overflow-hidden"

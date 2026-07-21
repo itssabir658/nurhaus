@@ -67,12 +67,14 @@ export default async function RootLayout({
   const searchProducts = isShopifyConfigured ? await getProducts({ first: 48 }).catch(() => []) : [];
 
   // Vercel's edge network sets this header with the visitor's IP-derived country
-  // on every request — no separate geolocation service needed. Falls back to
-  // showing the bar (undefined outside Vercel, e.g. local dev) rather than hiding
-  // it, so the promo only disappears when we can positively confirm a US visitor.
+  // on every request — no separate geolocation service needed. The raw code is
+  // passed down and Providers derives isUSVisitor/isCanadaVisitor from it, so
+  // every shipping/promo mention (banner, cart drawer, cart page, product
+  // trust signals, shipping policy) shares one source of truth. Falls back to
+  // null (undefined outside Vercel, e.g. local dev) rather than hiding or
+  // altering anything, so promo copy only changes once a country is confirmed.
   const requestHeaders = await headers();
   const visitorCountry = requestHeaders.get('x-vercel-ip-country');
-  const showAnnouncementBar = visitorCountry !== 'US';
 
   return (
     <html
@@ -80,7 +82,7 @@ export default async function RootLayout({
       className={`${cormorant.variable} ${inter.variable} ${figtree.variable} ${manrope.variable} ${brolimo.variable} ${felixti.variable}`}
     >
       <body className="bg-primary text-ink font-sans">
-        <Providers searchProducts={searchProducts} showAnnouncementBar={showAnnouncementBar}>{children}</Providers>
+        <Providers searchProducts={searchProducts} visitorCountry={visitorCountry}>{children}</Providers>
       </body>
     </html>
   );

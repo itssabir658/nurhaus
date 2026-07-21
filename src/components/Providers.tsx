@@ -8,6 +8,7 @@ import SearchOverlay from './SearchOverlay';
 import AnnouncementBar from './AnnouncementBar';
 import { NurhausContext } from '@/contexts/NurhausContext';
 import { CartProvider } from '@/contexts/CartContext';
+import { GeoProvider } from '@/contexts/GeoContext';
 import type { AppProduct } from '@/lib/shopify/types';
 import Lenis from 'lenis';
 import gsap from 'gsap';
@@ -16,12 +17,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 export default function Providers({
   children,
   searchProducts = [],
-  showAnnouncementBar = true,
+  visitorCountry = null,
 }: {
   children: React.ReactNode;
   searchProducts?: AppProduct[];
-  showAnnouncementBar?: boolean;
+  visitorCountry?: string | null;
 }) {
+  const isUSVisitor = visitorCountry === 'US';
+  const isCanadaVisitor = visitorCountry === 'CA';
   const [cartOpen, setCartOpen]     = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const openWaitlist = useCallback((_productName: string) => {}, []);
@@ -61,26 +64,28 @@ export default function Providers({
   }, []);
 
   return (
-    <NurhausContext.Provider value={{ openWaitlist, openCart }}>
-      <CartProvider>
-        {showAnnouncementBar && <AnnouncementBar />}
-        <Navigation
-          onCartOpen={() => setCartOpen(true)}
-          onSearchOpen={() => setSearchOpen(true)}
-        />
-        <CartDrawer
-          open={cartOpen}
-          onClose={() => setCartOpen(false)}
-        />
-        <SearchOverlay
-          open={searchOpen}
-          onClose={() => setSearchOpen(false)}
-          products={searchProducts}
-        />
-        {/* 44px announcement bar + 80px nav = 124px total header height */}
-        <main className="pt-[124px]">{children}</main>
-        <Footer />
-      </CartProvider>
-    </NurhausContext.Provider>
+    <GeoProvider value={{ isUSVisitor, isCanadaVisitor }}>
+      <NurhausContext.Provider value={{ openWaitlist, openCart }}>
+        <CartProvider>
+          {!isUSVisitor && <AnnouncementBar />}
+          <Navigation
+            onCartOpen={() => setCartOpen(true)}
+            onSearchOpen={() => setSearchOpen(true)}
+          />
+          <CartDrawer
+            open={cartOpen}
+            onClose={() => setCartOpen(false)}
+          />
+          <SearchOverlay
+            open={searchOpen}
+            onClose={() => setSearchOpen(false)}
+            products={searchProducts}
+          />
+          {/* 44px announcement bar + 80px nav = 124px total header height */}
+          <main className="pt-[124px]">{children}</main>
+          <Footer />
+        </CartProvider>
+      </NurhausContext.Provider>
+    </GeoProvider>
   );
 }

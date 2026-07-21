@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
+import { useGeo } from '@/contexts/GeoContext';
 
 interface CartDrawerProps {
   open:    boolean;
@@ -14,6 +15,7 @@ const SHIPPING_THRESHOLD = 250;
 
 export default function CartDrawer({ open, onClose }: CartDrawerProps) {
   const { cart, isLoading, isMutating, updateItem, removeItem } = useCart();
+  const { isUSVisitor } = useGeo();
   const lines = cart?.lines ?? [];
   const subtotal = cart?.subtotal ?? 0;
   const shippingProgress = Math.min((subtotal / SHIPPING_THRESHOLD) * 100, 100);
@@ -54,24 +56,26 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
               </button>
             </div>
 
-            {/* Shipping progress */}
-            <div className="px-8 py-4 border-b border-hairline bg-secondary/30 flex-shrink-0">
-              {subtotal >= SHIPPING_THRESHOLD ? (
-                <p className="text-xs text-accent font-medium tracking-wide">
-                  Complimentary shipping unlocked.
-                </p>
-              ) : (
-                <p className="text-xs text-smoke mb-2.5">
-                  <span className="text-ink font-medium">${(SHIPPING_THRESHOLD - subtotal).toLocaleString()}</span> away from complimentary shipping
-                </p>
-              )}
-              <div className="h-px bg-hairline mt-2">
-                <div
-                  className="h-full bg-accent transition-all duration-700 ease-expo"
-                  style={{ width: `${shippingProgress}%` }}
-                />
+            {/* Shipping progress — the $250 free-shipping promo doesn't apply to US orders */}
+            {!isUSVisitor && (
+              <div className="px-8 py-4 border-b border-hairline bg-secondary/30 flex-shrink-0">
+                {subtotal >= SHIPPING_THRESHOLD ? (
+                  <p className="text-xs text-accent font-medium tracking-wide">
+                    Complimentary shipping unlocked.
+                  </p>
+                ) : (
+                  <p className="text-xs text-smoke mb-2.5">
+                    <span className="text-ink font-medium">${(SHIPPING_THRESHOLD - subtotal).toLocaleString()}</span> away from complimentary shipping
+                  </p>
+                )}
+                <div className="h-px bg-hairline mt-2">
+                  <div
+                    className="h-full bg-accent transition-all duration-700 ease-expo"
+                    style={{ width: `${shippingProgress}%` }}
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Items */}
             <div className="flex-1 overflow-y-auto px-8 py-6">
