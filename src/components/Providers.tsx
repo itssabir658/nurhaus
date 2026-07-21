@@ -16,9 +16,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 export default function Providers({
   children,
   searchProducts = [],
+  showAnnouncementBar = true,
 }: {
   children: React.ReactNode;
   searchProducts?: AppProduct[];
+  showAnnouncementBar?: boolean;
 }) {
   const [cartOpen, setCartOpen]     = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -61,7 +63,7 @@ export default function Providers({
   return (
     <NurhausContext.Provider value={{ openWaitlist, openCart }}>
       <CartProvider>
-        <AnnouncementBar />
+        {showAnnouncementBar && <AnnouncementBar />}
         <Navigation
           onCartOpen={() => setCartOpen(true)}
           onSearchOpen={() => setSearchOpen(true)}

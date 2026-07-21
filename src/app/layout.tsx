@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Inter, Manrope } from 'next/font/google';
 import localFont from 'next/font/local';
+import { headers } from 'next/headers';
 import './globals.css';
 import Providers from '@/components/Providers';
 import { getProducts, isShopifyConfigured } from '@/lib/shopify';
@@ -65,13 +66,21 @@ export default async function RootLayout({
 }) {
   const searchProducts = isShopifyConfigured ? await getProducts({ first: 48 }).catch(() => []) : [];
 
+  // Vercel's edge network sets this header with the visitor's IP-derived country
+  // on every request — no separate geolocation service needed. Falls back to
+  // showing the bar (undefined outside Vercel, e.g. local dev) rather than hiding
+  // it, so the promo only disappears when we can positively confirm a US visitor.
+  const requestHeaders = await headers();
+  const visitorCountry = requestHeaders.get('x-vercel-ip-country');
+  const showAnnouncementBar = visitorCountry !== 'US';
+
   return (
     <html
       lang="en"
       className={`${cormorant.variable} ${inter.variable} ${figtree.variable} ${manrope.variable} ${brolimo.variable} ${felixti.variable}`}
     >
       <body className="bg-primary text-ink font-sans">
-        <Providers searchProducts={searchProducts}>{children}</Providers>
+        <Providers searchProducts={searchProducts} showAnnouncementBar={showAnnouncementBar}>{children}</Providers>
       </body>
     </html>
   );
