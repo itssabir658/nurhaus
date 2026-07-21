@@ -231,14 +231,14 @@ export default function EditorialHero() {
   }, [reducedMotion]);
 
   return (
-    <section className="relative -mt-[124px] pt-[124px] bg-white overflow-hidden">
+    <section className="relative -mt-[124px] pt-[124px] bg-primary overflow-hidden">
       {/* Full-bleed floral watermark — spans the entire hero canvas including the
           area behind the fixed nav (the -mt/pt trick above pulls this section's own
           box up to the true page top, y=0, instead of starting below the nav). A
           different source image is used per breakpoint (landscape vs portrait crop).
           Source PNGs have transparent backgrounds with dark line work; `invert`
           flips the lines to white (transparency is unaffected by the filter),
-          giving a barely-there ghosted watermark at 30% opacity on the white page. */}
+          giving a barely-there ghosted watermark at 30% opacity on the page background. */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
         <Image
           src="/patterns/floral-desktop.png"

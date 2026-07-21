@@ -92,11 +92,12 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
         <nav className="site-max site-px h-20 flex items-center justify-between gap-8">
           {/* Logo */}
           <Link href="/" aria-label="NÜR HAUS home">
-            <img
+            <Image
               src="/nurhaus-logo.svg"
               alt="NÜR HAUS"
               width={64}
               height={48}
+              priority
               className="h-12 w-auto object-contain"
             />
           </Link>
@@ -173,7 +174,7 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
             {/* Header row — floats above the editorial image instead of pushing it down */}
             <div className="absolute top-0 inset-x-0 z-10 site-px h-20 flex items-center justify-between mt-[44px]">
               <Link href="/" onClick={() => setMenuOpen(false)} aria-label="NÜR HAUS home">
-                <img
+                <Image
                   src="/nurhaus-logo.svg"
                   alt="NÜR HAUS"
                   width={64}

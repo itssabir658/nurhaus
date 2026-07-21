@@ -22,10 +22,10 @@ export default function Footer() {
       <div className="h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
 
       {/* Brand + links */}
-      <div className="site-max site-px pt-6 pb-16 md:pb-20">
+      <div className="site-max site-px pt-6 pb-6 md:pb-8">
         {/* Logo — above the grid so description aligns with column headings */}
         <Link href="/" aria-label="NÜR HAUS home" className="inline-block mb-10">
-          <img
+          <Image
             src="/nurhaus-logo.svg"
             alt="NÜR HAUS"
             width={64}
@@ -51,13 +51,20 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Image
-                  src="/instagram-logo.png"
-                  alt="Instagram"
-                  width={24}
-                  height={24}
-                  className="w-6 h-6 object-contain rounded-md"
-                />
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-6 h-6"
+                  aria-hidden="true"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
               </a>
             </div>
           </div>
@@ -108,6 +115,20 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+
+        {/* Signature credit — sits in the footer's existing bottom whitespace,
+            so it never grows the footer or reads as its own section. */}
+        <p className="mt-6 md:mt-8 text-center md:text-left text-[11px] tracking-[0.1em] text-primary/55">
+          Designed &amp; Developed by{' '}
+          <a
+            href="https://www.itssabir.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="signature-pulse text-primary transition-opacity duration-300"
+          >
+            Sabir
+          </a>
+        </p>
       </div>
 
       {/* Embossed wordmark — full-width, flush to footer bottom, carved
