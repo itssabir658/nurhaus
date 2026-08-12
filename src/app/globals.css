@@ -203,30 +203,40 @@ img, video { display: block; max-width: 100%; }
 }
 
 /* ============================================================
-   PHYSICAL CARDSTOCK EMBOSS (footer wordmark)
-   Static, non-interactive. Text color matches the footer background
-   exactly; top-down lighting — a crisp highlight strictly on the top
-   edge and a heavy, layered shadow pooling strictly at the bottom —
-   is the only thing that reveals the letterforms, like a letterpress
-   emboss lit from directly above.
+   PAPER-STAIN EMBOSS (footer wordmark)
+   Static, non-interactive. Fill is fully transparent — no color, no
+   background-image, no blend mode, nothing painted for the glyphs at
+   all. The letterforms act as a pure cut-out: they reveal whichever
+   background is directly behind them — the stain div's photo up top,
+   the default light paper theme below it once the section changes —
+   pixel for pixel, at every point along the text. There is no second
+   copy of any image anywhere in the DOM to duplicate, scale, or
+   misalign, so the color/texture match is exact and automatic on
+   both backgrounds at once, not something that has to be tuned per
+   background.
 
-   Every offset/blur/stroke below is in em, not px. The wordmark's
-   font-size is fluid (17vw, no breakpoints), so a fixed-px shadow
-   reads correctly at exactly one viewport width and looks muddy
-   (mobile) or flat (ultra-wide desktop) everywhere else. em keeps
-   the lighting proportional to the letterforms at every size.
+   The shadow is deliberately just two layers, both razor-thin and
+   low-opacity: a warm-white highlight offset up-left and a warm-dark
+   lowlight offset down-right, matching a single light source from the
+   upper-left corner of the page. That diagonal (not a purely vertical
+   offset) plus the tight blur is what reads as a clean, subtle raised
+   bulge — like the paper was pushed up from behind — rather than a
+   heavy carved bevel or a drop shadow. No color here is pure white or
+   black; both lean warm to match the paper instead of looking pasted
+   on top of it.
+
+   Offsets/blur are in em, not px, so the effect stays hairline-thin
+   proportionally at every size the fluid ~17vw wordmark can render at.
    ============================================================ */
 .wordmark-emboss {
   margin: 0;
-  color: #1c1712;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  -webkit-text-stroke: max(0.4px, 0.004em) #1c1712;
+  color: transparent;
   text-shadow:
-    0 -0.005em 0.0075em rgba(255, 255, 255, 0.15),
-    0 0.01em 0.01em rgba(0, 0, 0, 0.8),
-    0 0.02em 0.04em rgba(0, 0, 0, 0.4);
+    -0.008em -0.008em 0.006em rgba(255, 251, 240, 0.45),
+    0.008em 0.008em 0.006em rgba(92, 74, 58, 0.32);
 }
 
 /* ============================================================

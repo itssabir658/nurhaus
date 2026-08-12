@@ -81,7 +81,7 @@ export default async function RootLayout({
       lang="en"
       className={`${cormorant.variable} ${inter.variable} ${figtree.variable} ${manrope.variable} ${brolimo.variable} ${felixti.variable}`}
     >
-      <body className="bg-primary text-ink font-sans">
+      <body className="bg-paper bg-paper-texture bg-paper-tile bg-repeat text-ink font-sans">
         <Providers searchProducts={searchProducts} visitorCountry={visitorCountry}>{children}</Providers>
       </body>
     </html>
