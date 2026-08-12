@@ -158,7 +158,7 @@ export default function FAQPage() {
       </div>
 
       {/* Bottom CTA */}
-      <div className="border-t border-hairline bg-secondary/20">
+      <div className="border-t border-hairline bg-stain">
         <div className="site-max site-px py-16 md:py-20 text-center">
           <p className="font-display text-2xl md:text-3xl tracking-tight mb-8">Still have a question?</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -124,7 +124,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
       </section>
 
       {/* STORY TEASE */}
-      <section className="bg-secondary/30">
+      <section>
         <div className="site-max site-px py-14 md:py-40 grid md:grid-cols-2 gap-10 md:gap-16 items-center">
           <motion.div
             className="aspect-[4/5] overflow-hidden"

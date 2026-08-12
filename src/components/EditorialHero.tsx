@@ -192,6 +192,11 @@ export default function EditorialHero() {
   }, []);
 
   // Mobile: gentle auto-scroll every ~4.5s, pausing while the visitor is touching.
+  // The track renders the image list twice back-to-back; once we've scrolled
+  // through one full set we silently rewind by exactly one set-width (the
+  // duplicate lines up pixel-for-pixel with the original) before continuing
+  // forward, so it reads as scrolling right forever instead of snapping back
+  // to the first image.
   useEffect(() => {
     if (reducedMotion) return;
     const track = mobileTrackRef.current;
@@ -201,9 +206,13 @@ export default function EditorialHero() {
       if (mobilePausedRef.current) return;
       const card = track.children[0] as HTMLElement | undefined;
       const step = card ? card.offsetWidth + 12 : track.clientWidth * 0.85;
-      const next = track.scrollLeft + step;
-      const atEnd = next >= track.scrollWidth - track.clientWidth - 4;
-      track.scrollTo({ left: atEnd ? 0 : next, behavior: 'smooth' });
+      const singleSetWidth = track.scrollWidth / 2;
+
+      if (track.scrollLeft >= singleSetWidth) {
+        track.scrollLeft -= singleSetWidth;
+      }
+
+      track.scrollTo({ left: track.scrollLeft + step, behavior: 'smooth' });
     }, 4500);
 
     const pause = () => {
@@ -231,27 +240,31 @@ export default function EditorialHero() {
   }, [reducedMotion]);
 
   return (
-    <section className="relative -mt-[124px] pt-[124px] bg-primary overflow-hidden">
+    <section className="relative -mt-[124px] pt-[124px] bg-paper bg-paper-texture bg-paper-tile bg-repeat overflow-hidden">
       {/* Full-bleed floral watermark — spans the entire hero canvas including the
           area behind the fixed nav (the -mt/pt trick above pulls this section's own
           box up to the true page top, y=0, instead of starting below the nav). A
           different source image is used per breakpoint (landscape vs portrait crop).
-          Source PNGs have transparent backgrounds with dark line work, shown at
-          partial opacity directly (no `invert`) against the off-white section bg. */}
+          Rendered at full opacity/quality (no milky opacity fade, no compression
+          softening) so the HD emboss shadows stay crisp, and shown at its own
+          natural color/tone — no grayscale or mix-blend-multiply — rather than
+          color-matched against the section's paper-texture background. */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
         <Image
           src="/patterns/floral-desktop.png"
           alt=""
           fill
           priority
-          className="hidden md:block object-cover opacity-40"
+          quality={100}
+          className="hidden md:block object-cover"
         />
         <Image
           src="/patterns/floral-mobile.png"
           alt=""
           fill
           priority
-          className="md:hidden object-cover opacity-40"
+          quality={100}
+          className="md:hidden object-cover"
         />
       </div>
 
@@ -373,9 +386,9 @@ export default function EditorialHero() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="relative z-10 -mx-6 flex gap-3 overflow-x-auto px-6 pb-1 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
-          {IMAGES.map((img, i) => (
+          {[...IMAGES, ...IMAGES].map((img, i) => (
             <div
-              key={img.src}
+              key={`${img.src}-${i}`}
               className="relative flex-shrink-0 snap-start w-[86%] h-[300px] overflow-hidden"
             >
               <BreathingImage

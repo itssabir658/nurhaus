@@ -18,6 +18,14 @@ const config: Config = {
         midnight:  '#1C1712',
         smoke:     '#7A746F',
         muted:     '#B8AFA7',
+        paper:     '#F6F2E6',
+        stain:     '#EEE5DA',
+      },
+      backgroundImage: {
+        'paper-texture': "url('/doen-bg_update.jpg')",
+      },
+      backgroundSize: {
+        'paper-tile': '480px',
       },
       fontFamily: {
         display: ['TT Ramillas', 'Georgia', 'serif'],

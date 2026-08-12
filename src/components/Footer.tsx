@@ -17,37 +17,49 @@ const careLinks  = [
 
 export default function Footer() {
   return (
-    <footer className="footer-grain relative bg-midnight text-primary overflow-hidden">
-      {/* Gold seam — the transition from the cream body into the dark footer */}
-      <div className="h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
+    <footer className="relative text-ink overflow-hidden">
+      {/* Stain — torn-paper texture with the embossed wordmark baked into a
+          single image, shown at every breakpoint. bg-stain is a loading-state
+          fallback color behind it. */}
+      <div className="relative bg-stain min-h-[260px] md:min-h-[360px] overflow-hidden flex items-end justify-center">
+        <Image
+          src="/footer-wordmark.png"
+          alt=""
+          aria-hidden="true"
+          width={1508}
+          height={1043}
+          className="select-none w-full h-auto"
+        />
+      </div>
 
-      {/* Brand + links */}
-      <div className="site-max site-px pt-6 pb-6 md:pb-8">
-        {/* Logo — above the grid so description aligns with column headings */}
-        <Link href="/" aria-label="NÜR HAUS home" className="inline-block mb-10">
-          <Image
-            src="/nurhaus-logo.svg"
-            alt="NÜR HAUS"
-            width={64}
-            height={48}
-            className="h-12 w-auto object-contain invert"
-          />
-        </Link>
+      {/* Divider — back to the default light paper theme below the stain */}
+      <div className="site-max site-px">
+        <div className="border-t border-hairline" />
+      </div>
 
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-x-6 md:gap-x-8 gap-y-10 md:gap-y-14">
+      {/* Brand + links — refined editorial grid */}
+      <div className="site-max site-px pt-12 pb-8 md:pt-16 md:pb-10">
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-x-6 md:gap-x-8 gap-y-10">
           {/* Brand column */}
-          <div className="col-span-3 md:col-span-2 flex flex-col justify-between">
-            <div>
-              <p className="text-sm text-primary/55 leading-relaxed max-w-[220px]">
-                Modest silhouettes, in measured light. Made in small batches, for women who dress with intention.
-              </p>
-            </div>
-            <div className="flex items-center gap-3 mt-10">
-              <span className="text-xs text-primary/45 tracking-wide">Find us on</span>
+          <div className="col-span-3 md:col-span-2">
+            <Link href="/" aria-label="NÜR HAUS home" className="inline-block mb-5">
+              <Image
+                src="/nurhaus-logo.png"
+                alt="NÜR HAUS"
+                width={655}
+                height={464}
+                className="h-9 w-auto object-contain"
+              />
+            </Link>
+            <p className="text-sm text-gray-700 leading-relaxed max-w-[240px]">
+              Modest silhouettes, in measured light. Made in small batches, for women who dress with intention.
+            </p>
+            <div className="flex items-center gap-3 mt-6">
+              <span className="text-[10px] tracking-widest uppercase text-accent">Find us on</span>
               <a
                 href="https://www.instagram.com/nurhausco?igsh=cGs3dDd1end5c3Rs"
                 aria-label="Instagram"
-                className="opacity-90 hover:opacity-100 transition-opacity duration-300"
+                className="text-gray-700 opacity-90 hover:opacity-100 transition-opacity duration-300"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -58,7 +70,7 @@ export default function Footer() {
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="w-6 h-6"
+                  className="w-5 h-5"
                   aria-hidden="true"
                 >
                   <rect x="2" y="2" width="20" height="20" rx="5" />
@@ -70,13 +82,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="eyebrow-light mb-5">Shop</p>
-            <ul className="space-y-3">
+            <p className="text-[10px] tracking-widest uppercase text-accent mb-4">Shop</p>
+            <ul className="space-y-2.5">
               {shopLinks.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-primary/60 hover:text-primary transition-colors duration-300"
+                    className="text-sm text-gray-700 hover:text-ink transition-colors duration-300"
                   >
                     {l.label}
                   </Link>
@@ -85,13 +97,13 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <p className="eyebrow-light mb-5">House</p>
-            <ul className="space-y-3">
+            <p className="text-[10px] tracking-widest uppercase text-accent mb-4">House</p>
+            <ul className="space-y-2.5">
               {houseLinks.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-primary/60 hover:text-primary transition-colors duration-300"
+                    className="text-sm text-gray-700 hover:text-ink transition-colors duration-300"
                   >
                     {l.label}
                   </Link>
@@ -100,13 +112,13 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <p className="eyebrow-light mb-5">Policies</p>
-            <ul className="space-y-3">
+            <p className="text-[10px] tracking-widest uppercase text-accent mb-4">Policies</p>
+            <ul className="space-y-2.5">
               {careLinks.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-primary/60 hover:text-primary transition-colors duration-300"
+                    className="text-sm text-gray-700 hover:text-ink transition-colors duration-300"
                   >
                     {l.label}
                   </Link>
@@ -116,30 +128,20 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Signature credit — sits in the footer's existing bottom whitespace,
-            so it never grows the footer or reads as its own section. */}
-        <p className="mt-6 md:mt-8 text-center md:text-left text-[11px] tracking-[0.1em] text-primary/55">
-          Designed &amp; Developed by{' '}
-          <a
-            href="https://www.itssabir.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="signature-pulse text-primary transition-opacity duration-300"
-          >
-            Sabir
-          </a>
-        </p>
-      </div>
-
-      {/* Embossed wordmark — full-width, flush to footer bottom, carved
-          into the cardstock via a static top-left highlight / bottom-right shadow. */}
-      <div aria-hidden="true" className="select-none mt-6 pt-[0.15em]">
-        <p
-          className="wordmark-emboss text-center text-[17vw] leading-[0.82] tracking-[0.02em] whitespace-nowrap"
-          style={{ fontFamily: 'var(--font-felixti)' }}
-        >
-          NÜR HAUS
-        </p>
+        {/* Bottom credits */}
+        <div className="border-t border-hairline mt-10 pt-6">
+          <p className="text-center md:text-left text-[10px] tracking-widest uppercase text-accent">
+            Designed &amp; Developed by{' '}
+            <a
+              href="https://www.itssabir.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="signature-pulse text-gray-700 transition-opacity duration-300"
+            >
+              Sabir
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );
