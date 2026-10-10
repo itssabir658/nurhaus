@@ -6,6 +6,7 @@ import Footer from './Footer';
 import CartDrawer from './CartDrawer';
 import SearchOverlay from './SearchOverlay';
 import AnnouncementBar from './AnnouncementBar';
+import MetaPixel from './MetaPixel';
 import { NurhausContext } from '@/contexts/NurhausContext';
 import { CartProvider } from '@/contexts/CartContext';
 import { GeoProvider } from '@/contexts/GeoContext';
@@ -67,6 +68,7 @@ export default function Providers({
     <GeoProvider value={{ isUSVisitor, isCanadaVisitor }}>
       <NurhausContext.Provider value={{ openWaitlist, openCart }}>
         <CartProvider>
+          <MetaPixel />
           {!isUSVisitor && <AnnouncementBar />}
           <Navigation
             onCartOpen={() => setCartOpen(true)}

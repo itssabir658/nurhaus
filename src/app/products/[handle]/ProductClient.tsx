@@ -10,6 +10,7 @@ import { useGeo } from '@/contexts/GeoContext';
 import SizeGuideModal from '@/components/SizeGuideModal';
 import { getSizeGuideData } from '@/lib/sizeGuides';
 import type { AppProduct } from '@/lib/shopify/types';
+import { trackViewContent, trackInitiateCheckout } from '@/lib/meta/pixel';
 
 const ACCORDION_ITEMS = ['description', 'care'] as const;
 const ACCORDION_LABELS: Record<typeof ACCORDION_ITEMS[number], string> = {
@@ -102,6 +103,14 @@ export default function ProductClient({
     } catch { /* ignore */ }
   }, [product.handle, related]);
 
+  // ViewContent fires once per product, not per variant selection — otherwise
+  // picking through sizes inflates the event count and skews optimisation.
+  useEffect(() => {
+    if (isDemo) return;
+    trackViewContent(product);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.handle, isDemo]);
+
   const triggerSizeError = () => {
     setSizeError(true);
     window.setTimeout(() => setSizeError(false), 600);
@@ -167,6 +176,7 @@ export default function ProductClient({
       // this creates/updates the cart for just this variant, then hands off to Shopify's
       // hosted checkout, bypassing the cart page entirely.
       const updatedCart = await addItem(variant.id, safeQty);
+      trackInitiateCheckout(updatedCart);
       window.location.href = updatedCart.checkoutUrl;
     } finally {
       setIsBuyingNow(false);

@@ -8,6 +8,7 @@ import {
   removeCartLineAction,
 } from '@/lib/shopify/actions';
 import type { AppCart } from '@/lib/shopify/types';
+import { trackAddToCart } from '@/lib/meta/pixel';
 
 interface CartContextValue {
   cart: AppCart | null;
@@ -36,6 +37,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       const updated = await addToCartAction(merchandiseId, quantity);
       setCart(updated);
+
+      // Read the line back off the cart so the event carries the real price
+      // and title Shopify returned, rather than anything the caller passed.
+      const line = updated.lines.find((l) => l.variantId === merchandiseId);
+      if (line) {
+        trackAddToCart({
+          variantId: line.variantId,
+          name: line.productTitle,
+          price: line.price,
+          currency: updated.currency,
+          quantity,
+        });
+      }
+
       return updated;
     } finally {
       setIsMutating(false);

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import { useGeo } from '@/contexts/GeoContext';
 import type { AppProduct } from '@/lib/shopify/types';
+import { trackInitiateCheckout } from '@/lib/meta/pixel';
 
 const FREE_SHIPPING_THRESHOLD = 250;
 
@@ -30,6 +31,7 @@ export default function CartPageClient({
     // checkout session (host + path + key) — hand off to it as-is. Rewriting the
     // hostname to a custom domain here is unsafe: it silently 404s unless that
     // domain is verified/connected as the shop's checkout domain in Shopify Admin.
+    trackInitiateCheckout(cart);
     setIsRedirecting(true);
     window.location.href = cart.checkoutUrl;
   };
