@@ -9,6 +9,7 @@ import {
   addCartLines,
   updateCartLines,
   removeCartLines,
+  updateCartAttributes,
 } from './index';
 import type { AppCart } from './types';
 
@@ -58,4 +59,29 @@ export async function updateCartLineAction(lineId: string, quantity: number): Pr
 export async function removeCartLineAction(lineId: string): Promise<AppCart> {
   const cart = await getOrCreateCart();
   return removeCartLines(cart.id, [lineId]);
+}
+
+/**
+ * Attaches the viewer's Meta click identifiers to the cart so they survive into
+ * the order. `_fbp` and `_fbc` are browser cookies on this storefront; checkout
+ * completes on Shopify's domain, so the orders webhook would otherwise have no
+ * way to know which ad click produced the sale.
+ *
+ * Never throws — attribution is best-effort and must not break adding to cart.
+ */
+export async function attachAttributionAction(
+  fbp: string | null,
+  fbc: string | null,
+): Promise<void> {
+  if (!fbp && !fbc) return;
+  try {
+    const cart = await getOrCreateCart();
+    const attributes = [
+      ...(fbp ? [{ key: '_fbp', value: fbp }] : []),
+      ...(fbc ? [{ key: '_fbc', value: fbc }] : []),
+    ];
+    await updateCartAttributes(cart.id, attributes);
+  } catch (err) {
+    console.error('[attribution] could not attach _fbp/_fbc to cart', err);
+  }
 }

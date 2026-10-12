@@ -174,6 +174,17 @@ export const cartCreateMutation = `
   ${IMAGE_FRAGMENT}
 `;
 
+export const cartAttributesUpdateMutation = `
+  mutation CartAttributesUpdate($cartId: ID!, $attributes: [AttributeInput!]!) {
+    cartAttributesUpdate(cartId: $cartId, attributes: $attributes) {
+      cart { ...CartFragment }
+      userErrors { field message }
+    }
+  }
+  ${CART_FRAGMENT}
+  ${IMAGE_FRAGMENT}
+`;
+
 export const cartLinesAddMutation = `
   mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
     cartLinesAdd(cartId: $cartId, lines: $lines) {
