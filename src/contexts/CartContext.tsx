@@ -6,7 +6,9 @@ import {
   addToCartAction,
   updateCartLineAction,
   removeCartLineAction,
+  attachAttributionAction,
 } from '@/lib/shopify/actions';
+import { getMetaClickIds } from '@/lib/meta/attribution';
 import type { AppCart } from '@/lib/shopify/types';
 import { trackAddToCart } from '@/lib/meta/pixel';
 
@@ -37,6 +39,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       const updated = await addToCartAction(merchandiseId, quantity);
       setCart(updated);
+
+      // Stamp the Meta click IDs onto the cart the first time something is
+      // added. They ride through to the order as note_attributes, which is the
+      // only way the orders webhook can attribute the sale to an ad click.
+      // Deliberately not awaited — attribution must never delay the UI.
+      const { fbp, fbc } = getMetaClickIds();
+      void attachAttributionAction(fbp, fbc);
 
       // Read the line back off the cart so the event carries the real price
       // and title Shopify returned, rather than anything the caller passed.

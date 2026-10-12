@@ -28,6 +28,11 @@ interface ShopifyLineItem {
   title: string;
 }
 
+interface ShopifyNoteAttribute {
+  name: string;
+  value: string;
+}
+
 interface ShopifyOrder {
   id: number;
   admin_graphql_api_id?: string;
@@ -38,6 +43,13 @@ interface ShopifyOrder {
   created_at?: string;
   order_status_url?: string;
   line_items?: ShopifyLineItem[];
+  /** Cart attributes set on the storefront — carries _fbp / _fbc. */
+  note_attributes?: ShopifyNoteAttribute[];
+  /** Shopify records the shopper's own IP and user agent here, not its servers'. */
+  client_details?: {
+    browser_ip?: string | null;
+    user_agent?: string | null;
+  } | null;
   customer?: {
     first_name?: string | null;
     last_name?: string | null;
@@ -85,6 +97,20 @@ export async function POST(request: Request) {
   const lineItems = order.line_items ?? [];
   const address = order.shipping_address;
 
+  // The storefront stamps these onto the cart before checkout; Shopify hands
+  // them back here. They are the strongest attribution signal available —
+  // without them Meta sees a purchase it cannot tie to any ad click.
+  const noteAttr = (name: string) =>
+    order.note_attributes?.find((a) => a.name === name)?.value ?? null;
+  const fbp = noteAttr('_fbp');
+  const fbc = noteAttr('_fbc');
+
+  if (!fbp && !fbc) {
+    console.warn(
+      `[shopify/orders] order ${order.id} has no _fbp/_fbc — purchase will likely be unattributed`,
+    );
+  }
+
   const result = await sendCapiEvent({
     eventName: 'Purchase',
     // Stable and derived from the order, so Shopify's webhook retries
@@ -104,6 +130,10 @@ export async function POST(request: Request) {
       state: address?.province_code ?? address?.province,
       zip: address?.zip,
       country: address?.country_code,
+      clientIpAddress: order.client_details?.browser_ip,
+      clientUserAgent: order.client_details?.user_agent,
+      fbp,
+      fbc,
     },
     customData: {
       // value and currency are REQUIRED for Purchase — without them there is

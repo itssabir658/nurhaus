@@ -4,6 +4,7 @@ import {
   getProductByHandleQuery,
   getCartQuery,
   cartCreateMutation,
+  cartAttributesUpdateMutation,
   cartLinesAddMutation,
   cartLinesUpdateMutation,
   cartLinesRemoveMutation,
@@ -73,6 +74,26 @@ export async function createCart(lines: { merchandiseId: string; quantity: numbe
   assertNoUserErrors(data.cartCreate.userErrors);
   if (!data.cartCreate.cart) throw new Error('Shopify did not return a cart.');
   return toAppCart(data.cartCreate.cart);
+}
+
+/**
+ * Stamps key/value attributes onto the cart. Shopify carries these through to
+ * the order as `note_attributes`, which is how the Meta click identifiers
+ * (_fbp / _fbc) survive the jump from this storefront to Shopify's hosted
+ * checkout and back out through the orders webhook. Without them the
+ * Conversions API cannot tie a purchase to the ad click that caused it.
+ */
+export async function updateCartAttributes(
+  cartId: string,
+  attributes: { key: string; value: string }[]
+): Promise<AppCart> {
+  const data = await shopifyFetch<{ cartAttributesUpdate: CartMutationResponse }>({
+    query: cartAttributesUpdateMutation,
+    variables: { cartId, attributes },
+  });
+  assertNoUserErrors(data.cartAttributesUpdate.userErrors);
+  if (!data.cartAttributesUpdate.cart) throw new Error('Shopify did not return a cart.');
+  return toAppCart(data.cartAttributesUpdate.cart);
 }
 
 export async function addCartLines(
