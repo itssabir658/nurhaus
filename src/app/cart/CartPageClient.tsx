@@ -5,11 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
-import { useGeo } from '@/contexts/GeoContext';
 import type { AppProduct } from '@/lib/shopify/types';
 import { trackInitiateCheckout } from '@/lib/meta/pixel';
-
-const FREE_SHIPPING_THRESHOLD = 250;
+import { FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
 
 export default function CartPageClient({
   crossSell,
@@ -17,7 +15,6 @@ export default function CartPageClient({
   crossSell: AppProduct[];
 }) {
   const { cart, isLoading, isMutating, updateItem, removeItem } = useCart();
-  const { isUSVisitor } = useGeo();
   const [isRedirecting, setIsRedirecting] = useState(false);
   const lines = cart?.lines ?? [];
   const subtotal = cart?.subtotal ?? 0;
@@ -66,8 +63,10 @@ export default function CartPageClient({
         </div>
       ) : (
         <div className="site-max site-px py-12">
-          {/* Shipping progress — the $250 free-shipping promo doesn't apply to US orders */}
-          {!isUSVisitor && (
+          {/* Shipping progress. Shown to US visitors too now — the threshold
+              applies in both markets, and hiding it previously meant US shoppers
+              reached checkout with no idea shipping would be charged. */}
+          {(
             <div className="mb-10 p-5 border border-hairline">
               <div className="flex items-center justify-between mb-3 text-sm">
                 <p className="text-smoke">
