@@ -4,18 +4,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
-import { useGeo } from '@/contexts/GeoContext';
+import { FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
 
 interface CartDrawerProps {
   open:    boolean;
   onClose: () => void;
 }
 
-const SHIPPING_THRESHOLD = 250;
+const SHIPPING_THRESHOLD = FREE_SHIPPING_THRESHOLD;
 
 export default function CartDrawer({ open, onClose }: CartDrawerProps) {
   const { cart, isLoading, isMutating, updateItem, removeItem } = useCart();
-  const { isUSVisitor } = useGeo();
   const lines = cart?.lines ?? [];
   const subtotal = cart?.subtotal ?? 0;
   const shippingProgress = Math.min((subtotal / SHIPPING_THRESHOLD) * 100, 100);
@@ -56,8 +55,10 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
               </button>
             </div>
 
-            {/* Shipping progress — the $250 free-shipping promo doesn't apply to US orders */}
-            {!isUSVisitor && (
+            {/* Shipping progress. Shown in every market now — the threshold
+                applies to US orders too, and hiding it left US shoppers unaware
+                shipping would be charged until checkout. */}
+            {(
               <div className="px-8 py-4 border-b border-hairline bg-secondary/30 flex-shrink-0">
                 {subtotal >= SHIPPING_THRESHOLD ? (
                   <p className="text-xs text-accent font-medium tracking-wide">

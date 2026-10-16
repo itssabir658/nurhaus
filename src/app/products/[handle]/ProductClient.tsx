@@ -11,6 +11,7 @@ import SizeGuideModal from '@/components/SizeGuideModal';
 import { getSizeGuideData } from '@/lib/sizeGuides';
 import type { AppProduct } from '@/lib/shopify/types';
 import { trackViewContent, trackInitiateCheckout } from '@/lib/meta/pixel';
+import { shippingPromise } from '@/lib/shipping';
 
 const ACCORDION_ITEMS = ['description', 'care'] as const;
 const ACCORDION_LABELS: Record<typeof ACCORDION_ITEMS[number], string> = {
@@ -39,7 +40,7 @@ export default function ProductClient({
 }) {
   const { openWaitlist, openCart } = useNurhaus();
   const { addItem } = useCart();
-  const { isUSVisitor, isCanadaVisitor } = useGeo();
+  const { isCanadaVisitor } = useGeo();
 
   const [activeImage, setActiveImage]     = useState(0);
   const [selectedSize, setSelectedSize]   = useState('');
@@ -436,16 +437,13 @@ export default function ProductClient({
                 </div>
               </div>
 
-              {/* Trust signals — the $250 free-shipping promo doesn't apply to US orders,
-                  and calls out "across Canada" specifically for CA visitors */}
+              {/* Trust signals. The shipping line shows everywhere now: hiding it
+                  from US visitors left them with no shipping information at all,
+                  so the cost first appeared at checkout as a surprise — the single
+                  biggest drop in the funnel. Stating it up front is the fix. */}
               <div className="mt-8 pt-8 border-t border-hairline space-y-3">
                 {[
-                  ...(isUSVisitor ? [] : [{
-                    icon: '✦',
-                    text: isCanadaVisitor
-                      ? 'Complimentary shipping across Canada on orders above $250'
-                      : 'Complimentary shipping on orders above $250',
-                  }]),
+                  { icon: '✦', text: shippingPromise(isCanadaVisitor) },
                   { icon: '✦', text: 'Each piece finished by hand' },
                 ].map((item) => (
                   <p key={item.text} className="text-xs text-smoke flex items-start gap-3">
