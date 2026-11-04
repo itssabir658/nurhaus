@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import type { AppProduct } from '@/lib/shopify/types';
 import { getServerCampaignState } from '@/lib/campaign/server';
 import { getMarkdown, formatMoney } from '@/lib/pricing';
+import { isFullySoldOut } from '@/lib/productStatus';
 
 async function loadProduct(handle: string): Promise<AppProduct | null> {
   const live = isShopifyConfigured ? await getProductByHandle(handle).catch(() => null) : null;
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: { params: { handle: string } 
   const product = await loadProduct(params.handle);
   if (!product) return {};
   const { live } = await getServerCampaignState();
-  const markdown = live ? getMarkdown(product.price, product.compareAtPrice) : null;
+  const markdown = live && !isFullySoldOut(product) ? getMarkdown(product.price, product.compareAtPrice) : null;
 
   const title = markdown ? `${product.name} — ${markdown.percentOff}% Off` : `${product.name} — ${product.kind}`;
   const priceLine = markdown

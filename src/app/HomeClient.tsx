@@ -8,7 +8,8 @@ import ShopifySetupNotice from '@/components/ShopifySetupNotice';
 import EditorialHero, { type HeroContent } from '@/components/EditorialHero';
 import { CampaignCountdown } from '@/components/campaign/Countdown';
 import { SaleBenefits } from '@/components/campaign/SaleBenefits';
-import { PriceTag, SaleBadge } from '@/components/campaign/PriceTag';
+import { PriceTag, SaleBadge, BestsellerBadge } from '@/components/campaign/PriceTag';
+import { isFullySoldOut, isBestseller } from '@/lib/productStatus';
 import { useCampaign } from '@/contexts/CampaignContext';
 import { matchesCampaignPercent } from '@/lib/pricing';
 
@@ -59,7 +60,7 @@ function SaleEdit({ products }: { products: AppProduct[] }) {
   if (!campaign || !isLive) return null;
 
   const pieces = products
-    .filter((p) => p.availableForSale && matchesCampaignPercent(saleFor(p.price, p.compareAtPrice), campaign.discountPercent))
+    .filter((p) => !isFullySoldOut(p) && matchesCampaignPercent(saleFor(p.price, p.compareAtPrice), campaign.discountPercent))
     .slice(0, 4);
   if (pieces.length === 0) return null;
 
@@ -117,7 +118,7 @@ function SaleEdit({ products }: { products: AppProduct[] }) {
                 <p className="eyebrow mb-1.5">{p.kind}</p>
                 <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                   <span className="font-product text-lg md:text-xl">{p.name}</span>
-                  <PriceTag price={p.price} compareAt={p.compareAtPrice} />
+                  <PriceTag price={p.price} compareAt={p.compareAtPrice} soldOut={isFullySoldOut(p)} />
                 </div>
               </Link>
             </motion.div>
@@ -136,8 +137,21 @@ function SaleEdit({ products }: { products: AppProduct[] }) {
 
 function CardBadge({ product }: { product: AppProduct }) {
   const { saleFor } = useCampaign();
-  const markdown = saleFor(product.price, product.compareAtPrice);
-  return markdown ? <SaleBadge markdown={markdown} className="absolute top-3 left-3 md:top-4 md:left-4" /> : null;
+  const soldOut = isFullySoldOut(product);
+  const markdown = soldOut ? null : saleFor(product.price, product.compareAtPrice);
+  return (
+    <>
+      {(markdown || isBestseller(product)) && (
+        <div className="absolute top-3 left-3 md:top-4 md:left-4 flex flex-col items-start gap-2">
+          {markdown && <SaleBadge markdown={markdown} />}
+          {isBestseller(product) && <BestsellerBadge />}
+        </div>
+      )}
+      {soldOut && (
+        <span className="absolute top-3 right-3 md:top-4 md:right-4 bg-midnight/80 px-3 py-1 eyebrow text-primary">Sold Out</span>
+      )}
+    </>
+  );
 }
 
 export default function HomeClient({ products, configured }: { products: AppProduct[]; configured: boolean }) {
@@ -213,7 +227,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                   <p className="eyebrow mb-1.5">{p.kind}</p>
                   <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                     <span className="font-product text-xl">{p.name}</span>
-                    <PriceTag price={p.price} compareAt={p.compareAtPrice} />
+                    <PriceTag price={p.price} compareAt={p.compareAtPrice} soldOut={isFullySoldOut(p)} />
                   </div>
                 </Link>
               </motion.div>
@@ -246,7 +260,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                       <p className="eyebrow mb-1.5">{product.kind}</p>
                       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                         <span className="font-product text-xl">{product.name}</span>
-                        <PriceTag price={product.price} compareAt={product.compareAtPrice} />
+                        <PriceTag price={product.price} compareAt={product.compareAtPrice} soldOut={isFullySoldOut(product)} />
                       </div>
                     </Link>
                   </motion.div>

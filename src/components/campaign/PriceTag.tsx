@@ -28,14 +28,17 @@ export function SaleBadge({ markdown, className = '' }: { markdown: Markdown; cl
 export function PriceTag({
   price,
   compareAt,
+  soldOut = false,
   className = '',
 }: {
   price: number;
   compareAt: number | null | undefined;
+  /** Fully sold-out pieces never carry sale styling — there is nothing to buy at that price. */
+  soldOut?: boolean;
   className?: string;
 }) {
   const { saleFor } = useCampaign();
-  const markdown = saleFor(price, compareAt);
+  const markdown = soldOut ? null : saleFor(price, compareAt);
 
   if (!markdown) {
     return <span className={`text-sm text-smoke ${className}`}>${price.toLocaleString()}</span>;
@@ -54,4 +57,16 @@ export function PriceTag({
 /** Hook form for components that need the markdown itself (badges, savings copy). */
 export function useSale(price: number, compareAt: number | null | undefined): Markdown | null {
   return useCampaign().saleFor(price, compareAt);
+}
+
+/** "Bestseller" label, shown for products tagged `bestseller` in Shopify. */
+export function BestsellerBadge({ className = '' }: { className?: string }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 bg-primary/95 text-ink px-2.5 py-1 text-[0.58rem] tracking-[0.22em] uppercase font-medium ${className}`}
+      style={{ fontFamily: 'var(--font-eyebrow)' }}
+    >
+      Bestseller
+    </span>
+  );
 }
