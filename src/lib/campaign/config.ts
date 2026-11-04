@@ -73,9 +73,9 @@ export const END_OF_SEASON_2026: Campaign = {
   name: 'End of Season Sale',
   discountPercent: 20,
   startsAt: null,
-  // 12:00 PM Eastern Standard Time (UTC-5) on Thursday 5 November 2026
+  // 12:00 PM Eastern Standard Time (UTC-5) on Saturday 14 November 2026
   // = 17:00 UTC. US daylight time ends 1 November, so EST (-05:00) is correct.
-  endsAt: '2026-11-05T12:00:00-05:00',
+  endsAt: '2026-11-14T12:00:00-05:00',
   requireShopifyMarkdown: true,
   shopHref: '/shop?category=sale',
   shopFilterParam: 'sale',
@@ -87,8 +87,8 @@ export const END_OF_SEASON_2026: Campaign = {
     heroBody: 'Discover timeless modest essentials. Enjoy 20% off selected styles during our End of Season Sale.',
     heroCta: 'Shop the Sale',
     countdownLabel: 'The Sale Ends In',
-    deadlineLabel: 'Thursday 5 November, 12:00 PM EST',
-    deadlineShort: 'Thu 5 Nov, 12 PM EST',
+    deadlineLabel: 'Saturday 14 November, 12:00 PM EST',
+    deadlineShort: 'Sat 14 Nov, 12 PM EST',
     productNote: 'End of Season Sale',
     shopEyebrow: 'End of Season Sale · 20% Off',
     shopFilterLabel: 'Sale',
