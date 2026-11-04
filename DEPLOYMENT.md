@@ -200,34 +200,3 @@ schedule the revert) at the deadline.
 
 Preview without Shopify: set `CAMPAIGN_DEMO_MARKDOWN=20` locally to mark the
 *demo* catalog down 20%. It has no effect when Shopify is connected.
-
----
-
-## 10. Newsletter and waiting-list sign-ups
-
-The "Join the Waiting List" popup on sold-out pieces posts to
-`/api/subscribe`, which saves the email in Shopify as a customer. The route
-also supports newsletter sign-ups (`NewsletterBlock`), but that form is not
-currently placed on the site:
-
-| Form | Shopify tags | Email marketing |
-|---|---|---|
-| Newsletter | `newsletter`, `website-signup` | Subscribed (shows in Shopify Email audiences) |
-| Waiting list | `waitlist`, `waitlist-<product-handle>` | Unchanged; the form promises contact about that piece only |
-
-Existing customers are tagged and updated, never duplicated or unsubscribed.
-To email a waiting list when a piece is back, filter Customers by its tag
-(e.g. `waitlist-saphira`).
-
-**Setup:** this store uses Shopify's new customer accounts, so the Storefront
-token can't create subscribers. It needs an **Admin API** token:
-
-1. Shopify admin → Settings → Apps → Develop apps → your custom app (or a new
-   one) → Configure **Admin API** scopes → enable `read_customers` and
-   `write_customers` → Install / update the app.
-2. Copy the **Admin API access token** (starts with `shpat_`).
-3. In Vercel → Project → Settings → Environment Variables, add
-   `SHOPIFY_ADMIN_ACCESS_TOKEN` (Production), then redeploy.
-
-Until the token is set, each sign-up is emailed to the store via Resend
-(`RESEND_API_KEY`) instead, so no sign-up is lost.
