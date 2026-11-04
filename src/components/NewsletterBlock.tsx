@@ -2,25 +2,14 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { submitSignup } from '@/lib/subscribe';
 
 export default function NewsletterBlock({ dark = false }: { dark?: boolean }) {
   const [email, setEmail]     = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending]     = useState(false);
-  const [error, setError]         = useState<string | null>(null);
-  const [company, setCompany]     = useState('');
 
-  // Saved to Shopify as a customer subscribed to email marketing (see /api/subscribe).
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (sending) return;
-    setSending(true);
-    setError(null);
-    const err = await submitSignup({ email, kind: 'newsletter', company });
-    setSending(false);
-    if (err) setError(err);
-    else setSubmitted(true);
+    setSubmitted(true);
   };
 
   const textClass    = dark ? 'text-primary' : 'text-ink';
@@ -44,21 +33,7 @@ export default function NewsletterBlock({ dark = false }: { dark?: boolean }) {
               Receive collection previews, editorial stories, and exclusive releases.
             </p>
             <form onSubmit={handleSubmit} className="max-w-xs mx-auto space-y-4">
-              {/* Honeypot: hidden from people, filled in by bots. */}
               <input
-                type="text"
-                name="company"
-                tabIndex={-1}
-                autoComplete="off"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                className="hidden"
-                aria-hidden="true"
-              />
-              <label htmlFor="newsletter-email" className="sr-only">Email address</label>
-              <input
-                id="newsletter-email"
-                autoComplete="email"
                 type="email"
                 required
                 value={email}
@@ -75,16 +50,12 @@ export default function NewsletterBlock({ dark = false }: { dark?: boolean }) {
                 }`}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
-                disabled={sending}
               >
-                {sending ? 'Joining…' : 'Join The Circle'}
+                Join The Circle
               </motion.button>
             </form>
-            {error && (
-              <p role="alert" className="text-xs mt-3 text-red-600">{error}</p>
-            )}
-            <p className={`text-[0.62rem] mt-4 tracking-[0.08em] leading-relaxed ${subtextClass}`}>
-              By joining you agree to receive emails from NÜR HAUS. Unsubscribe anytime.
+            <p className={`text-[0.62rem] mt-4 tracking-[0.08em] ${subtextClass}`}>
+              No spam. Only meaningful updates.
             </p>
           </motion.div>
         ) : (

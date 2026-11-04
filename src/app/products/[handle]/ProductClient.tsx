@@ -47,7 +47,7 @@ export default function ProductClient({
   related: AppProduct[];
   isDemo?: boolean;
 }) {
-  const { openWaitlist, openCart } = useNurhaus();
+  const { openCart } = useNurhaus();
   const { addItem } = useCart();
   const { isCanadaVisitor } = useGeo();
   const { campaign, saleFor } = useCampaign();
@@ -480,17 +480,10 @@ export default function ProductClient({
               {/* CTAs */}
               <div ref={ctaRef} className="space-y-3">
                 {productSoldOut ? (
-                  <>
-                    <button
-                      onClick={() => openWaitlist(product.name, product.handle)}
-                      className="btn-primary w-full"
-                    >
-                      Join the Waiting List
-                    </button>
-                    <p className="text-xs text-muted text-center">
-                      Be notified with priority access when this piece returns.
-                    </p>
-                  </>
+                  // Sold out: no waiting list. Point shoppers to what's available.
+                  <Link href="/shop" className="btn-outline w-full">
+                    Explore the Collection
+                  </Link>
                 ) : (
                   <>
                     <button

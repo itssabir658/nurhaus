@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import Navigation from './Navigation';
 import Footer from './Footer';
 import CartDrawer from './CartDrawer';
-import WaitlistPopup from './WaitlistPopup';
 import SearchOverlay from './SearchOverlay';
 import AnnouncementBar from './AnnouncementBar';
 import MetaPixel from './MetaPixel';
@@ -34,12 +33,6 @@ export default function Providers({
   const isCanadaVisitor = visitorCountry === 'CA';
   const [cartOpen, setCartOpen]     = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [waitlist, setWaitlist] = useState<{ open: boolean; name: string; handle: string }>({ open: false, name: '', handle: '' });
-  const openWaitlist = useCallback(
-    (name: string, handle: string) => setWaitlist({ open: true, name, handle }),
-    [],
-  );
-  const closeWaitlist = useCallback(() => setWaitlist((w) => ({ ...w, open: false })), []);
   const openCart = useCallback(() => setCartOpen(true), []);
 
   useEffect(() => {
@@ -78,7 +71,7 @@ export default function Providers({
   return (
     <GeoProvider value={{ isUSVisitor, isCanadaVisitor }}>
       <CampaignProvider serverNow={serverNow} verified={campaignVerified}>
-        <NurhausContext.Provider value={{ openWaitlist, openCart }}>
+        <NurhausContext.Provider value={{ openCart }}>
           <CartProvider>
             <MetaPixel />
             {/* Decides per visitor: campaign bar for everyone while a sale is
@@ -92,12 +85,6 @@ export default function Providers({
               open={cartOpen}
               onClose={() => setCartOpen(false)}
               suggestions={searchProducts}
-            />
-            <WaitlistPopup
-              open={waitlist.open}
-              productName={waitlist.name}
-              productHandle={waitlist.handle}
-              onClose={closeWaitlist}
             />
             <SearchOverlay
               open={searchOpen}
