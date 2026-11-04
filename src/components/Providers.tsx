@@ -10,6 +10,7 @@ import MetaPixel from './MetaPixel';
 import { NurhausContext } from '@/contexts/NurhausContext';
 import { CartProvider } from '@/contexts/CartContext';
 import { GeoProvider } from '@/contexts/GeoContext';
+import { CampaignProvider } from '@/contexts/CampaignContext';
 import type { AppProduct } from '@/lib/shopify/types';
 import Lenis from 'lenis';
 import gsap from 'gsap';
@@ -19,10 +20,14 @@ export default function Providers({
   children,
   searchProducts = [],
   visitorCountry = null,
+  serverNow,
+  campaignVerified = false,
 }: {
   children: React.ReactNode;
   searchProducts?: AppProduct[];
   visitorCountry?: string | null;
+  serverNow: number;
+  campaignVerified?: boolean;
 }) {
   const isUSVisitor = visitorCountry === 'US';
   const isCanadaVisitor = visitorCountry === 'CA';
@@ -66,28 +71,32 @@ export default function Providers({
 
   return (
     <GeoProvider value={{ isUSVisitor, isCanadaVisitor }}>
-      <NurhausContext.Provider value={{ openWaitlist, openCart }}>
-        <CartProvider>
-          <MetaPixel />
-          {!isUSVisitor && <AnnouncementBar />}
-          <Navigation
-            onCartOpen={() => setCartOpen(true)}
-            onSearchOpen={() => setSearchOpen(true)}
-          />
-          <CartDrawer
-            open={cartOpen}
-            onClose={() => setCartOpen(false)}
-          />
-          <SearchOverlay
-            open={searchOpen}
-            onClose={() => setSearchOpen(false)}
-            products={searchProducts}
-          />
-          {/* 44px announcement bar + 80px nav = 124px total header height */}
-          <main className="pt-[124px]">{children}</main>
-          <Footer />
-        </CartProvider>
-      </NurhausContext.Provider>
+      <CampaignProvider serverNow={serverNow} verified={campaignVerified}>
+        <NurhausContext.Provider value={{ openWaitlist, openCart }}>
+          <CartProvider>
+            <MetaPixel />
+            {/* Decides per visitor: campaign bar for everyone while a sale is
+                live, otherwise the shipping notice (hidden for US visitors). */}
+            <AnnouncementBar />
+            <Navigation
+              onCartOpen={() => setCartOpen(true)}
+              onSearchOpen={() => setSearchOpen(true)}
+            />
+            <CartDrawer
+              open={cartOpen}
+              onClose={() => setCartOpen(false)}
+            />
+            <SearchOverlay
+              open={searchOpen}
+              onClose={() => setSearchOpen(false)}
+              products={searchProducts}
+            />
+            {/* 44px announcement bar + 80px nav = 124px total header height */}
+            <main className="pt-[124px]">{children}</main>
+            <Footer />
+          </CartProvider>
+        </NurhausContext.Provider>
+      </CampaignProvider>
     </GeoProvider>
   );
 }

@@ -5,6 +5,9 @@ import { headers } from 'next/headers';
 import './globals.css';
 import Providers from '@/components/Providers';
 import { getProducts, isShopifyConfigured } from '@/lib/shopify';
+import { DEMO_PRODUCTS } from '@/lib/demoProducts';
+import { ACTIVE_CAMPAIGN } from '@/lib/campaign/config';
+import { catalogHonoursCampaign } from '@/lib/campaign/verify';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -76,13 +79,26 @@ export default async function RootLayout({
   const requestHeaders = await headers();
   const visitorCountry = requestHeaders.get('x-vercel-ip-country');
 
+  // Campaign gating. The sale is only advertised when Shopify's own prices
+  // carry the matching markdown (live catalog when connected; the demo
+  // catalog only when Shopify isn't configured at all). The request
+  // timestamp seeds the first render so server and client markup match.
+  const campaignCatalog = isShopifyConfigured ? searchProducts : DEMO_PRODUCTS;
+  const campaignVerified = catalogHonoursCampaign(campaignCatalog, ACTIVE_CAMPAIGN);
+  const serverNow = Date.now();
+
   return (
     <html
       lang="en"
       className={`${cormorant.variable} ${inter.variable} ${figtree.variable} ${manrope.variable} ${brolimo.variable} ${felixti.variable}`}
     >
       <body className="bg-primary text-ink font-sans">
-        <Providers searchProducts={searchProducts} visitorCountry={visitorCountry}>{children}</Providers>
+        <Providers
+          searchProducts={searchProducts}
+          visitorCountry={visitorCountry}
+          serverNow={serverNow}
+          campaignVerified={campaignVerified}
+        >{children}</Providers>
       </body>
     </html>
   );

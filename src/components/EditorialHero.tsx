@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -22,6 +22,41 @@ const IMAGES: GalleryImage[] = [
   { src: '/hero-editorial/7.jpg', alt: 'A lace fan and flowers laid out on the grass' },
   { src: '/hero-editorial/8.jpg', alt: 'Ordering coffee at a modern counter' },
 ];
+
+/**
+ * Copy shown beside the gallery. Defaults to the standing brand message;
+ * campaigns pass their own (plus a footer slot for the countdown) so they
+ * reuse this hero's photography and motion instead of duplicating it.
+ */
+export interface HeroContent {
+  /** Changes trigger a soft crossfade between messages (e.g. sale → sale closed). */
+  key: string;
+  eyebrow?: string;
+  /** Desktop headline; may contain line breaks. */
+  headline: ReactNode;
+  /** Mobile headline — single flowing line. */
+  headlineMobile: string;
+  body: string;
+  cta: { label: string; href: string };
+  /** Rendered under the CTA (campaign countdown). */
+  footer?: ReactNode;
+}
+
+export const DEFAULT_HERO_CONTENT: HeroContent = {
+  key: 'default',
+  headline: (
+    <>
+      Modest Silhouettes,
+      <br />
+      Thoughtfully Made.
+    </>
+  ),
+  headlineMobile: 'Modest Silhouettes, Thoughtfully Made.',
+  body: 'Small-batch abayas and dresses — light, easy, and made with intention.',
+  cta: { label: 'Shop Now', href: '/shop' },
+};
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const ROTATE_MS = 4000;
 const SWAP_TRANSITION = { duration: 1.2, ease: [0.22, 0.61, 0.36, 1] as const };
@@ -116,7 +151,8 @@ function GalleryColumn({
   );
 }
 
-export default function EditorialHero() {
+export default function EditorialHero({ content = DEFAULT_HERO_CONTENT }: { content?: HeroContent }) {
+  const hasFooter = Boolean(content.footer);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [columns, setColumns] = useState([0, 1, 2, 3]);
   const [hoveredCol, setHoveredCol] = useState<number | null>(null);
@@ -257,51 +293,78 @@ export default function EditorialHero() {
       </div>
 
       {/* ============ DESKTOP / TABLET (md+) ============ */}
-      <div className="relative z-10 hidden md:flex md:h-[calc(100vh-124px)] md:min-h-[560px]">
+      <div className={`relative z-10 hidden md:flex md:h-[calc(100vh-124px)] ${hasFooter ? 'md:min-h-[600px]' : 'md:min-h-[560px]'}`}>
         {/* Left — editorial copy */}
         <div className="flex items-center site-px w-[45%] lg:w-[40%]">
-          <div>
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-              className="font-display text-[#2E241E] text-[clamp(2.4rem,3.4vw,4rem)] leading-[1.15] tracking-tight"
-            >
-              Modest Silhouettes,
-              <br />
-              Thoughtfully Made.
-            </motion.h1>
-
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{ opacity: 1, scaleX: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="w-12 h-px bg-[#2E241E]/30 origin-left my-7"
-            />
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[#463A30] text-base leading-relaxed max-w-xs mb-10"
+              key={content.key}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.5, ease: EASE }}
             >
-              Small-batch abayas and dresses — light, easy, and made with intention.
-            </motion.p>
+              {content.eyebrow && (
+                <motion.p
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.05, ease: EASE }}
+                  className="eyebrow mb-5 flex items-center gap-3"
+                >
+                  <span className="sale-glint text-gold" aria-hidden="true">✦</span>
+                  {content.eyebrow}
+                </motion.p>
+              )}
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <Link
-                href="/shop"
-                className="group inline-flex items-center gap-3 rounded-full border border-[#2E241E]/40 bg-white/20 backdrop-blur-xl shadow-sm px-7 py-3.5 text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] transition-colors duration-300 hover:bg-[#2E241E] hover:text-white"
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
+                className={`font-display text-[#2E241E] text-[clamp(2.4rem,3.4vw,4rem)] leading-[1.15] tracking-tight ${hasFooter ? '[@media(max-height:820px)]:text-[clamp(2.2rem,3vw,3.2rem)]' : ''}`}
               >
-                Shop Now
-                <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </Link>
+                {content.headline}
+              </motion.h1>
+
+              <motion.div
+                initial={{ opacity: 0, scaleX: 0 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className={`w-12 h-px origin-left ${hasFooter ? 'bg-gold my-6 [@media(max-height:820px)]:my-4' : 'bg-[#2E241E]/30 my-7'}`}
+              />
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.6, ease: EASE }}
+                className={`text-[#463A30] text-base leading-relaxed ${hasFooter ? 'max-w-sm mb-8 [@media(max-height:820px)]:mb-6' : 'max-w-xs mb-10'}`}
+              >
+                {content.body}
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.75, ease: EASE }}
+              >
+                <Link
+                  href={content.cta.href}
+                  className="btn-campaign group inline-flex items-center gap-3 rounded-full border border-[#2E241E]/40 bg-white/20 backdrop-blur-xl shadow-sm px-7 py-3.5 text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] transition-colors duration-300"
+                >
+                  {content.cta.label}
+                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </Link>
+              </motion.div>
+
+              {content.footer && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.95, ease: EASE }}
+                  className="mt-10 pt-8 [@media(max-height:820px)]:mt-6 [@media(max-height:820px)]:pt-5 border-t border-[#2E241E]/10"
+                >
+                  {content.footer}
+                </motion.div>
+              )}
             </motion.div>
-          </div>
+          </AnimatePresence>
         </div>
 
         {/* Right — rotating editorial gallery */}
@@ -332,40 +395,65 @@ export default function EditorialHero() {
 
       {/* ============ MOBILE (< md) — text-first, swipeable peek gallery ============ */}
       <div className="relative z-10 md:hidden flex flex-col justify-center min-h-[calc(100svh-124px)] site-px py-8">
-        <div>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display text-[#2E241E] text-[clamp(2rem,9vw,2.75rem)] leading-[1.15] tracking-tight mb-4"
-          >
-            Modest Silhouettes, Thoughtfully Made.
-          </motion.h1>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div key={content.key} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            {content.eyebrow && (
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.05, ease: EASE }}
+                className="eyebrow mb-4 flex items-center gap-2.5"
+              >
+                <span className="sale-glint text-gold" aria-hidden="true">✦</span>
+                {content.eyebrow}
+              </motion.p>
+            )}
 
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[#463A30] text-[15px] font-medium leading-relaxed max-w-[90%] mb-6"
-          >
-            Small-batch abayas and dresses — light, easy, and made with intention.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-8"
-          >
-            <Link
-              href="/shop"
-              className="flex items-center justify-center gap-3 w-full h-[52px] rounded-full border border-[#2E241E]/40 bg-white/20 backdrop-blur-xl shadow-sm text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] active:bg-[#2E241E] active:text-white transition-colors duration-300"
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
+              className="font-display text-[#2E241E] text-[clamp(2rem,9vw,2.75rem)] leading-[1.15] tracking-tight mb-4"
             >
-              Shop Now
-              <span>→</span>
-            </Link>
+              {content.headlineMobile}
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.25, ease: EASE }}
+              className="text-[#463A30] text-[15px] font-medium leading-relaxed max-w-[90%] mb-6"
+            >
+              {content.body}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.35, ease: EASE }}
+              className={content.footer ? 'mb-7' : 'mb-8'}
+            >
+              <Link
+                href={content.cta.href}
+                className="flex items-center justify-center gap-3 w-full h-[52px] rounded-full border border-[#2E241E]/40 bg-white/20 backdrop-blur-xl shadow-sm text-[0.72rem] tracking-[0.1em] uppercase text-[#2E241E] active:bg-[#2E241E] active:text-white transition-colors duration-300"
+              >
+                {content.cta.label}
+                <span>→</span>
+              </Link>
+            </motion.div>
+
+            {content.footer && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.45, ease: EASE }}
+                className="mb-8 flex justify-center text-center"
+              >
+                {content.footer}
+              </motion.div>
+            )}
           </motion.div>
-        </div>
+        </AnimatePresence>
 
         <motion.div
           ref={mobileTrackRef}

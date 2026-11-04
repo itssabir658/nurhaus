@@ -5,17 +5,147 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { AppProduct } from '@/lib/shopify/types';
 import ShopifySetupNotice from '@/components/ShopifySetupNotice';
-import EditorialHero from '@/components/EditorialHero';
+import EditorialHero, { type HeroContent } from '@/components/EditorialHero';
+import { CampaignCountdown } from '@/components/campaign/Countdown';
+import { PriceTag, SaleBadge } from '@/components/campaign/PriceTag';
+import { useCampaign } from '@/contexts/CampaignContext';
+import { matchesCampaignPercent } from '@/lib/pricing';
 
 const fadeUp = {
   hidden:  { opacity: 0, y: 36 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
 };
 
+function useHeroContent(): HeroContent | undefined {
+  const { campaign, isLive, endedWhileViewing } = useCampaign();
+  if (!campaign) return undefined;
+
+  if (isLive) {
+    return {
+      key: `${campaign.id}-live`,
+      eyebrow: campaign.copy.heroEyebrow,
+      headline: campaign.copy.heroHeadline,
+      headlineMobile: campaign.copy.heroHeadline,
+      body: campaign.copy.heroBody,
+      cta: { label: campaign.copy.heroCta, href: campaign.shopHref },
+      footer: <CampaignCountdown />,
+    };
+  }
+
+  // Deadline passed while the visitor was on the page: replace the sale
+  // message with a quiet closing note rather than a countdown stuck at zero.
+  // A fresh visit after the deadline gets the standard hero (undefined).
+  if (endedWhileViewing) {
+    return {
+      key: `${campaign.id}-ended`,
+      headline: campaign.copy.endedHeadline,
+      headlineMobile: campaign.copy.endedHeadline,
+      body: campaign.copy.endedBody,
+      cta: { label: campaign.copy.endedCta, href: '/shop' },
+    };
+  }
+  return undefined;
+}
+
+/**
+ * Up to four marked-down pieces, in Shopify's best-selling order (the order
+ * the catalog is already fetched in), shown directly under the hero while a
+ * campaign runs. Only pieces whose real markdown matches the headline
+ * percentage are included, so the "20% off" heading is always true.
+ */
+function SaleEdit({ products }: { products: AppProduct[] }) {
+  const { campaign, isLive, saleFor } = useCampaign();
+  if (!campaign || !isLive) return null;
+
+  const pieces = products
+    .filter((p) => p.availableForSale && matchesCampaignPercent(saleFor(p.price, p.compareAtPrice), campaign.discountPercent))
+    .slice(0, 4);
+  if (pieces.length === 0) return null;
+
+  return (
+    <section className="site-max site-px pt-14 md:pt-28" aria-labelledby="sale-edit-heading">
+      <div className="flex items-end justify-between gap-6 mb-8 md:mb-14">
+        <div>
+          <motion.p className="eyebrow mb-3" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            The Sale Edit
+          </motion.p>
+          <motion.h2
+            id="sale-edit-heading"
+            className="font-display text-[1.75rem] sm:text-[2.4rem] md:text-[3.25rem] tracking-tight leading-tight max-w-xl text-balance"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            Selected pieces, now {campaign.discountPercent}%{'\u00a0'}off.
+          </motion.h2>
+        </div>
+        <Link
+          href={campaign.shopHref}
+          className="hidden md:inline-flex items-center gap-2 eyebrow text-accent hover:text-ink transition-colors duration-300 whitespace-nowrap"
+        >
+          {campaign.copy.heroCta} <span>→</span>
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-10">
+        {pieces.map((p, i) => {
+          const markdown = saleFor(p.price, p.compareAtPrice);
+          return (
+            <motion.div
+              key={p.handle}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 } as any}
+            >
+              <Link href={`/products/${p.handle}`} className="product-card group block">
+                <div className="product-card-img relative mb-4 aspect-[3/4]">
+                  {p.images[0] && (
+                    <Image
+                      src={p.images[0]}
+                      alt={p.name}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, 50vw"
+                      className="object-cover"
+                    />
+                  )}
+                  {markdown && <SaleBadge markdown={markdown} className="absolute top-3 left-3" />}
+                </div>
+                <p className="eyebrow mb-1.5">{p.kind}</p>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                  <span className="font-product text-lg md:text-xl">{p.name}</span>
+                  <PriceTag price={p.price} compareAt={p.compareAtPrice} />
+                </div>
+              </Link>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <div className="md:hidden mt-10">
+        <Link href={campaign.shopHref} className="btn-outline w-full">
+          {campaign.copy.heroCta}
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function CardBadge({ product }: { product: AppProduct }) {
+  const { saleFor } = useCampaign();
+  const markdown = saleFor(product.price, product.compareAtPrice);
+  return markdown ? <SaleBadge markdown={markdown} className="absolute top-3 left-3 md:top-4 md:left-4" /> : null;
+}
+
 export default function HomeClient({ products, configured }: { products: AppProduct[]; configured: boolean }) {
+  const heroContent = useHeroContent();
   return (
     <div className="page-enter">
-      <EditorialHero />
+      <EditorialHero content={heroContent} />
+
+      <SaleEdit products={products} />
 
       {/* COLLECTION PREVIEW */}
       <section className="site-max site-px py-14 md:py-44">
@@ -66,7 +196,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                 transition={{ delay: (i % 3) * 0.1 } as any}
               >
                 <Link href={`/products/${p.handle}`} className="product-card group block">
-                  <div className="product-card-img mb-5">
+                  <div className="product-card-img relative mb-5">
                     {p.images[0] && (
                       <Image
                         src={p.images[0]}
@@ -77,11 +207,12 @@ export default function HomeClient({ products, configured }: { products: AppProd
                         className="w-full h-auto aspect-auto"
                       />
                     )}
+                    <CardBadge product={p} />
                   </div>
                   <p className="eyebrow mb-1.5">{p.kind}</p>
-                  <div className="flex items-baseline justify-between">
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                     <span className="font-product text-xl">{p.name}</span>
-                    <span className="text-sm text-smoke">${p.price.toLocaleString()}</span>
+                    <PriceTag price={p.price} compareAt={p.compareAtPrice} />
                   </div>
                 </Link>
               </motion.div>
@@ -98,7 +229,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                 .map((product, index) => (
                   <motion.div key={product.handle} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className={`max-w-lg ${index === 1 ? 'justify-self-end' : ''}`}>
                     <Link href={`/products/${product.handle}`} className="product-card group block">
-                      <div className="product-card-img mb-5">
+                      <div className="product-card-img relative mb-5">
                         {product.images[0] && (
                           <Image
                             src={product.images[0]}
@@ -109,11 +240,12 @@ export default function HomeClient({ products, configured }: { products: AppProd
                             className="w-full h-auto aspect-auto"
                           />
                         )}
+                        <CardBadge product={product} />
                       </div>
                       <p className="eyebrow mb-1.5">{product.kind}</p>
-                      <div className="flex items-baseline justify-between">
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                         <span className="font-product text-xl">{product.name}</span>
-                        <span className="text-sm text-smoke">${product.price.toLocaleString()}</span>
+                        <PriceTag price={product.price} compareAt={product.compareAtPrice} />
                       </div>
                     </Link>
                   </motion.div>

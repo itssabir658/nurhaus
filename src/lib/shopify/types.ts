@@ -33,6 +33,8 @@ export interface ShopifyVariant {
   quantityAvailable: number | null;
   selectedOptions: ShopifySelectedOption[];
   price: ShopifyMoney;
+  /** Original price set in Shopify admin; null when the variant is not marked down. */
+  compareAtPrice?: ShopifyMoney | null;
   image: ShopifyImage | null;
   storeAvailability?: { edges: { node: ShopifyStoreAvailability }[] };
 }
@@ -84,6 +86,8 @@ export interface AppVariant {
   availableForSale: boolean;
   quantityAvailable: number | null;
   price: number;
+  /** Shopify's compare-at (original) price — only set when it is above `price`. */
+  compareAtPrice: number | null;
   image: string | null;
   selectedOptions: ShopifySelectedOption[];
 }
@@ -104,6 +108,11 @@ export interface AppProduct {
   /** Optional per-product care instructions (newline-separated lines). Falls back to a shared default when unset. */
   care?: string;
   price: number;
+  /**
+   * Compare-at price of the lowest-priced variant (the one `price` comes from),
+   * so the product-level markdown always pairs a price with its own original.
+   * Null when that variant is not marked down in Shopify.
+   */
   compareAtPrice: number | null;
   currency: string;
   images: string[];
@@ -125,6 +134,8 @@ export interface AppCartLine {
   productTitle: string;
   image: string | null;
   price: number;
+  /** Shopify's compare-at (original) unit price — only set when it is above `price`. */
+  compareAtPrice: number | null;
   size: string | null;
 }
 

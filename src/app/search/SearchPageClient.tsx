@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { AppProduct } from '@/lib/shopify/types';
+import { PriceTag } from '@/components/campaign/PriceTag';
 
 const TRENDING = ['Abaya', 'Dress', 'New arrivals'];
 const RECENTS  = ['Abaya sizes'];
@@ -158,7 +159,7 @@ export default function SearchPageClient({ products }: { products: AppProduct[] 
                         </div>
                       </div>
                       <p className="font-product text-base group-hover:text-accent transition-colors mb-1">{product.name}</p>
-                      <p className="text-sm text-smoke">${product.price.toLocaleString()}</p>
+                      <PriceTag price={product.price} compareAt={product.compareAtPrice} />
                     </Link>
                   </motion.div>
                 ))}

@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import { FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
+import { useCampaign } from '@/contexts/CampaignContext';
+import { formatMoney, getCartSavings, getMarkdown } from '@/lib/pricing';
 
 interface CartDrawerProps {
   open:    boolean;
@@ -18,6 +20,8 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
   const lines = cart?.lines ?? [];
   const subtotal = cart?.subtotal ?? 0;
   const shippingProgress = Math.min((subtotal / SHIPPING_THRESHOLD) * 100, 100);
+  const { campaign, isLive } = useCampaign();
+  const savings = isLive ? getCartSavings(lines) : 0;
 
   return (
     <AnimatePresence>
@@ -134,6 +138,9 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                           </div>
                           <div className="text-right">
                             <p className="text-sm font-medium">${item.lineTotal.toLocaleString()}</p>
+                            {isLive && getMarkdown(item.price, item.compareAtPrice) && (
+                              <s className="block text-[0.7rem] text-muted">{formatMoney((item.compareAtPrice ?? 0) * item.quantity)}</s>
+                            )}
                             <button
                               disabled={isMutating}
                               onClick={() => removeItem(item.id)}
@@ -153,6 +160,15 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
             {/* Footer */}
             {lines.length > 0 && (
               <div className="border-t border-hairline px-8 py-6 flex-shrink-0">
+                {savings > 0 && campaign && (
+                  <div className="flex justify-between items-baseline mb-3 text-xs">
+                    <span className="text-accent flex items-center gap-2">
+                      <span className="text-gold" aria-hidden="true">✦</span>
+                      {campaign.copy.cartSavingsLabel}
+                    </span>
+                    <span className="text-accent font-medium">−{formatMoney(savings)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between items-baseline mb-6">
                   <span className="text-sm text-smoke">Subtotal</span>
                   <span className="font-display text-2xl">${subtotal.toLocaleString()}</span>

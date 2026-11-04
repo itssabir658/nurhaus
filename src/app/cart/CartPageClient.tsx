@@ -8,6 +8,9 @@ import { useCart } from '@/contexts/CartContext';
 import type { AppProduct } from '@/lib/shopify/types';
 import { trackInitiateCheckout } from '@/lib/meta/pixel';
 import { FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
+import { useCampaign } from '@/contexts/CampaignContext';
+import { PriceTag } from '@/components/campaign/PriceTag';
+import { formatMoney, getCartSavings, getMarkdown } from '@/lib/pricing';
 
 export default function CartPageClient({
   crossSell,
@@ -20,6 +23,10 @@ export default function CartPageClient({
   const subtotal = cart?.subtotal ?? 0;
   const progress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
   const remaining = Math.max(FREE_SHIPPING_THRESHOLD - subtotal, 0);
+  const { campaign, isLive } = useCampaign();
+  // Savings come from each line's Shopify compare-at price; the subtotal is
+  // already the reduced amount Shopify will charge.
+  const savings = isLive ? getCartSavings(lines) : 0;
 
   const handleCheckout = () => {
     if (!cart?.checkoutUrl) return;
@@ -110,7 +117,12 @@ export default function CartPageClient({
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-4 mb-1">
                             <Link href={`/products/${item.productHandle}`} className="font-display text-lg hover:text-accent transition-colors">{item.productTitle}</Link>
-                            <p className="font-display text-lg flex-shrink-0">${item.lineTotal.toLocaleString()}</p>
+                            <div className="text-right flex-shrink-0">
+                              <p className="font-display text-lg">${item.lineTotal.toLocaleString()}</p>
+                              {isLive && getMarkdown(item.price, item.compareAtPrice) && (
+                                <s className="text-xs text-muted">{formatMoney((item.compareAtPrice ?? 0) * item.quantity)}</s>
+                              )}
+                            </div>
                           </div>
                           {item.size && <p className="text-xs text-muted tracking-wide mb-5">Size {item.size}</p>}
                           <div className="flex items-center justify-between">
@@ -140,6 +152,15 @@ export default function CartPageClient({
                       ${subtotal.toLocaleString()}
                     </motion.span>
                   </div>
+                  {savings > 0 && campaign && (
+                    <div className="flex justify-between">
+                      <span className="text-accent flex items-center gap-2">
+                        <span className="text-gold" aria-hidden="true">✦</span>
+                        {campaign.copy.cartSavingsLabel}
+                      </span>
+                      <span className="text-accent font-medium">−{formatMoney(savings)}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="text-smoke">Shipping</span>
                     <span className={remaining > 0 ? 'text-smoke' : 'text-accent'}>
@@ -159,6 +180,11 @@ export default function CartPageClient({
                     </motion.span>
                   </div>
                   <p className="text-xs text-muted mt-1.5">Excluding duties where applicable</p>
+                  {savings > 0 && campaign && (
+                    <p className="text-xs text-smoke mt-3">
+                      Sale pricing is already included in your subtotal. Sale ends {campaign.copy.deadlineShort}.
+                    </p>
+                  )}
                 </div>
                 <button
                   onClick={handleCheckout}
@@ -195,7 +221,7 @@ export default function CartPageClient({
                         {p.images[0] && <Image src={p.images[0]} alt={p.name} fill className="object-cover object-center product-card-img" />}
                       </div>
                       <p className="font-product text-base group-hover:text-accent transition-colors mb-1">{p.name}</p>
-                      <p className="text-sm text-smoke">${p.price.toLocaleString()}</p>
+                      <PriceTag price={p.price} compareAt={p.compareAtPrice} />
                     </Link>
                   </motion.div>
                 ))}
