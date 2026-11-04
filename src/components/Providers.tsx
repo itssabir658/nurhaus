@@ -85,6 +85,7 @@ export default function Providers({
             <CartDrawer
               open={cartOpen}
               onClose={() => setCartOpen(false)}
+              suggestions={searchProducts}
             />
             <SearchOverlay
               open={searchOpen}

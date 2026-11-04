@@ -6,8 +6,7 @@ import './globals.css';
 import Providers from '@/components/Providers';
 import { getProducts, isShopifyConfigured } from '@/lib/shopify';
 import { DEMO_PRODUCTS } from '@/lib/demoProducts';
-import { ACTIVE_CAMPAIGN } from '@/lib/campaign/config';
-import { catalogHonoursCampaign } from '@/lib/campaign/verify';
+import { getServerCampaignState } from '@/lib/campaign/server';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -50,17 +49,50 @@ const felixti = localFont({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: 'NÜR HAUS — Modest Luxury',
-    template: '%s | NÜR HAUS',
-  },
-  description: 'Modest luxury, in measured light. A curated collection of abayas and dresses, finished by hand and meant to be kept.',
-  openGraph: {
-    siteName: 'NÜR HAUS',
-    type: 'website',
-  },
-};
+const BASE_DESCRIPTION =
+  'Modest luxury, in measured light. A curated collection of abayas and dresses, finished by hand and meant to be kept.';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const base: Metadata = {
+    metadataBase: new URL('https://nurhaus.ca'),
+    title: {
+      default: 'NÜR HAUS — Modest Luxury',
+      template: '%s | NÜR HAUS',
+    },
+    description: BASE_DESCRIPTION,
+    openGraph: {
+      siteName: 'NÜR HAUS',
+      type: 'website',
+    },
+  };
+
+  // While a sale is live (and honoured by Shopify prices), search results and
+  // link previews on WhatsApp/Instagram/Facebook lead with the offer. Reverts
+  // to the standing brand copy automatically when the campaign ends.
+  const { campaign, live } = await getServerCampaignState();
+  if (!campaign || !live) return base;
+
+  const title = `NÜR HAUS — ${campaign.name}, ${campaign.discountPercent}% Off Selected Styles`;
+  const description = `${campaign.discountPercent}% off selected modest abayas and dresses, finished by hand. Sale price applied automatically, no code needed.`;
+  return {
+    ...base,
+    title: { default: title, template: '%s | NÜR HAUS' },
+    description,
+    openGraph: {
+      siteName: 'NÜR HAUS',
+      type: 'website',
+      title,
+      description,
+      images: [{ url: '/hero-editorial/4.jpg', alt: `${campaign.name} at NÜR HAUS` }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/hero-editorial/4.jpg'],
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -83,8 +115,9 @@ export default async function RootLayout({
   // carry the matching markdown (live catalog when connected; the demo
   // catalog only when Shopify isn't configured at all). The request
   // timestamp seeds the first render so server and client markup match.
-  const campaignCatalog = isShopifyConfigured ? searchProducts : DEMO_PRODUCTS;
-  const campaignVerified = catalogHonoursCampaign(campaignCatalog, ACTIVE_CAMPAIGN);
+  const { verified: campaignVerified } = await getServerCampaignState(
+    isShopifyConfigured ? searchProducts : DEMO_PRODUCTS,
+  );
   const serverNow = Date.now();
 
   return (

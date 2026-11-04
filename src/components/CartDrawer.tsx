@@ -7,21 +7,35 @@ import { useCart } from '@/contexts/CartContext';
 import { FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
 import { useCampaign } from '@/contexts/CampaignContext';
 import { formatMoney, getCartSavings, getMarkdown } from '@/lib/pricing';
+import { PriceTag } from '@/components/campaign/PriceTag';
+import type { AppProduct } from '@/lib/shopify/types';
 
 interface CartDrawerProps {
   open:    boolean;
   onClose: () => void;
+  /** Catalog to draw "complete the look" suggestions from. */
+  suggestions?: AppProduct[];
 }
 
 const SHIPPING_THRESHOLD = FREE_SHIPPING_THRESHOLD;
 
-export default function CartDrawer({ open, onClose }: CartDrawerProps) {
+export default function CartDrawer({ open, onClose, suggestions = [] }: CartDrawerProps) {
   const { cart, isLoading, isMutating, updateItem, removeItem } = useCart();
   const lines = cart?.lines ?? [];
   const subtotal = cart?.subtotal ?? 0;
   const shippingProgress = Math.min((subtotal / SHIPPING_THRESHOLD) * 100, 100);
   const { campaign, isLive } = useCampaign();
   const savings = isLive ? getCartSavings(lines) : 0;
+
+  // While the sale runs and the cart is short of free shipping, suggest up to
+  // two in-stock sale pieces that aren't already in the cart.
+  const inCart = new Set(lines.map((l) => l.productHandle));
+  const addOns =
+    isLive && lines.length > 0 && subtotal < SHIPPING_THRESHOLD
+      ? suggestions
+          .filter((p) => p.availableForSale && !inCart.has(p.handle) && getMarkdown(p.price, p.compareAtPrice))
+          .slice(0, 2)
+      : [];
 
   return (
     <AnimatePresence>
@@ -96,7 +110,9 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                     <path d="M16 10a4 4 0 0 1-8 0" />
                   </svg>
                   <p className="text-smoke text-sm mb-6">Your cart is empty</p>
-                  <Link href="/shop" onClick={onClose} className="btn-outline text-sm">Explore Collection</Link>
+                  <Link href={isLive && campaign ? campaign.shopHref : '/shop'} onClick={onClose} className="btn-outline text-sm">
+                    {isLive && campaign ? campaign.copy.announcementCta : 'Explore Collection'}
+                  </Link>
                 </div>
               ) : (
                 <ul className="space-y-8">
@@ -154,6 +170,28 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                     </li>
                   ))}
                 </ul>
+              )}
+
+              {addOns.length > 0 && (
+                <div className="mt-10 pt-8 border-t border-hairline">
+                  <p className="eyebrow mb-1">Complete the Look</p>
+                  <p className="text-xs text-smoke mb-5">
+                    Also in the sale, and it brings you closer to complimentary shipping.
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    {addOns.map((p) => (
+                      <Link key={p.handle} href={`/products/${p.handle}`} onClick={onClose} className="product-card group block">
+                        <div className="product-card-img relative aspect-[3/4] mb-2.5">
+                          {p.images[0] && (
+                            <Image src={p.images[0]} alt={p.name} fill sizes="180px" className="object-cover" />
+                          )}
+                        </div>
+                        <p className="font-product text-sm leading-tight mb-0.5">{p.name}</p>
+                        <PriceTag price={p.price} compareAt={p.compareAtPrice} />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
 

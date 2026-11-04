@@ -182,7 +182,7 @@ export default function CartPageClient({
                   <p className="text-xs text-muted mt-1.5">Excluding duties where applicable</p>
                   {savings > 0 && campaign && (
                     <p className="text-xs text-smoke mt-3">
-                      Sale pricing is already included in your subtotal. Sale ends {campaign.copy.deadlineShort}.
+                      Sale pricing is already included in your subtotal{campaign.showDeadline ? <>. Sale ends {campaign.copy.deadlineShort}</> : null}.
                     </p>
                   )}
                 </div>

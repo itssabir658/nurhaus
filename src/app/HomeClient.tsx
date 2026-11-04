@@ -7,6 +7,7 @@ import type { AppProduct } from '@/lib/shopify/types';
 import ShopifySetupNotice from '@/components/ShopifySetupNotice';
 import EditorialHero, { type HeroContent } from '@/components/EditorialHero';
 import { CampaignCountdown } from '@/components/campaign/Countdown';
+import { SaleBenefits } from '@/components/campaign/SaleBenefits';
 import { PriceTag, SaleBadge } from '@/components/campaign/PriceTag';
 import { useCampaign } from '@/contexts/CampaignContext';
 import { matchesCampaignPercent } from '@/lib/pricing';
@@ -28,7 +29,7 @@ function useHeroContent(): HeroContent | undefined {
       headlineMobile: campaign.copy.heroHeadline,
       body: campaign.copy.heroBody,
       cta: { label: campaign.copy.heroCta, href: campaign.shopHref },
-      footer: <CampaignCountdown />,
+      footer: campaign.showDeadline ? <CampaignCountdown /> : <SaleBenefits />,
     };
   }
 

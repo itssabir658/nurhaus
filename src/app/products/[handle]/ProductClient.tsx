@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -63,6 +63,9 @@ export default function ProductClient({
   const [demoNotice, setDemoNotice]       = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<AppProduct[]>([]);
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+  // Mobile sticky buy bar: shown while the main buy buttons are off-screen.
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const [ctaVisible, setCtaVisible] = useState(true);
 
   const sizeGuideData = getSizeGuideData(product.handle, product.kind, product.name);
 
@@ -131,6 +134,14 @@ export default function ProductClient({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product.handle, isDemo]);
 
+  useEffect(() => {
+    const el = ctaRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([entry]) => setCtaVisible(entry.isIntersecting), { threshold: 0 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   const triggerSizeError = () => {
     setSizeError(true);
     window.setTimeout(() => setSizeError(false), 600);
@@ -173,6 +184,17 @@ export default function ProductClient({
     } finally {
       setIsAddingToCart(false);
     }
+  };
+
+  // From the sticky bar: with no size chosen, take the shopper to the size
+  // picker (and flag it) rather than failing silently.
+  const handleStickyAdd = () => {
+    if (hasSizes && !selectedSize) {
+      document.getElementById('size-select')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      triggerSizeError();
+      return;
+    }
+    void handleAddToCart();
   };
 
   const handleBuyNow = async () => {
@@ -308,7 +330,7 @@ export default function ProductClient({
 
               {/* Size selector */}
               {!productSoldOut && hasSizes && (
-                <div className="mb-6">
+                <div id="size-select" className="mb-6 scroll-mt-40">
                   <div className="flex items-center justify-between mb-3">
                     <p className="eyebrow">Select Size</p>
                     {sizeGuideData && (
@@ -438,13 +460,20 @@ export default function ProductClient({
                     <p className="text-xs text-smoke mt-1.5">Sale price applied, no code needed.</p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <SaleEndsNote />
+                    {campaign.showDeadline ? (
+                      <SaleEndsNote />
+                    ) : (
+                      <>
+                        <p className="text-[0.6rem] tracking-[0.2em] uppercase text-muted">You save</p>
+                        <p className="text-sm text-ink font-medium mt-1">{formatMoney(markdown.savings)}</p>
+                      </>
+                    )}
                   </div>
                 </div>
               )}
 
               {/* CTAs */}
-              <div className="space-y-3">
+              <div ref={ctaRef} className="space-y-3">
                 {productSoldOut ? (
                   <>
                     <button
@@ -475,7 +504,7 @@ export default function ProductClient({
                     </button>
                     {markdown && campaign && (
                       <p className="text-[0.7rem] text-muted text-center pt-1">
-                        Sale ends {campaign.copy.deadlineShort}. Sale pieces are{' '}
+                        {campaign.showDeadline && <>Sale ends {campaign.copy.deadlineShort}. </>}Sale pieces are{' '}
                         <Link href="/shipping" className="underline underline-offset-2 hover:text-ink transition-colors">final sale</Link>.
                       </p>
                     )}
@@ -633,6 +662,37 @@ export default function ProductClient({
           </div>
         </div>
       )}
+
+      {/* Mobile sticky buy bar — keeps price and Add to Cart one tap away
+          while browsing images, details and related pieces. */}
+      <AnimatePresence>
+        {!ctaVisible && !productSoldOut && !allSizesSoldOut && (
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:hidden fixed inset-x-0 bottom-0 z-40 bg-primary/95 backdrop-blur-md border-t border-hairline px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] flex items-center gap-4"
+          >
+            <div className="min-w-0 flex-1">
+              <p className="font-product text-base leading-tight truncate">
+                {product.name}
+                {selectedSize && <span className="text-xs text-smoke"> · Size {selectedSize}</span>}
+              </p>
+              <div className="mt-0.5">
+                <PriceTag price={displayPrice} compareAt={displayCompareAt} />
+              </div>
+            </div>
+            <button
+              onClick={handleStickyAdd}
+              disabled={variantSoldOut || isAddingToCart || isBuyingNow}
+              className={`btn-primary !px-6 !py-3.5 flex-shrink-0 ${variantSoldOut ? 'opacity-40 cursor-not-allowed' : ''}`}
+            >
+              {isAddingToCart ? 'Adding…' : hasSizes && !selectedSize ? 'Select Size' : 'Add to Cart'}
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Size Guide Modal */}
       {sizeGuideData && (

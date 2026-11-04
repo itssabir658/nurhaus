@@ -62,6 +62,12 @@ export interface Campaign {
    */
   countdownWindowHours: number | null;
   /**
+   * Whether shoppers see any end date or countdown at all. When false the
+   * campaign still switches off on time at `endsAt`, silently, but nothing
+   * on the site states or counts down to that moment.
+   */
+  showDeadline: boolean;
+  /**
    * When true, sitewide sale messaging only appears once at least one product
    * in the live Shopify catalog carries a markdown matching `discountPercent`.
    * Keeps the storefront from advertising a discount checkout will not honour
@@ -85,8 +91,11 @@ export const END_OF_SEASON_2026: Campaign = {
   // 1 November, so EST (-05:00) is correct. Shown to shoppers as
   // "Thursday 26 November, 11:59 PM EST".
   endsAt: '2026-11-27T00:00:00-05:00',
-  // Live countdown for the final 3 days only (from Tue 24 Nov, 12 AM EST).
   countdownWindowHours: 72,
+  // No date or countdown is shown. Deeper Black Friday pricing follows this
+  // sale, so a "sale ends" countdown would push shoppers to rush ahead of a
+  // better price, which would mislead them. The sale just ends quietly at endsAt.
+  showDeadline: false,
   requireShopifyMarkdown: true,
   shopHref: '/shop?category=sale',
   shopFilterParam: 'sale',
