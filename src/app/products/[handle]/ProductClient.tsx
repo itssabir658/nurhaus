@@ -482,7 +482,7 @@ export default function ProductClient({
                 {productSoldOut ? (
                   <>
                     <button
-                      onClick={() => openWaitlist(product.name)}
+                      onClick={() => openWaitlist(product.name, product.handle)}
                       className="btn-primary w-full"
                     >
                       Join the Waiting List

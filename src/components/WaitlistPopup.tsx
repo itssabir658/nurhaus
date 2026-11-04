@@ -2,27 +2,48 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { submitSignup } from '@/lib/subscribe';
 
 interface Props {
-  open:        boolean;
-  productName: string;
-  onClose:     () => void;
+  open:          boolean;
+  productName:   string;
+  /** Shopify product handle — saved as the `waitlist-<handle>` customer tag. */
+  productHandle: string;
+  onClose:       () => void;
 }
 
-export default function WaitlistPopup({ open, productName, onClose }: Props) {
+export default function WaitlistPopup({ open, productName, productHandle, onClose }: Props) {
   const [email, setEmail]         = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending]     = useState(false);
+  const [error, setError]         = useState<string | null>(null);
+  const [company, setCompany]     = useState('');
 
   useEffect(() => {
     if (!open) {
-      const t = setTimeout(() => { setSubmitted(false); setEmail(''); }, 500);
+      const t = setTimeout(() => { setSubmitted(false); setEmail(''); setError(null); }, 500);
       return () => clearTimeout(t);
     }
   }, [open]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+
+  // Saved to Shopify as a customer tagged for this piece. Not subscribed to
+  // marketing, matching the promise below the form.
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (sending) return;
+    setSending(true);
+    setError(null);
+    const err = await submitSignup({ email, kind: 'waitlist', product: productHandle, company });
+    setSending(false);
+    if (err) setError(err);
+    else setSubmitted(true);
   };
 
   return (
@@ -70,6 +91,19 @@ export default function WaitlistPopup({ open, productName, onClose }: Props) {
                     </p>
                     <form onSubmit={handleSubmit} className="space-y-4">
                       <input
+                        type="text"
+                        name="company"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
+                        className="hidden"
+                        aria-hidden="true"
+                      />
+                      <label htmlFor="waitlist-email" className="sr-only">Email address</label>
+                      <input
+                        id="waitlist-email"
+                        autoComplete="email"
                         type="email"
                         required
                         value={email}
@@ -78,10 +112,11 @@ export default function WaitlistPopup({ open, productName, onClose }: Props) {
                         className="input-luxury w-full"
                         autoFocus
                       />
-                      <button type="submit" className="btn-primary w-full">
-                        Notify Me
+                      <button type="submit" className="btn-primary w-full" disabled={sending}>
+                        {sending ? 'Saving…' : 'Notify Me'}
                       </button>
                     </form>
+                    {error && <p role="alert" className="text-xs mt-3 text-red-600">{error}</p>}
                     <p className="text-[0.62rem] text-muted mt-4 tracking-[0.08em]">
                       You will only be contacted about this piece.
                     </p>
