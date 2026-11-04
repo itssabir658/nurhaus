@@ -51,6 +51,19 @@ export function useCountdown(): TimeParts {
   return parts;
 }
 
+/**
+ * True once the remaining time is inside the campaign's countdown window
+ * (e.g. the final 72 hours). Derived from the same ticking value as the
+ * countdown, so it opens on time while the page is open and matches on
+ * server and client for the first render.
+ */
+export function useCountdownWindowOpen(parts: TimeParts): boolean {
+  const { campaign } = useCampaign();
+  const windowHours = campaign?.countdownWindowHours ?? null;
+  if (windowHours === null) return true;
+  return parts.totalMs <= windowHours * 3_600_000;
+}
+
 const pad = (n: number) => String(n).padStart(2, '0');
 
 /**
@@ -105,7 +118,21 @@ export function CampaignCountdown({ className = '' }: { className?: string }) {
   const { campaign } = useCampaign();
   const parts = useCountdown();
   const reduced = useReducedMotionAfterMount();
+  const windowOpen = useCountdownWindowOpen(parts);
   if (!campaign) return null;
+
+  // Before the final window: state the real end date, no ticking timer.
+  if (!windowOpen) {
+    return (
+      <div className={className}>
+        <p className="eyebrow mb-3 text-[#463A30]">The Sale Runs Until</p>
+        <p className="font-display text-[#2E241E] text-[1.6rem] sm:text-[2rem] leading-tight">
+          {campaign.copy.deadlineLabel.replace(/, .*$/, '')}
+        </p>
+        <p className="mt-2 text-[0.7rem] text-[#7A746F] tracking-wide">{campaign.copy.deadlineLabel.replace(/^.*?, /, '')}</p>
+      </div>
+    );
+  }
 
   const units: [string, number][] = [
     ['Days', parts.days],
@@ -147,5 +174,28 @@ export function CompactCountdown({ className = '' }: { className?: string }) {
     <span className={`tabular-nums ${className}`} aria-label={srSummary(parts)}>
       {text}
     </span>
+  );
+}
+
+/**
+ * Right-hand side of the product page sale note: a live "Ends in" timer
+ * inside the countdown window, otherwise the real end date. Self-contained
+ * so only this element re-renders each second.
+ */
+export function SaleEndsNote() {
+  const { campaign } = useCampaign();
+  const parts = useCountdown();
+  const windowOpen = useCountdownWindowOpen(parts);
+  if (!campaign) return null;
+  return windowOpen ? (
+    <>
+      <p className="text-[0.6rem] tracking-[0.2em] uppercase text-muted">Ends in</p>
+      <CompactCountdown className="block text-sm text-ink font-medium mt-1" />
+    </>
+  ) : (
+    <>
+      <p className="text-[0.6rem] tracking-[0.2em] uppercase text-muted">Until</p>
+      <p className="text-sm text-ink font-medium mt-1">{campaign.copy.deadlineShort.replace(/, .*$/, '')}</p>
+    </>
   );
 }

@@ -14,7 +14,7 @@ import { trackViewContent, trackInitiateCheckout } from '@/lib/meta/pixel';
 import { shippingPromise } from '@/lib/shipping';
 import { useCampaign } from '@/contexts/CampaignContext';
 import { PriceTag, SaleBadge } from '@/components/campaign/PriceTag';
-import { CompactCountdown } from '@/components/campaign/Countdown';
+import { SaleEndsNote } from '@/components/campaign/Countdown';
 import { formatMoney } from '@/lib/pricing';
 
 // Shopify only reports quantityAvailable for tracked inventory; at or below
@@ -438,8 +438,7 @@ export default function ProductClient({
                     <p className="text-xs text-smoke mt-1.5">Sale price applied, no code needed.</p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="text-[0.6rem] tracking-[0.2em] uppercase text-muted">Ends in</p>
-                    <CompactCountdown className="block text-sm text-ink font-medium mt-1" />
+                    <SaleEndsNote />
                   </div>
                 </div>
               )}

@@ -178,6 +178,11 @@ price itself. A product shows a sale price, a struck-through original and a
 "20% Off" badge only when its variant has a **Compare-at price** above its
 **Price** in Shopify admin, i.e. the reduced price is what checkout charges.
 
+`countdownWindowHours` controls when the live Days/Hours/Minutes/Seconds
+countdown appears (e.g. `72` = final three days only). Before that the hero
+states the real end date. The countdown always targets the actual deadline;
+it never resets or restarts.
+
 Sitewide messaging (announcement bar, homepage hero and countdown, shop
 "Sale" filter) only appears when **both** are true:
 
