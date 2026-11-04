@@ -205,9 +205,10 @@ Preview without Shopify: set `CAMPAIGN_DEMO_MARKDOWN=20` locally to mark the
 
 ## 10. Newsletter and waiting-list sign-ups
 
-The homepage "Nürhaus Circle" form and the "Join the Waiting List" popup on
-sold-out pieces both post to `/api/subscribe`, which saves the email in
-Shopify as a customer:
+The "Join the Waiting List" popup on sold-out pieces posts to
+`/api/subscribe`, which saves the email in Shopify as a customer. The route
+also supports newsletter sign-ups (`NewsletterBlock`), but that form is not
+currently placed on the site:
 
 | Form | Shopify tags | Email marketing |
 |---|---|---|

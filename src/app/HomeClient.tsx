@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { AppProduct } from '@/lib/shopify/types';
 import ShopifySetupNotice from '@/components/ShopifySetupNotice';
-import NewsletterBlock from '@/components/NewsletterBlock';
 import EditorialHero, { type HeroContent } from '@/components/EditorialHero';
 import { CampaignCountdown } from '@/components/campaign/Countdown';
 import { SaleBenefits } from '@/components/campaign/SaleBenefits';
@@ -305,13 +304,6 @@ export default function HomeClient({ products, configured }: { products: AppProd
             </p>
             <Link href="/story" className="btn-outline">Read our story</Link>
           </motion.div>
-        </div>
-      </section>
-
-      {/* NEWSLETTER — saves to Shopify as a subscribed customer */}
-      <section className="border-t border-hairline">
-        <div className="site-max site-px py-16 md:py-28">
-          <NewsletterBlock />
         </div>
       </section>
     </div>
