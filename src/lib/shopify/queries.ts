@@ -26,6 +26,10 @@ const VARIANT_FRAGMENT = `
       amount
       currencyCode
     }
+    compareAtPrice {
+      amount
+      currencyCode
+    }
     image {
       ...ImageFragment
     }
@@ -114,6 +118,7 @@ const CART_FRAGMENT = `
               quantityAvailable
               selectedOptions { name value }
               price { amount currencyCode }
+              compareAtPrice { amount currencyCode }
               image { ...ImageFragment }
               product {
                 handle

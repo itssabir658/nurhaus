@@ -277,6 +277,103 @@ img, video { display: block; max-width: 100%; }
 }
 
 /* ============================================================
+   CAMPAIGN (sale) MOTION
+   Deliberately slow and low-contrast: a sale here should read as an
+   event, not a clearance. Nothing flashes, nothing loops faster than
+   a breath. All of it is disabled under prefers-reduced-motion.
+   ============================================================ */
+
+/* Announcement bar settles in from above once, on first paint. */
+@keyframes announcementEnter {
+  from { opacity: 0; transform: translateY(-100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.announcement-enter {
+  animation: announcementEnter 700ms var(--ease-expo);
+}
+
+/* The gold star breathes — signals the bar is live without blinking. */
+@keyframes saleGlint {
+  0%, 100% { opacity: 0.55; transform: scale(0.92) rotate(0deg); }
+  50%      { opacity: 1;    transform: scale(1)    rotate(45deg); }
+}
+.sale-glint {
+  display: inline-block;
+  animation: saleGlint 4.8s ease-in-out infinite;
+}
+
+/* Hairline underline that draws in on hover. */
+.announcement-cta {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 1px;
+  transition: background-size 500ms var(--ease-expo);
+}
+.group:hover .announcement-cta,
+.group:focus-visible .announcement-cta {
+  background-size: 100% 1px;
+}
+
+/* Sale badge: unveils left-to-right once, then a single soft sheen on card hover. */
+@keyframes saleBadgeReveal {
+  from { clip-path: inset(0 100% 0 0); opacity: 0; }
+  to   { clip-path: inset(0 0 0 0);    opacity: 1; }
+}
+.sale-badge {
+  position: relative;
+  overflow: hidden;
+  animation: saleBadgeReveal 900ms var(--ease-expo) 200ms both;
+}
+.sale-badge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(199, 167, 108, 0.28) 50%, transparent 65%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.product-card:hover .sale-badge::after {
+  transition: transform 1100ms var(--ease-expo);
+  transform: translateX(120%);
+}
+
+/* Hero CTA: fill sweeps up from the bottom edge instead of snapping. */
+.btn-campaign {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.btn-campaign::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #2E241E;
+  transform: translateY(101%);
+  transition: transform 600ms var(--ease-expo);
+}
+.btn-campaign:hover::before,
+.btn-campaign:focus-visible::before {
+  transform: translateY(0);
+}
+.btn-campaign:hover,
+.btn-campaign:focus-visible {
+  color: #F8F5F1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sale-glint,
+  .sale-badge,
+  .announcement-enter {
+    animation: none;
+    opacity: 1;
+    clip-path: none;
+  }
+}
+
+/* ============================================================
    SCROLLBAR
    ============================================================ */
 ::-webkit-scrollbar { width: 3px; }

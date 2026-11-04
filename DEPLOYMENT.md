@@ -163,3 +163,40 @@ whitelisted for `next/image`.
 - [ ] "Proceed to Checkout" lands on a real `myshopify.com`/checkout-branded checkout page
 - [ ] Product images load via `cdn.shopify.com` with no broken-image icons
 - [ ] Lookbook "Shop this look" links resolve to real products (see §4)
+
+---
+
+## 9. Promotional campaigns (sales)
+
+All sale messaging is driven by one file: `src/lib/campaign/config.ts`.
+`ACTIVE_CAMPAIGN` holds the current campaign's copy, headline percentage and
+deadline (an ISO timestamp with an explicit UTC offset). Set it to `null` to
+switch every campaign element off; point it at a new object for the next sale.
+
+**Shopify is the price source of truth.** The storefront never discounts a
+price itself. A product shows a sale price, a struck-through original and a
+"20% Off" badge only when its variant has a **Compare-at price** above its
+**Price** in Shopify admin, i.e. the reduced price is what checkout charges.
+
+`countdownWindowHours` controls when the live Days/Hours/Minutes/Seconds
+countdown appears (e.g. `72` = final three days only). Before that the hero
+states the real end date. The countdown always targets the actual deadline;
+it never resets or restarts.
+
+Sitewide messaging (announcement bar, homepage hero and countdown, shop
+"Sale" filter) only appears when **both** are true:
+
+1. The current time is before the campaign deadline (checked on the server per
+   request, and in the browser every second, so it switches off on time even
+   for a visitor who already has the page open).
+2. At least one product in the live catalog carries a compare-at markdown
+   matching the campaign's `discountPercent` (±1 point for cent rounding).
+
+To run a sale: in Shopify admin set each sale variant's **Compare-at price** to
+the original price and its **Price** to the reduced price (bulk editor works).
+To end it: after the deadline the site stops advertising automatically, but
+the reduced prices stay in Shopify until you restore them, so revert them (or
+schedule the revert) at the deadline.
+
+Preview without Shopify: set `CAMPAIGN_DEMO_MARKDOWN=20` locally to mark the
+*demo* catalog down 20%. It has no effect when Shopify is connected.

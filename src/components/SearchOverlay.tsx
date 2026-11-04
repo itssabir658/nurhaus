@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { AppProduct } from '@/lib/shopify/types';
+import { PriceTag } from '@/components/campaign/PriceTag';
 
 interface SearchOverlayProps {
   open:     boolean;
@@ -117,7 +118,7 @@ export default function SearchOverlay({ open, onClose, products }: SearchOverlay
                           )}
                         </div>
                         <p className="font-product text-base">{p.name}</p>
-                        <p className="text-sm text-smoke mt-0.5">${p.price.toLocaleString()}</p>
+                        <div className="mt-0.5"><PriceTag price={p.price} compareAt={p.compareAtPrice} /></div>
                       </Link>
                     ))}
                   </div>
@@ -160,7 +161,7 @@ export default function SearchOverlay({ open, onClose, products }: SearchOverlay
                             </div>
                             <div>
                               <p className="text-sm text-ink group-hover:text-accent transition-colors duration-300 font-medium">{p.name}</p>
-                              <p className="text-xs text-muted mt-0.5">${p.price.toLocaleString()}</p>
+                              <div className="mt-0.5"><PriceTag price={p.price} compareAt={p.compareAtPrice} /></div>
                             </div>
                           </Link>
                         </li>

@@ -8,6 +8,11 @@ import { useSearchParams } from 'next/navigation';
 import type { AppProduct } from '@/lib/shopify/types';
 import { getProductDescriptor } from '@/lib/productDescriptors';
 import ShopifySetupNotice from '@/components/ShopifySetupNotice';
+import { PriceTag, SaleBadge } from '@/components/campaign/PriceTag';
+import { useCampaign } from '@/contexts/CampaignContext';
+
+// Pseudo-category for the campaign's sale-only view (selected via ?category=sale).
+const SALE_CATEGORY = '__sale';
 
 const fadeUp = {
   hidden:  { opacity: 0, y: 32 },
@@ -84,6 +89,7 @@ function HeroGalleryColumn({ imgIndex, colIndex, reducedMotion }: { imgIndex: nu
 
 function ShopContent({ products, categories, configured }: { products: AppProduct[]; categories: string[]; configured: boolean }) {
   const searchParams = useSearchParams();
+  const { campaign, isLive, saleFor } = useCampaign();
   const [activeCategory, setActiveCategory] = useState('All');
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortBy, setSortBy] = useState('Featured');
@@ -91,10 +97,20 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
   const [heroMobileIndex, setHeroMobileIndex] = useState(0);
   const [heroReducedMotion, setHeroReducedMotion] = useState(false);
 
+  // Pieces Shopify has actually marked down — only offered while a campaign is live.
+  const onSale = (p: AppProduct) => saleFor(p.price, p.compareAtPrice) !== null;
+  const saleAvailable = isLive && products.some(onSale);
+
   useEffect(() => {
     const cat = searchParams.get('category');
-    if (cat && categories.includes(cat)) setActiveCategory(cat);
-  }, [searchParams, categories]);
+    if (cat && campaign && cat === campaign.shopFilterParam && saleAvailable) setActiveCategory(SALE_CATEGORY);
+    else if (cat && categories.includes(cat)) setActiveCategory(cat);
+  }, [searchParams, categories, campaign, saleAvailable]);
+
+  // Campaign ended while browsing the sale view — fall back to everything.
+  useEffect(() => {
+    if (activeCategory === SALE_CATEGORY && !saleAvailable) setActiveCategory('All');
+  }, [activeCategory, saleAvailable]);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -123,7 +139,11 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
   }, [heroReducedMotion]);
 
   const filtered = [...products]
-    .filter((p) => (activeCategory === 'All' ? true : p.kind === activeCategory))
+    .filter((p) =>
+      activeCategory === 'All' ? true
+      : activeCategory === SALE_CATEGORY ? onSale(p)
+      : p.kind === activeCategory,
+    )
     .sort((a, b) => {
       if (sortBy === 'Price ↑') return a.price - b.price;
       if (sortBy === 'Price ↓') return b.price - a.price;
@@ -179,7 +199,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                 color: 'var(--c-primary)',
               }}
             >
-              Summer Drop
+              {isLive && campaign ? campaign.copy.shopEyebrow : 'Summer Drop'}
             </span>
           </motion.div>
           <motion.h1
@@ -230,6 +250,20 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                 >
                   All
                 </button>
+                {saleAvailable && campaign && (
+                  <button
+                    onClick={() => setActiveCategory(SALE_CATEGORY)}
+                    aria-pressed={activeCategory === SALE_CATEGORY}
+                    className={`inline-flex items-center gap-1.5 px-4 py-1.5 text-[0.7rem] tracking-[0.18em] uppercase font-medium transition-all duration-300 ${
+                      activeCategory === SALE_CATEGORY
+                        ? 'bg-ink text-primary'
+                        : 'text-smoke hover:text-ink'
+                    }`}
+                  >
+                    <span className="text-gold" aria-hidden="true">✦</span>
+                    {campaign.copy.shopFilterLabel}
+                  </button>
+                )}
               </div>
 
               <div className="flex items-center gap-4">
@@ -360,6 +394,8 @@ export default function ShopClient(props: { products: AppProduct[]; categories: 
 }
 
 function ProductCard({ product: p, large = false }: { product: AppProduct; large?: boolean }) {
+  const { saleFor } = useCampaign();
+  const markdown = saleFor(p.price, p.compareAtPrice);
   return (
     <Link href={`/products/${p.handle}`} className="product-card group block">
       <div className="product-card-img relative">
@@ -374,8 +410,13 @@ function ProductCard({ product: p, large = false }: { product: AppProduct; large
             className="w-full h-auto aspect-auto group-hover:scale-105 transition-transform duration-[1200ms] ease-expo"
           />
         )}
-        {p.tags.includes('new') && (
-          <span className="absolute top-4 left-4 bg-primary px-3 py-1 eyebrow text-ink">New</span>
+        {(markdown || p.tags.includes('new')) && (
+          <div className="absolute top-3 left-3 md:top-4 md:left-4 flex flex-col items-start gap-2">
+            {markdown && <SaleBadge markdown={markdown} />}
+            {p.tags.includes('new') && (
+              <span className="bg-primary px-3 py-1 eyebrow text-ink">New</span>
+            )}
+          </div>
         )}
         {!p.availableForSale && (
           <span className="absolute top-4 right-4 bg-midnight/80 px-3 py-1 eyebrow text-primary">Sold Out</span>
@@ -383,9 +424,9 @@ function ProductCard({ product: p, large = false }: { product: AppProduct; large
       </div>
       <div className="mt-4">
         <p className="eyebrow mb-1">{getProductDescriptor(p.name, p.kind)}</p>
-        <div className="flex items-baseline justify-between">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
           <span className={`font-product ${large ? 'text-2xl' : 'text-xl'}`}>{p.name}</span>
-          <span className="text-sm text-smoke">${p.price.toLocaleString()}</span>
+          <PriceTag price={p.price} compareAt={p.compareAtPrice} />
         </div>
       </div>
     </Link>

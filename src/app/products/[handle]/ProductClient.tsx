@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,6 +12,14 @@ import { getSizeGuideData } from '@/lib/sizeGuides';
 import type { AppProduct } from '@/lib/shopify/types';
 import { trackViewContent, trackInitiateCheckout } from '@/lib/meta/pixel';
 import { shippingPromise } from '@/lib/shipping';
+import { useCampaign } from '@/contexts/CampaignContext';
+import { PriceTag, SaleBadge } from '@/components/campaign/PriceTag';
+import { SaleEndsNote } from '@/components/campaign/Countdown';
+import { formatMoney } from '@/lib/pricing';
+
+// Shopify only reports quantityAvailable for tracked inventory; at or below
+// this, the real remaining count is shown for the selected size.
+const LOW_STOCK_THRESHOLD = 3;
 
 const ACCORDION_ITEMS = ['description', 'care'] as const;
 const ACCORDION_LABELS: Record<typeof ACCORDION_ITEMS[number], string> = {
@@ -41,6 +49,7 @@ export default function ProductClient({
   const { openWaitlist, openCart } = useNurhaus();
   const { addItem } = useCart();
   const { isCanadaVisitor } = useGeo();
+  const { campaign, saleFor } = useCampaign();
 
   const [activeImage, setActiveImage]     = useState(0);
   const [selectedSize, setSelectedSize]   = useState('');
@@ -54,6 +63,9 @@ export default function ProductClient({
   const [demoNotice, setDemoNotice]       = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<AppProduct[]>([]);
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+  // Mobile sticky buy bar: shown while the main buy buttons are off-screen.
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const [ctaVisible, setCtaVisible] = useState(true);
 
   const sizeGuideData = getSizeGuideData(product.handle, product.kind, product.name);
 
@@ -80,6 +92,16 @@ export default function ProductClient({
   // null means untracked/unlimited, so there's no cap to enforce.
   const maxQty = selectedVariant?.quantityAvailable ?? null;
   const atMaxQty = maxQty !== null && qty >= maxQty;
+
+  // Price shown is the selected size's own Shopify price (sizes can differ),
+  // falling back to the product's lowest price before a size is chosen.
+  const displayPrice = selectedVariant && (!hasSizes || selectedSize) ? selectedVariant.price : product.price;
+  const displayCompareAt = selectedVariant && (!hasSizes || selectedSize) ? selectedVariant.compareAtPrice : product.compareAtPrice;
+  const markdown = saleFor(displayPrice, displayCompareAt);
+
+  const sizeChosenAndAvailable = hasSizes && selectedSize && selectedVariant?.availableForSale;
+  const lowStockCount =
+    sizeChosenAndAvailable && maxQty !== null && maxQty > 0 && maxQty <= LOW_STOCK_THRESHOLD ? maxQty : null;
 
   // Re-clamp quantity whenever the selected size (and therefore its stock cap) changes —
   // e.g. going from a size with 5 in stock down to one with only 2.
@@ -111,6 +133,14 @@ export default function ProductClient({
     trackViewContent(product);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product.handle, isDemo]);
+
+  useEffect(() => {
+    const el = ctaRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([entry]) => setCtaVisible(entry.isIntersecting), { threshold: 0 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const triggerSizeError = () => {
     setSizeError(true);
@@ -154,6 +184,17 @@ export default function ProductClient({
     } finally {
       setIsAddingToCart(false);
     }
+  };
+
+  // From the sticky bar: with no size chosen, take the shopper to the size
+  // picker (and flag it) rather than failing silently.
+  const handleStickyAdd = () => {
+    if (hasSizes && !selectedSize) {
+      document.getElementById('size-select')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      triggerSizeError();
+      return;
+    }
+    void handleAddToCart();
   };
 
   const handleBuyNow = async () => {
@@ -255,7 +296,27 @@ export default function ProductClient({
               <h1 className="font-product text-[2.8rem] md:text-[3.5rem] leading-tight tracking-tight mb-4">
                 {product.name}
               </h1>
-              <p className="font-display text-2xl text-accent mb-8">${product.price.toLocaleString()}</p>
+              {markdown ? (
+                <div className="mb-8">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <p className="font-display text-2xl text-accent">
+                      <span className="sr-only">Sale price </span>
+                      {formatMoney(markdown.price)}
+                    </p>
+                    <s className="font-display text-lg text-muted">
+                      <span className="sr-only">Original price </span>
+                      {formatMoney(markdown.compareAt)}
+                    </s>
+                    <SaleBadge markdown={markdown} />
+                  </div>
+                  <p className="text-xs text-smoke mt-2.5 tracking-wide">
+                    You save <span className="text-ink font-medium">{formatMoney(markdown.savings)}</span>
+                    {campaign && <> &middot; {campaign.copy.productNote}</>}
+                  </p>
+                </div>
+              ) : (
+                <p className="font-display text-2xl text-accent mb-8">${displayPrice.toLocaleString()}</p>
+              )}
 
               <p className="text-smoke text-sm leading-relaxed mb-10 max-w-md">{product.description}</p>
 
@@ -269,7 +330,7 @@ export default function ProductClient({
 
               {/* Size selector */}
               {!productSoldOut && hasSizes && (
-                <div className="mb-6">
+                <div id="size-select" className="mb-6 scroll-mt-40">
                   <div className="flex items-center justify-between mb-3">
                     <p className="eyebrow">Select Size</p>
                     {sizeGuideData && (
@@ -334,6 +395,13 @@ export default function ProductClient({
                         <p className={`text-xs mt-1 transition-colors duration-200 ${sizeError ? 'text-red-500 font-medium' : 'text-muted'}`}>
                           Please select a size
                         </p>
+                      ) : sizeChosenAndAvailable ? (
+                        <p className="text-xs mt-1 text-smoke flex items-center gap-2" aria-live="polite">
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" aria-hidden="true" />
+                          {lowStockCount !== null
+                            ? `Size ${selectedSize} — only ${lowStockCount} remaining`
+                            : `Size ${selectedSize} — in stock`}
+                        </p>
                       ) : null}
                     </>
                   )}
@@ -379,8 +447,33 @@ export default function ProductClient({
                 </div>
               )}
 
+              {/* Campaign note, beside the buy buttons. Only for pieces Shopify
+                  has actually marked down; the deadline comes from campaign
+                  config and counts down in real time. */}
+              {markdown && campaign && !productSoldOut && (
+                <div className="mb-5 border border-gold/40 bg-secondary/20 px-5 py-4 flex items-center justify-between gap-4">
+                  <div>
+                    <p className="eyebrow text-ink flex items-center gap-2">
+                      <span className="sale-glint text-gold" aria-hidden="true">✦</span>
+                      {campaign.copy.productNote}
+                    </p>
+                    <p className="text-xs text-smoke mt-1.5">Sale price applied, no code needed.</p>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    {campaign.showDeadline ? (
+                      <SaleEndsNote />
+                    ) : (
+                      <>
+                        <p className="text-[0.6rem] tracking-[0.2em] uppercase text-muted">You save</p>
+                        <p className="text-sm text-ink font-medium mt-1">{formatMoney(markdown.savings)}</p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {/* CTAs */}
-              <div className="space-y-3">
+              <div ref={ctaRef} className="space-y-3">
                 {productSoldOut ? (
                   <>
                     <button
@@ -409,6 +502,12 @@ export default function ProductClient({
                     >
                       {isBuyingNow ? 'Processing…' : 'Buy Now'}
                     </button>
+                    {markdown && campaign && (
+                      <p className="text-[0.7rem] text-muted text-center pt-1">
+                        {campaign.showDeadline && <>Sale ends {campaign.copy.deadlineShort}. </>}Sale pieces are{' '}
+                        <Link href="/shipping" className="underline underline-offset-2 hover:text-ink transition-colors">final sale</Link>.
+                      </p>
+                    )}
                     <AnimatePresence>
                       {demoNotice && (
                         <motion.p
@@ -527,7 +626,7 @@ export default function ProductClient({
                       )}
                     </div>
                     <p className="font-product text-base group-hover:text-accent transition-colors">{p.name}</p>
-                    <p className="text-sm text-smoke mt-0.5">${p.price.toLocaleString()}</p>
+                    <div className="mt-0.5"><PriceTag price={p.price} compareAt={p.compareAtPrice} /></div>
                   </Link>
                 </motion.div>
               ))}
@@ -556,13 +655,44 @@ export default function ProductClient({
                     )}
                   </div>
                   <p className="font-product text-lg group-hover:text-accent transition-colors">{p.name}</p>
-                  <p className="text-sm text-smoke mt-1">${p.price.toLocaleString()}</p>
+                  <div className="mt-1"><PriceTag price={p.price} compareAt={p.compareAtPrice} /></div>
                 </Link>
               ))}
             </div>
           </div>
         </div>
       )}
+
+      {/* Mobile sticky buy bar — keeps price and Add to Cart one tap away
+          while browsing images, details and related pieces. */}
+      <AnimatePresence>
+        {!ctaVisible && !productSoldOut && !allSizesSoldOut && (
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:hidden fixed inset-x-0 bottom-0 z-40 bg-primary/95 backdrop-blur-md border-t border-hairline px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] flex items-center gap-4"
+          >
+            <div className="min-w-0 flex-1">
+              <p className="font-product text-base leading-tight truncate">
+                {product.name}
+                {selectedSize && <span className="text-xs text-smoke"> · Size {selectedSize}</span>}
+              </p>
+              <div className="mt-0.5">
+                <PriceTag price={displayPrice} compareAt={displayCompareAt} />
+              </div>
+            </div>
+            <button
+              onClick={handleStickyAdd}
+              disabled={variantSoldOut || isAddingToCart || isBuyingNow}
+              className={`btn-primary !px-6 !py-3.5 flex-shrink-0 ${variantSoldOut ? 'opacity-40 cursor-not-allowed' : ''}`}
+            >
+              {isAddingToCart ? 'Adding…' : hasSizes && !selectedSize ? 'Select Size' : 'Add to Cart'}
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Size Guide Modal */}
       {sizeGuideData && (

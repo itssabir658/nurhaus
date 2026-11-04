@@ -35,12 +35,13 @@ function makeVariants(opts: {
     availableForSale: !opts.soldOut,
     quantityAvailable: opts.soldOut ? 0 : size === opts.lowStockSize ? 4 : null,
     price: opts.price,
+    compareAtPrice: null,
     image: opts.image,
     selectedOptions: [{ name: 'Size', value: size }],
   }));
 }
 
-export const DEMO_PRODUCTS: AppProduct[] = [
+const BASE_DEMO_PRODUCTS: AppProduct[] = [
   {
     id: "demo-layla",
     handle: "layla",
@@ -226,6 +227,31 @@ export const DEMO_PRODUCTS: AppProduct[] = [
     pickup: PICKUP_INFO,
   },
 ];
+
+/**
+ * Design-preview only. Setting CAMPAIGN_DEMO_MARKDOWN=20 (server env) marks
+ * the *demo* catalog down by that percentage, the way a real Shopify
+ * compare-at markdown would look, so sale UI can be reviewed locally before
+ * Shopify is connected. It has no effect on live Shopify products, which are
+ * never sourced from this file, and demo items cannot be checked out.
+ */
+function withDemoMarkdown(products: AppProduct[]): AppProduct[] {
+  const pct = Number(process.env.CAMPAIGN_DEMO_MARKDOWN);
+  if (!Number.isFinite(pct) || pct <= 0 || pct >= 100) return products;
+  const markDown = (original: number) => Math.round(original * (1 - pct / 100) * 100) / 100;
+  return products.map((p, i) => {
+    // Leave every fourth piece at full price, as "selected styles" would.
+    if (i % 4 === 3) return p;
+    return {
+      ...p,
+      price: markDown(p.price),
+      compareAtPrice: p.price,
+      variants: p.variants.map((v) => ({ ...v, price: markDown(v.price), compareAtPrice: v.price })),
+    };
+  });
+}
+
+export const DEMO_PRODUCTS: AppProduct[] = withDemoMarkdown(BASE_DEMO_PRODUCTS);
 
 export function getDemoProductByHandle(handle: string): AppProduct | null {
   return DEMO_PRODUCTS.find((p) => p.handle === handle) ?? null;
