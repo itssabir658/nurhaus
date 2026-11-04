@@ -3,7 +3,7 @@
 import { createContext, useContext } from 'react';
 
 interface NurhausContextValue {
-  openWaitlist: (productName: string) => void;
+  openWaitlist: (productName: string, productHandle: string) => void;
   openCart: () => void;
 }
 
