@@ -175,9 +175,9 @@ const BASE_DEMO_PRODUCTS: AppProduct[] = [
       '/products/saphira/4.jpg',
     ],
     sizes: SIZES,
-    variants: makeVariants({ handle: 'saphira', price: 470, image: '/products/saphira/1.jpg' }),
-    availableForSale: true,
-    tags: [],
+    variants: makeVariants({ handle: 'saphira', price: 470, image: '/products/saphira/1.jpg', soldOut: true }),
+    availableForSale: false,
+    tags: ['bestseller'],
     pickup: PICKUP_INFO,
   },
   {
@@ -198,9 +198,9 @@ const BASE_DEMO_PRODUCTS: AppProduct[] = [
       '/products/dahlia/4.jpg',
     ],
     sizes: SIZES,
-    variants: makeVariants({ handle: 'dahlia', price: 435, image: '/products/dahlia/1.jpg' }),
-    availableForSale: true,
-    tags: [],
+    variants: makeVariants({ handle: 'dahlia', price: 435, image: '/products/dahlia/1.jpg', soldOut: true }),
+    availableForSale: false,
+    tags: ['bestseller'],
     pickup: PICKUP_INFO,
   },
   {
@@ -240,8 +240,9 @@ function withDemoMarkdown(products: AppProduct[]): AppProduct[] {
   if (!Number.isFinite(pct) || pct <= 0 || pct >= 100) return products;
   const markDown = (original: number) => Math.round(original * (1 - pct / 100) * 100) / 100;
   return products.map((p, i) => {
-    // Leave every fourth piece at full price, as "selected styles" would.
-    if (i % 4 === 3) return p;
+    // Leave every fourth piece at full price, as "selected styles" would,
+    // and never discount sold-out pieces (mirrors the live store).
+    if (i % 4 === 3 || !p.availableForSale) return p;
     return {
       ...p,
       price: markDown(p.price),

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { AppProduct } from '@/lib/shopify/types';
 import { PriceTag } from '@/components/campaign/PriceTag';
+import { isFullySoldOut } from '@/lib/productStatus';
 
 const TRENDING = ['Abaya', 'Dress', 'New arrivals'];
 const RECENTS  = ['Abaya sizes'];
@@ -159,7 +160,7 @@ export default function SearchPageClient({ products }: { products: AppProduct[] 
                         </div>
                       </div>
                       <p className="font-product text-base group-hover:text-accent transition-colors mb-1">{product.name}</p>
-                      <PriceTag price={product.price} compareAt={product.compareAtPrice} />
+                      <PriceTag price={product.price} compareAt={product.compareAtPrice} soldOut={isFullySoldOut(product)} />
                     </Link>
                   </motion.div>
                 ))}

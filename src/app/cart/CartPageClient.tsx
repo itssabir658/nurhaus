@@ -10,6 +10,7 @@ import { trackInitiateCheckout } from '@/lib/meta/pixel';
 import { FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
 import { useCampaign } from '@/contexts/CampaignContext';
 import { PriceTag } from '@/components/campaign/PriceTag';
+import { isFullySoldOut } from '@/lib/productStatus';
 import { formatMoney, getCartSavings, getMarkdown } from '@/lib/pricing';
 
 export default function CartPageClient({
@@ -221,7 +222,7 @@ export default function CartPageClient({
                         {p.images[0] && <Image src={p.images[0]} alt={p.name} fill className="object-cover object-center product-card-img" />}
                       </div>
                       <p className="font-product text-base group-hover:text-accent transition-colors mb-1">{p.name}</p>
-                      <PriceTag price={p.price} compareAt={p.compareAtPrice} />
+                      <PriceTag price={p.price} compareAt={p.compareAtPrice} soldOut={isFullySoldOut(p)} />
                     </Link>
                   </motion.div>
                 ))}

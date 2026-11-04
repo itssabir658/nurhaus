@@ -13,7 +13,8 @@ import type { AppProduct } from '@/lib/shopify/types';
 import { trackViewContent, trackInitiateCheckout } from '@/lib/meta/pixel';
 import { shippingPromise } from '@/lib/shipping';
 import { useCampaign } from '@/contexts/CampaignContext';
-import { PriceTag, SaleBadge } from '@/components/campaign/PriceTag';
+import { PriceTag, SaleBadge, BestsellerBadge } from '@/components/campaign/PriceTag';
+import { isFullySoldOut, isBestseller } from '@/lib/productStatus';
 import { SaleEndsNote } from '@/components/campaign/Countdown';
 import { formatMoney } from '@/lib/pricing';
 
@@ -97,7 +98,8 @@ export default function ProductClient({
   // falling back to the product's lowest price before a size is chosen.
   const displayPrice = selectedVariant && (!hasSizes || selectedSize) ? selectedVariant.price : product.price;
   const displayCompareAt = selectedVariant && (!hasSizes || selectedSize) ? selectedVariant.compareAtPrice : product.compareAtPrice;
-  const markdown = saleFor(displayPrice, displayCompareAt);
+  // A piece with no size left to buy never shows sale pricing.
+  const markdown = isFullySoldOut(product) ? null : saleFor(displayPrice, displayCompareAt);
 
   const sizeChosenAndAvailable = hasSizes && selectedSize && selectedVariant?.availableForSale;
   const lowStockCount =
@@ -292,7 +294,10 @@ export default function ProductClient({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="eyebrow mb-3">{product.kind}</p>
+              <div className="flex items-center gap-3 mb-3">
+                <p className="eyebrow">{product.kind}</p>
+                {isBestseller(product) && <BestsellerBadge className="border border-hairline" />}
+              </div>
               <h1 className="font-product text-[2.8rem] md:text-[3.5rem] leading-tight tracking-tight mb-4">
                 {product.name}
               </h1>
@@ -626,7 +631,7 @@ export default function ProductClient({
                       )}
                     </div>
                     <p className="font-product text-base group-hover:text-accent transition-colors">{p.name}</p>
-                    <div className="mt-0.5"><PriceTag price={p.price} compareAt={p.compareAtPrice} /></div>
+                    <div className="mt-0.5"><PriceTag price={p.price} compareAt={p.compareAtPrice} soldOut={isFullySoldOut(p)} /></div>
                   </Link>
                 </motion.div>
               ))}
@@ -655,7 +660,7 @@ export default function ProductClient({
                     )}
                   </div>
                   <p className="font-product text-lg group-hover:text-accent transition-colors">{p.name}</p>
-                  <div className="mt-1"><PriceTag price={p.price} compareAt={p.compareAtPrice} /></div>
+                  <div className="mt-1"><PriceTag price={p.price} compareAt={p.compareAtPrice} soldOut={isFullySoldOut(p)} /></div>
                 </Link>
               ))}
             </div>

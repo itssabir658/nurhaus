@@ -8,7 +8,8 @@ import { useSearchParams } from 'next/navigation';
 import type { AppProduct } from '@/lib/shopify/types';
 import { getProductDescriptor } from '@/lib/productDescriptors';
 import ShopifySetupNotice from '@/components/ShopifySetupNotice';
-import { PriceTag, SaleBadge } from '@/components/campaign/PriceTag';
+import { PriceTag, SaleBadge, BestsellerBadge } from '@/components/campaign/PriceTag';
+import { isFullySoldOut, isBestseller } from '@/lib/productStatus';
 import { useCampaign } from '@/contexts/CampaignContext';
 
 // Pseudo-category for the campaign's sale-only view (selected via ?category=sale).
@@ -98,7 +99,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
   const [heroReducedMotion, setHeroReducedMotion] = useState(false);
 
   // Pieces Shopify has actually marked down — only offered while a campaign is live.
-  const onSale = (p: AppProduct) => saleFor(p.price, p.compareAtPrice) !== null;
+  const onSale = (p: AppProduct) => !isFullySoldOut(p) && saleFor(p.price, p.compareAtPrice) !== null;
   const saleAvailable = isLive && products.some(onSale);
 
   useEffect(() => {
@@ -395,7 +396,9 @@ export default function ShopClient(props: { products: AppProduct[]; categories: 
 
 function ProductCard({ product: p, large = false }: { product: AppProduct; large?: boolean }) {
   const { saleFor } = useCampaign();
-  const markdown = saleFor(p.price, p.compareAtPrice);
+  const soldOut = isFullySoldOut(p);
+  const markdown = soldOut ? null : saleFor(p.price, p.compareAtPrice);
+  const bestseller = isBestseller(p);
   return (
     <Link href={`/products/${p.handle}`} className="product-card group block">
       <div className="product-card-img relative">
@@ -410,15 +413,16 @@ function ProductCard({ product: p, large = false }: { product: AppProduct; large
             className="w-full h-auto aspect-auto group-hover:scale-105 transition-transform duration-[1200ms] ease-expo"
           />
         )}
-        {(markdown || p.tags.includes('new')) && (
+        {(markdown || bestseller || p.tags.includes('new')) && (
           <div className="absolute top-3 left-3 md:top-4 md:left-4 flex flex-col items-start gap-2">
             {markdown && <SaleBadge markdown={markdown} />}
+            {bestseller && <BestsellerBadge />}
             {p.tags.includes('new') && (
               <span className="bg-primary px-3 py-1 eyebrow text-ink">New</span>
             )}
           </div>
         )}
-        {!p.availableForSale && (
+        {soldOut && (
           <span className="absolute top-4 right-4 bg-midnight/80 px-3 py-1 eyebrow text-primary">Sold Out</span>
         )}
       </div>
@@ -426,7 +430,7 @@ function ProductCard({ product: p, large = false }: { product: AppProduct; large
         <p className="eyebrow mb-1">{getProductDescriptor(p.name, p.kind)}</p>
         <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
           <span className={`font-product ${large ? 'text-2xl' : 'text-xl'}`}>{p.name}</span>
-          <PriceTag price={p.price} compareAt={p.compareAtPrice} />
+          <PriceTag price={p.price} compareAt={p.compareAtPrice} soldOut={soldOut} />
         </div>
       </div>
     </Link>

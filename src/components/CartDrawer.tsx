@@ -9,6 +9,7 @@ import { useCampaign } from '@/contexts/CampaignContext';
 import { formatMoney, getCartSavings, getMarkdown } from '@/lib/pricing';
 import { PriceTag } from '@/components/campaign/PriceTag';
 import type { AppProduct } from '@/lib/shopify/types';
+import { isFullySoldOut } from '@/lib/productStatus';
 
 interface CartDrawerProps {
   open:    boolean;
@@ -33,7 +34,7 @@ export default function CartDrawer({ open, onClose, suggestions = [] }: CartDraw
   const addOns =
     isLive && lines.length > 0 && subtotal < SHIPPING_THRESHOLD
       ? suggestions
-          .filter((p) => p.availableForSale && !inCart.has(p.handle) && getMarkdown(p.price, p.compareAtPrice))
+          .filter((p) => !isFullySoldOut(p) && !inCart.has(p.handle) && getMarkdown(p.price, p.compareAtPrice))
           .slice(0, 2)
       : [];
 
