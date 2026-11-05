@@ -28,7 +28,7 @@ export default function AnnouncementBar() {
         {/* One line from sm up; on phones the CTA drops to a second line so
             neither the offer nor the call to action gets cut. */}
         <p
-          className="flex flex-col sm:flex-row items-center gap-0.5 sm:gap-4 text-[0.56rem] sm:text-[0.64rem] tracking-[0.1em] sm:tracking-[0.18em] uppercase font-medium select-none px-4 whitespace-nowrap leading-tight"
+          className="flex flex-col sm:flex-row items-center gap-0.5 sm:gap-4 text-[0.625rem] sm:text-[0.64rem] tracking-[0.08em] sm:tracking-[0.18em] uppercase font-medium select-none px-4 whitespace-nowrap leading-tight"
           style={{ color: '#F8F5F1', fontFamily: 'var(--font-sans)' }}
         >
           <span className="flex items-center gap-2.5">
@@ -36,7 +36,7 @@ export default function AnnouncementBar() {
             <span>{campaign.copy.announcement}</span>
           </span>
           <span className="hidden sm:inline-block h-3 w-px bg-primary/25" aria-hidden="true" />
-          <span className="inline-flex items-center gap-1.5 text-gold text-[0.52rem] sm:text-[length:inherit] tracking-[0.2em] sm:tracking-[inherit]">
+          <span className="inline-flex items-center gap-1.5 text-gold text-[0.625rem] sm:text-[length:inherit] tracking-[0.18em] sm:tracking-[inherit]">
             <span className="announcement-cta">{campaign.copy.announcementCta}</span>
             <span className="inline-block transition-transform duration-500 ease-expo group-hover:translate-x-1" aria-hidden="true">→</span>
           </span>
@@ -52,7 +52,7 @@ export default function AnnouncementBar() {
   return (
     <div className={BAR_CLASS} style={BAR_STYLE}>
       <p
-        className="text-[0.56rem] sm:text-[0.64rem] tracking-[0.08em] sm:tracking-[0.14em] uppercase font-medium select-none px-4 text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
+        className="text-[0.625rem] sm:text-[0.64rem] tracking-[0.06em] sm:tracking-[0.14em] uppercase font-medium select-none px-4 text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
         style={{ color: '#F8F5F1', fontFamily: 'var(--font-sans)' }}
       >
         {message}

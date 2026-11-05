@@ -374,6 +374,25 @@ img, video { display: block; max-width: 100%; }
 }
 
 /* ============================================================
+   TOUCH TARGETS
+   Grows a small control's tappable area to at least 44x44px (Apple /
+   WCAG 2.5.5 guidance) without changing how it looks or how it is laid
+   out: an invisible pseudo-element centred on the control takes the taps.
+   ============================================================ */
+.hit-area {
+  position: relative;
+}
+.hit-area::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+}
+
+/* ============================================================
    SCROLLBAR
    ============================================================ */
 ::-webkit-scrollbar { width: 3px; }

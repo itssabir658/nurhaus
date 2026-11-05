@@ -66,7 +66,7 @@ export default function ProductClient({
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   // Mobile sticky buy bar: shown while the main buy buttons are off-screen.
   const ctaRef = useRef<HTMLDivElement>(null);
-  const [ctaVisible, setCtaVisible] = useState(true);
+  const [ctaScrolledPast, setCtaScrolledPast] = useState(false);
 
   const sizeGuideData = getSizeGuideData(product.handle, product.kind, product.name);
 
@@ -136,12 +136,25 @@ export default function ProductClient({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product.handle, isDemo]);
 
+  // Show the sticky bar only once the buy buttons have scrolled above the
+  // viewport. Checked on scroll (rAF-throttled) rather than with an
+  // IntersectionObserver, which misses a jump straight from below to above.
   useEffect(() => {
-    const el = ctaRef.current;
-    if (!el || typeof IntersectionObserver === 'undefined') return;
-    const io = new IntersectionObserver(([entry]) => setCtaVisible(entry.isIntersecting), { threshold: 0 });
-    io.observe(el);
-    return () => io.disconnect();
+    let frame = 0;
+    const check = () => {
+      frame = 0;
+      const el = ctaRef.current;
+      if (el) setCtaScrolledPast(el.getBoundingClientRect().bottom < 0);
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(check); };
+    check();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, []);
 
   const triggerSizeError = () => {
@@ -232,9 +245,9 @@ export default function ProductClient({
       {/* Breadcrumb */}
       <div className="site-max site-px py-4 border-b border-hairline">
         <nav className="flex items-center gap-2 text-xs text-muted">
-          <Link href="/" className="hover:text-ink transition-colors">Home</Link>
+          <Link href="/" className="hit-area hover:text-ink transition-colors">Home</Link>
           <span>/</span>
-          <Link href="/shop" className="hover:text-ink transition-colors">Collection</Link>
+          <Link href="/shop" className="hit-area hover:text-ink transition-colors">Collection</Link>
           <span>/</span>
           <span className="text-smoke">{product.name}</span>
         </nav>
@@ -341,7 +354,7 @@ export default function ProductClient({
                     {sizeGuideData && (
                       <button
                         onClick={() => setSizeGuideOpen(true)}
-                        className="text-xs text-smoke hover:text-ink underline underline-offset-2 transition-colors"
+                        className="hit-area text-xs text-smoke hover:text-ink underline underline-offset-2 transition-colors"
                       >
                         Size Guide
                       </button>
@@ -419,7 +432,7 @@ export default function ProductClient({
                 <div className="mb-6">
                   <button
                     onClick={() => setSizeGuideOpen(true)}
-                    className="text-xs text-smoke hover:text-ink underline underline-offset-2 transition-colors"
+                    className="hit-area text-xs text-smoke hover:text-ink underline underline-offset-2 transition-colors"
                   >
                     Size Guide
                   </button>
@@ -432,7 +445,7 @@ export default function ProductClient({
                   <div className="flex items-center gap-4">
                     <p className="eyebrow">Qty</p>
                     <div className={`flex items-center border border-hairline ${qtyShake ? 'animate-shake-subtle' : ''}`}>
-                      <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-10 h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center text-lg">−</button>
+                      <button onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease quantity" className="w-11 h-11 md:w-10 md:h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center text-lg">−</button>
                       <span className="w-10 text-center text-sm">{qty}</span>
                       <button
                         onClick={() => {
@@ -443,7 +456,8 @@ export default function ProductClient({
                           setQty((q) => (maxQty !== null ? Math.min(q + 1, maxQty) : q + 1));
                         }}
                         aria-disabled={atMaxQty}
-                        className={`w-10 h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center ${atMaxQty ? 'opacity-30 cursor-not-allowed hover:text-smoke' : ''}`}
+                        aria-label="Increase quantity"
+                        className={`w-11 h-11 md:w-10 md:h-10 text-smoke hover:text-ink transition-colors flex items-center justify-center ${atMaxQty ? 'opacity-30 cursor-not-allowed hover:text-smoke' : ''}`}
                       >
                         +
                       </button>
@@ -469,7 +483,7 @@ export default function ProductClient({
                       <SaleEndsNote />
                     ) : (
                       <>
-                        <p className="text-[0.6rem] tracking-[0.2em] uppercase text-muted">You save</p>
+                        <p className="text-[0.625rem] tracking-[0.2em] uppercase text-muted">You save</p>
                         <p className="text-sm text-ink font-medium mt-1">{formatMoney(markdown.savings)}</p>
                       </>
                     )}
@@ -664,7 +678,7 @@ export default function ProductClient({
       {/* Mobile sticky buy bar — keeps price and Add to Cart one tap away
           while browsing images, details and related pieces. */}
       <AnimatePresence>
-        {!ctaVisible && !productSoldOut && !allSizesSoldOut && (
+        {ctaScrolledPast && !productSoldOut && !allSizesSoldOut && (
           <motion.div
             initial={{ y: '100%' }}
             animate={{ y: 0 }}

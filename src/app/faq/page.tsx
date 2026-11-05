@@ -116,7 +116,7 @@ export default function FAQPage() {
                 <button
                   key={cat.id}
                   onClick={() => { setActiveCategory(cat.id); setOpenFaq(null); }}
-                  className={`text-left py-2.5 lg:py-3.5 text-sm transition-colors duration-300 relative ${
+                  className={`hit-area text-left py-2.5 lg:py-3.5 text-sm transition-colors duration-300 relative ${
                     activeCategory === cat.id ? 'text-ink font-medium' : 'text-muted hover:text-smoke'
                   }`}
                 >

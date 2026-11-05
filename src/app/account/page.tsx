@@ -118,7 +118,7 @@ function AddressesSection() {
       <p className="font-display text-2xl tracking-tight mb-8">Saved Addresses</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="border border-accent p-6 relative">
-          <span className="absolute top-4 right-4 text-[0.6rem] tracking-widest uppercase text-accent">Default</span>
+          <span className="absolute top-4 right-4 text-[0.625rem] tracking-widest uppercase text-accent">Default</span>
           <p className="font-display text-lg mb-3">Home</p>
           <div className="text-sm text-smoke space-y-1">
             <p>Amira Al-Hassan</p>

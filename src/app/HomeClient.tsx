@@ -8,7 +8,7 @@ import ShopifySetupNotice from '@/components/ShopifySetupNotice';
 import EditorialHero, { type HeroContent } from '@/components/EditorialHero';
 import { CampaignCountdown } from '@/components/campaign/Countdown';
 import { SaleBenefits } from '@/components/campaign/SaleBenefits';
-import { PriceTag, SaleBadge, BestsellerBadge } from '@/components/campaign/PriceTag';
+import { PriceTag, SaleBadge, BestsellerBadge, SoldOutBadge } from '@/components/campaign/PriceTag';
 import { isFullySoldOut, isBestseller } from '@/lib/productStatus';
 import { useCampaign } from '@/contexts/CampaignContext';
 import { matchesCampaignPercent } from '@/lib/pricing';
@@ -84,7 +84,7 @@ function SaleEdit({ products }: { products: AppProduct[] }) {
         </div>
         <Link
           href={campaign.shopHref}
-          className="hidden md:inline-flex items-center gap-2 eyebrow text-accent hover:text-ink transition-colors duration-300 whitespace-nowrap"
+          className="hit-area hidden md:inline-flex items-center gap-2 eyebrow text-accent hover:text-ink transition-colors duration-300 whitespace-nowrap"
         >
           {campaign.copy.heroCta} <span>→</span>
         </Link>
@@ -113,10 +113,10 @@ function SaleEdit({ products }: { products: AppProduct[] }) {
                       className="object-cover"
                     />
                   )}
-                  {markdown && <SaleBadge markdown={markdown} className="absolute top-3 left-3" />}
+                  {markdown && <SaleBadge markdown={markdown} className="absolute top-2.5 left-2.5 md:top-3 md:left-3" />}
                 </div>
                 <p className="eyebrow mb-1.5">{p.kind}</p>
-                <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between gap-x-3 gap-y-0.5">
                   <span className="font-product text-lg md:text-xl">{p.name}</span>
                   <PriceTag price={p.price} compareAt={p.compareAtPrice} soldOut={isFullySoldOut(p)} />
                 </div>
@@ -139,18 +139,14 @@ function CardBadge({ product }: { product: AppProduct }) {
   const { saleFor } = useCampaign();
   const soldOut = isFullySoldOut(product);
   const markdown = soldOut ? null : saleFor(product.price, product.compareAtPrice);
+  // One stacked column so labels never collide on narrow two-column cards.
+  if (!markdown && !isBestseller(product) && !soldOut) return null;
   return (
-    <>
-      {(markdown || isBestseller(product)) && (
-        <div className="absolute top-3 left-3 md:top-4 md:left-4 flex flex-col items-start gap-2">
-          {markdown && <SaleBadge markdown={markdown} />}
-          {isBestseller(product) && <BestsellerBadge />}
-        </div>
-      )}
-      {soldOut && (
-        <span className="absolute top-3 right-3 md:top-4 md:right-4 bg-midnight/80 px-3 py-1 eyebrow text-primary">Sold Out</span>
-      )}
-    </>
+    <div className="absolute top-2.5 left-2.5 md:top-4 md:left-4 flex flex-col items-start gap-1.5 md:gap-2">
+      {markdown && <SaleBadge markdown={markdown} />}
+      {isBestseller(product) && <BestsellerBadge />}
+      {soldOut && <SoldOutBadge />}
+    </div>
   );
 }
 
@@ -179,7 +175,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
               Designed with care, rooted in modesty.
             </motion.h2>
           </div>
-          <Link href="/shop" className="hidden md:inline-flex items-center gap-2 eyebrow text-accent hover:text-ink transition-colors duration-300">
+          <Link href="/shop" className="hit-area hidden md:inline-flex items-center gap-2 eyebrow text-accent hover:text-ink transition-colors duration-300">
             View all <span>→</span>
           </Link>
         </div>
@@ -225,7 +221,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                     <CardBadge product={p} />
                   </div>
                   <p className="eyebrow mb-1.5">{p.kind}</p>
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                  <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between gap-x-3 gap-y-0.5">
                     <span className="font-product text-xl">{p.name}</span>
                     <PriceTag price={p.price} compareAt={p.compareAtPrice} soldOut={isFullySoldOut(p)} />
                   </div>
@@ -258,7 +254,7 @@ export default function HomeClient({ products, configured }: { products: AppProd
                         <CardBadge product={product} />
                       </div>
                       <p className="eyebrow mb-1.5">{product.kind}</p>
-                      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between gap-x-3 gap-y-0.5">
                         <span className="font-product text-xl">{product.name}</span>
                         <PriceTag price={product.price} compareAt={product.compareAtPrice} soldOut={isFullySoldOut(product)} />
                       </div>

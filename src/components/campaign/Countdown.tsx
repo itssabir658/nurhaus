@@ -189,12 +189,12 @@ export function SaleEndsNote() {
   if (!campaign) return null;
   return windowOpen ? (
     <>
-      <p className="text-[0.6rem] tracking-[0.2em] uppercase text-muted">Ends in</p>
+      <p className="text-[0.625rem] tracking-[0.2em] uppercase text-muted">Ends in</p>
       <CompactCountdown className="block text-sm text-ink font-medium mt-1" />
     </>
   ) : (
     <>
-      <p className="text-[0.6rem] tracking-[0.2em] uppercase text-muted">Until</p>
+      <p className="text-[0.625rem] tracking-[0.2em] uppercase text-muted">Until</p>
       <p className="text-sm text-ink font-medium mt-1">{campaign.copy.deadlineShort.replace(/, .*$/, '')}</p>
     </>
   );

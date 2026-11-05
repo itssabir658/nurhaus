@@ -11,7 +11,7 @@ import { formatMoney, type Markdown } from '@/lib/pricing';
 export function SaleBadge({ markdown, className = '' }: { markdown: Markdown; className?: string }) {
   return (
     <span
-      className={`sale-badge inline-flex items-center gap-1.5 bg-primary/95 text-ink border border-gold/50 px-2.5 py-1 text-[0.58rem] tracking-[0.22em] uppercase font-medium ${className}`}
+      className={`sale-badge inline-flex items-center gap-1.5 bg-primary/95 text-ink border border-gold/50 px-2.5 py-1 text-[0.625rem] tracking-[0.2em] uppercase font-medium ${className}`}
       style={{ fontFamily: 'var(--font-eyebrow)' }}
     >
       <span className="text-gold" aria-hidden="true">✦</span>
@@ -63,10 +63,22 @@ export function useSale(price: number, compareAt: number | null | undefined): Ma
 export function BestsellerBadge({ className = '' }: { className?: string }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 bg-primary/95 text-ink px-2.5 py-1 text-[0.58rem] tracking-[0.22em] uppercase font-medium ${className}`}
+      className={`inline-flex items-center gap-1.5 bg-primary/95 text-ink px-2.5 py-1 text-[0.625rem] tracking-[0.2em] uppercase font-medium ${className}`}
       style={{ fontFamily: 'var(--font-eyebrow)' }}
     >
       Bestseller
+    </span>
+  );
+}
+
+/** "Sold Out" label, styled to stack with the other card badges. */
+export function SoldOutBadge({ className = '' }: { className?: string }) {
+  return (
+    <span
+      className={`inline-flex items-center bg-midnight/85 text-primary px-2.5 py-1 text-[0.625rem] tracking-[0.2em] uppercase font-medium ${className}`}
+      style={{ fontFamily: 'var(--font-eyebrow)' }}
+    >
+      Sold Out
     </span>
   );
 }

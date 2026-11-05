@@ -8,7 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import type { AppProduct } from '@/lib/shopify/types';
 import { getProductDescriptor } from '@/lib/productDescriptors';
 import ShopifySetupNotice from '@/components/ShopifySetupNotice';
-import { PriceTag, SaleBadge, BestsellerBadge } from '@/components/campaign/PriceTag';
+import { PriceTag, SaleBadge, BestsellerBadge, SoldOutBadge } from '@/components/campaign/PriceTag';
 import { isFullySoldOut, isBestseller } from '@/lib/productStatus';
 import { useCampaign } from '@/contexts/CampaignContext';
 
@@ -192,7 +192,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
             transition={{ delay: 0.2, duration: 0.7, ease: [0.22,1,0.36,1] }}
           >
             <span
-              className="eyebrow-light inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5"
+              className="eyebrow-light inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5 whitespace-nowrap !tracking-[0.16em] sm:!tracking-[0.28em]"
               style={{
                 backdropFilter: 'blur(14px) saturate(160%)',
                 WebkitBackdropFilter: 'blur(14px) saturate(160%)',
@@ -243,7 +243,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
               <div className="flex gap-1">
                 <button
                   onClick={() => setActiveCategory('All')}
-                  className={`px-4 py-1.5 text-[0.7rem] tracking-[0.18em] uppercase font-medium transition-all duration-300 ${
+                  className={`hit-area px-4 py-1.5 text-[0.7rem] tracking-[0.18em] uppercase font-medium transition-all duration-300 ${
                     activeCategory === 'All'
                       ? 'bg-ink text-primary'
                       : 'text-smoke hover:text-ink'
@@ -255,7 +255,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                   <button
                     onClick={() => setActiveCategory(SALE_CATEGORY)}
                     aria-pressed={activeCategory === SALE_CATEGORY}
-                    className={`inline-flex items-center gap-1.5 px-4 py-1.5 text-[0.7rem] tracking-[0.18em] uppercase font-medium transition-all duration-300 ${
+                    className={`hit-area inline-flex items-center gap-1.5 px-4 py-1.5 text-[0.7rem] tracking-[0.18em] uppercase font-medium transition-all duration-300 ${
                       activeCategory === SALE_CATEGORY
                         ? 'bg-ink text-primary'
                         : 'text-smoke hover:text-ink'
@@ -275,7 +275,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                     <button
                       key={s}
                       onClick={() => setSortBy(s)}
-                      className={`hover:text-ink transition-colors ${sortBy === s ? 'text-ink font-medium' : ''}`}
+                      className={`hit-area hover:text-ink transition-colors ${sortBy === s ? 'text-ink font-medium' : ''}`}
                     >
                       {s}
                     </button>
@@ -285,7 +285,7 @@ function ShopContent({ products, categories, configured }: { products: AppProduc
                 {/* Filter toggle */}
                 <button
                   onClick={() => setFilterOpen(true)}
-                  className="flex items-center gap-2 text-[0.7rem] tracking-[0.18em] uppercase text-smoke hover:text-ink transition-colors"
+                  className="hit-area flex items-center gap-2 text-[0.7rem] tracking-[0.18em] uppercase text-smoke hover:text-ink transition-colors"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <line x1="4" y1="6" x2="20" y2="6" /><line x1="8" y1="12" x2="20" y2="12" /><line x1="12" y1="18" x2="20" y2="18" />
@@ -413,22 +413,21 @@ function ProductCard({ product: p, large = false }: { product: AppProduct; large
             className="w-full h-auto aspect-auto group-hover:scale-105 transition-transform duration-[1200ms] ease-expo"
           />
         )}
-        {(markdown || bestseller || p.tags.includes('new')) && (
-          <div className="absolute top-3 left-3 md:top-4 md:left-4 flex flex-col items-start gap-2">
+        {/* One stacked column so labels never collide on narrow two-column cards. */}
+        {(markdown || bestseller || soldOut || p.tags.includes('new')) && (
+          <div className="absolute top-2.5 left-2.5 md:top-4 md:left-4 flex flex-col items-start gap-1.5 md:gap-2">
             {markdown && <SaleBadge markdown={markdown} />}
             {bestseller && <BestsellerBadge />}
             {p.tags.includes('new') && (
-              <span className="bg-primary px-3 py-1 eyebrow text-ink">New</span>
+              <span className="bg-primary px-2.5 md:px-3 py-1 eyebrow text-ink !text-[0.625rem]">New</span>
             )}
+            {soldOut && <SoldOutBadge />}
           </div>
-        )}
-        {soldOut && (
-          <span className="absolute top-4 right-4 bg-midnight/80 px-3 py-1 eyebrow text-primary">Sold Out</span>
         )}
       </div>
       <div className="mt-4">
         <p className="eyebrow mb-1">{getProductDescriptor(p.name, p.kind)}</p>
-        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between gap-x-3 gap-y-0.5">
           <span className={`font-product ${large ? 'text-2xl' : 'text-xl'}`}>{p.name}</span>
           <PriceTag price={p.price} compareAt={p.compareAtPrice} soldOut={soldOut} />
         </div>
