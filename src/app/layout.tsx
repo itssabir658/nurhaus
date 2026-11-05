@@ -72,8 +72,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const { campaign, live } = await getServerCampaignState();
   if (!campaign || !live) return base;
 
-  const title = `NÜR HAUS — ${campaign.name}, ${campaign.discountPercent}% Off Selected Styles`;
-  const description = `${campaign.discountPercent}% off selected modest abayas and dresses, finished by hand. Sale price applied automatically, no code needed.`;
+  const title = `NÜR HAUS — ${campaign.name}, ${campaign.discountPercent}% Off Site-Wide`;
+  const description = `${campaign.discountPercent}% off modest abayas and dresses, site-wide. Finished by hand. Sale price applied automatically, no code needed.`;
   return {
     ...base,
     title: { default: title, template: '%s | NÜR HAUS' },

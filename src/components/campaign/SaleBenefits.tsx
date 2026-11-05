@@ -16,7 +16,7 @@ export function SaleBenefits({ className = '' }: { className?: string }) {
   if (!campaign) return null;
 
   const items = [
-    `${campaign.discountPercent}% off selected styles`,
+    `${campaign.discountPercent}% off site-wide`,
     'Sale price applied automatically, no code needed',
     shippingPromise(isCanadaVisitor),
   ];
