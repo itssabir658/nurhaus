@@ -79,7 +79,7 @@ function SaleEdit({ products }: { products: AppProduct[] }) {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            Selected pieces, now {campaign.discountPercent}%{'\u00a0'}off.
+            Now {campaign.discountPercent}%{'\u00a0'}off, site-wide.
           </motion.h2>
         </div>
         <Link

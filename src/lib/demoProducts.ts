@@ -239,10 +239,10 @@ function withDemoMarkdown(products: AppProduct[]): AppProduct[] {
   const pct = Number(process.env.CAMPAIGN_DEMO_MARKDOWN);
   if (!Number.isFinite(pct) || pct <= 0 || pct >= 100) return products;
   const markDown = (original: number) => Math.round(original * (1 - pct / 100) * 100) / 100;
-  return products.map((p, i) => {
-    // Leave every fourth piece at full price, as "selected styles" would,
-    // and never discount sold-out pieces (mirrors the live store).
-    if (i % 4 === 3 || !p.availableForSale) return p;
+  return products.map((p) => {
+    // Site-wide: every in-stock piece is marked down; sold-out pieces are
+    // left at full price (mirrors the live store).
+    if (!p.availableForSale) return p;
     return {
       ...p,
       price: markDown(p.price),

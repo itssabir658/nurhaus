@@ -7,8 +7,8 @@ import ShopClient from './ShopClient';
 export async function generateMetadata(): Promise<Metadata> {
   const { campaign, live } = await getServerCampaignState();
   if (!campaign || !live) return { title: 'Shop the Collection' };
-  const title = `The Sale — ${campaign.discountPercent}% Off Selected Styles`;
-  const description = `Shop the ${campaign.name}: ${campaign.discountPercent}% off selected abayas and dresses. Sale price applied automatically.`;
+  const title = `The Sale — ${campaign.discountPercent}% Off Site-Wide`;
+  const description = `Shop the ${campaign.name}: ${campaign.discountPercent}% off abayas and dresses, site-wide. Sale price applied automatically.`;
   return {
     title,
     description,

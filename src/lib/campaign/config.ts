@@ -81,9 +81,9 @@ export interface Campaign {
   copy: CampaignCopy;
 }
 
-export const END_OF_SEASON_2026: Campaign = {
-  id: 'eos-2026',
-  name: 'End of Season Sale',
+export const FALL_SEASON_2026: Campaign = {
+  id: 'fall-2026',
+  name: 'Fall Season Sale',
   discountPercent: 20,
   startsAt: null,
   // Runs until Black Friday begins: 12:00 AM Eastern Standard Time (UTC-5)
@@ -100,24 +100,24 @@ export const END_OF_SEASON_2026: Campaign = {
   shopHref: '/shop?category=sale',
   shopFilterParam: 'sale',
   copy: {
-    announcement: 'End of Season Sale — Enjoy 20% Off',
+    announcement: 'Fall Season Sale — 20% Off Site-Wide',
     announcementCta: 'Shop the Sale',
-    heroEyebrow: 'End of Season Sale',
+    heroEyebrow: 'Fall Season Sale',
     heroHeadline: 'The Season’s Lasting Impressions',
-    heroBody: 'Discover timeless modest essentials. Enjoy 20% off selected styles during our End of Season Sale.',
+    heroBody: 'Discover timeless modest essentials. Enjoy 20% off site-wide during our Fall Season Sale.',
     heroCta: 'Shop the Sale',
     countdownLabel: 'The Sale Ends In',
     deadlineLabel: 'Thursday 26 November, 11:59 PM EST',
     deadlineShort: 'Thu 26 Nov, 11:59 PM EST',
-    productNote: 'End of Season Sale',
-    shopEyebrow: 'End of Season Sale · 20% Off',
+    productNote: 'Fall Season Sale',
+    shopEyebrow: 'Fall Season Sale · 20% Off Site-Wide',
     shopFilterLabel: 'Sale',
-    cartSavingsLabel: 'End of Season Sale savings',
-    endedHeadline: 'The End of Season Sale Has Closed',
+    cartSavingsLabel: 'Fall Season Sale savings',
+    endedHeadline: 'The Fall Season Sale Has Closed',
     endedBody: 'Thank you for shopping the season with us. The collection remains available to explore.',
     endedCta: 'Explore the Collection',
   },
 };
 
 /** The campaign currently configured to run, or null for the normal storefront. */
-export const ACTIVE_CAMPAIGN: Campaign | null = END_OF_SEASON_2026;
+export const ACTIVE_CAMPAIGN: Campaign | null = FALL_SEASON_2026;
