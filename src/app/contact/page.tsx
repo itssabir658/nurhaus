@@ -75,7 +75,7 @@ export default function ContactPage() {
                     <div key={item.label}>
                       <p className="text-xs text-muted tracking-widest uppercase mb-1">{item.label}</p>
                       {item.href ? (
-                        <a href={item.href} className="font-display text-xl hover:text-accent transition-colors duration-300">
+                        <a href={item.href} className="hit-area font-display text-xl hover:text-accent transition-colors duration-300 break-all">
                           {item.value}
                         </a>
                       ) : (
@@ -102,7 +102,7 @@ export default function ContactPage() {
                       href="https://www.instagram.com/nurhausco/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-smoke hover:text-ink transition-colors duration-300 relative group"
+                      className="hit-area text-sm text-smoke hover:text-ink transition-colors duration-300 relative group"
                     >
                       {s}
                       <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-accent group-hover:w-full transition-all duration-400" />

@@ -197,7 +197,7 @@ export default function CartPageClient({
                 <Link href="/shop" className="btn-outline w-full block text-center text-sm py-3">Continue Shopping</Link>
                 <div className="mt-6 pt-5 border-t border-hairline flex items-center justify-center gap-4 text-muted">
                   {['Visa', 'Mastercard', 'PayPal', 'Apple Pay', 'Shop Pay'].map((p) => (
-                    <span key={p} className="text-[0.6rem] tracking-widest uppercase">{p}</span>
+                    <span key={p} className="text-[0.625rem] tracking-widest uppercase">{p}</span>
                   ))}
                 </div>
               </div>

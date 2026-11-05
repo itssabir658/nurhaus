@@ -87,7 +87,7 @@ export default function SearchOverlay({ open, onClose, products }: SearchOverlay
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search the collection…"
-                className="flex-1 bg-transparent font-display text-3xl md:text-4xl text-ink placeholder:text-muted/50 outline-none focus-visible:outline-none"
+                className="flex-1 min-w-0 w-full bg-transparent font-display text-3xl md:text-4xl text-ink placeholder:text-muted/50 outline-none focus-visible:outline-none"
               />
               {query && (
                 <button onClick={() => setQuery('')} className="text-muted hover:text-smoke transition-colors">

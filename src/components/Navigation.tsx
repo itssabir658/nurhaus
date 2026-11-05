@@ -118,11 +118,11 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
           </ul>
 
           {/* Actions */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-6">
             <button
               onClick={onSearchOpen}
               aria-label="Open search"
-              className="hidden sm:flex text-ink/70 hover:text-ink transition-colors duration-300"
+              className="hit-area hidden sm:flex text-ink/70 hover:text-ink transition-colors duration-300"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="10.5" cy="10.5" r="7" />
@@ -135,7 +135,7 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
             <button
               onClick={onCartOpen}
               aria-label={`Cart (${cartCount} items)`}
-              className="relative text-ink/70 hover:text-ink transition-colors duration-300"
+              className="hit-area text-ink/70 hover:text-ink transition-colors duration-300"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
@@ -152,7 +152,7 @@ export default function Navigation({ onCartOpen, onSearchOpen }: NavigationProps
             <button
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"
-              className="flex flex-col gap-[5px] p-1"
+              className="hit-area flex flex-col gap-[5px] p-1"
             >
               <span className="block w-5 h-px bg-ink" />
               <span className="block w-5 h-px bg-ink" />

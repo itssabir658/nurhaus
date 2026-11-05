@@ -157,19 +157,13 @@ export default function WishlistPage() {
 
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-[0.6rem] tracking-widest uppercase text-muted mb-1">{item.category}</p>
-                      <Link href={`/products/${item.handle}`} className="font-display text-lg hover:text-accent transition-colors leading-tight block">
+                      <p className="text-[0.625rem] tracking-widest uppercase text-muted mb-1">{item.category}</p>
+                      <Link href={`/products/${item.handle}`} className="hit-area font-display text-lg hover:text-accent transition-colors leading-tight block">
                         {item.name}
                       </Link>
                     </div>
                     <p className="text-sm text-smoke flex-shrink-0 mt-1">{item.price}</p>
                   </div>
-
-                  {!item.inStock && (
-                    <button className="mt-3 text-xs text-accent tracking-wide hover:text-ink transition-colors">
-                      Notify me when available
-                    </button>
-                  )}
                 </motion.div>
               ))}
             </AnimatePresence>

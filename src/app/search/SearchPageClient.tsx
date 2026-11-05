@@ -51,7 +51,7 @@ export default function SearchPageClient({ products }: { products: AppProduct[] 
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search for pieces, styles, occasions…"
-                className="flex-1 bg-transparent font-display text-2xl md:text-4xl tracking-tight text-ink placeholder:text-muted focus:outline-none"
+                className="flex-1 min-w-0 w-full bg-transparent font-display text-2xl md:text-4xl tracking-tight text-ink placeholder:text-muted focus:outline-none"
                 aria-label="Search products"
               />
               <AnimatePresence>
@@ -91,7 +91,7 @@ export default function SearchPageClient({ products }: { products: AppProduct[] 
                         <button
                           key={r}
                           onClick={() => setQuery(r)}
-                          className="flex items-center gap-4 text-sm text-smoke hover:text-ink transition-colors w-full text-left group"
+                          className="flex items-center gap-4 text-sm text-smoke hover:text-ink transition-colors w-full text-left group py-3 -my-3"
                         >
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-muted">
                             <polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 .49-5" />
@@ -109,7 +109,7 @@ export default function SearchPageClient({ products }: { products: AppProduct[] 
                       <button
                         key={t}
                         onClick={() => setQuery(t)}
-                        className="text-sm text-smoke border border-hairline px-4 py-2 hover:border-accent hover:text-ink transition-all duration-300"
+                        className="text-sm text-smoke border border-hairline px-4 py-2.5 hover:border-accent hover:text-ink transition-all duration-300"
                       >
                         {t}
                       </button>
@@ -156,7 +156,7 @@ export default function SearchPageClient({ products }: { products: AppProduct[] 
                           <Image src={product.images[0]} alt={product.name} fill className="object-cover object-center product-card-img" />
                         )}
                         <div className="absolute top-3 left-3">
-                          <span className="eyebrow bg-primary/90 text-ink px-2 py-1 text-[0.6rem]">{product.kind}</span>
+                          <span className="eyebrow bg-primary/90 text-ink px-2 py-1 text-[0.625rem]">{product.kind}</span>
                         </div>
                       </div>
                       <p className="font-product text-base group-hover:text-accent transition-colors mb-1">{product.name}</p>
