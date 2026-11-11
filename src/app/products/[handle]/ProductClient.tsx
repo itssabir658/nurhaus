@@ -16,7 +16,7 @@ import { useCampaign } from '@/contexts/CampaignContext';
 import { PriceTag, SaleBadge, BestsellerBadge } from '@/components/campaign/PriceTag';
 import { isFullySoldOut, isBestseller } from '@/lib/productStatus';
 import { SaleEndsNote } from '@/components/campaign/Countdown';
-import { formatMoney } from '@/lib/pricing';
+import { formatMoney, getMarkdown } from '@/lib/pricing';
 
 // Shopify only reports quantityAvailable for tracked inventory; at or below
 // this, the real remaining count is shown for the selected size.
@@ -100,6 +100,9 @@ export default function ProductClient({
   const displayCompareAt = selectedVariant && (!hasSizes || selectedSize) ? selectedVariant.compareAtPrice : product.compareAtPrice;
   // A piece with no size left to buy never shows sale pricing.
   const markdown = isFullySoldOut(product) ? null : saleFor(displayPrice, displayCompareAt);
+  // Any piece marked down in Shopify is a sale item, campaign or not, and
+  // sale items are final sale: non-refundable.
+  const isSaleItem = getMarkdown(displayPrice, displayCompareAt) !== null;
 
   const sizeChosenAndAvailable = hasSizes && selectedSize && selectedVariant?.availableForSale;
   const lowStockCount =
@@ -514,10 +517,11 @@ export default function ProductClient({
                     >
                       {isBuyingNow ? 'Processing…' : 'Buy Now'}
                     </button>
-                    {markdown && campaign && (
-                      <p className="text-[0.7rem] text-muted text-center pt-1">
-                        {campaign.showDeadline && <>Sale ends {campaign.copy.deadlineShort}. </>}Sale pieces are{' '}
-                        <Link href="/shipping" className="underline underline-offset-2 hover:text-ink transition-colors">final sale</Link>.
+                    {isSaleItem && (
+                      <p className="text-xs text-smoke text-center pt-1">
+                        {campaign?.showDeadline && markdown && <>Sale ends {campaign.copy.deadlineShort}. </>}
+                        Sale items are final sale and non-refundable.{' '}
+                        <Link href="/shipping" className="underline underline-offset-2 hover:text-ink transition-colors">Refund policy</Link>
                       </p>
                     )}
                     <AnimatePresence>

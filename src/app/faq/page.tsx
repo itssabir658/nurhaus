@@ -29,7 +29,7 @@ const CATEGORIES = [
     id: 'returns',
     label: 'Returns',
     faqs: [
-      { q: 'What is your returns policy?', a: 'We offer refund within 1 hour of order placement. Eligible unworn items in original condition with all tags attached may be returned within 5 days of delivery for store credit only. Please email nurhausca@gmail.com with your order number to begin.' },
+      { q: 'What is your returns policy?', a: 'We offer refund within 1 hour of order placement. Eligible unworn items in original condition with all tags attached may be returned within 5 days of delivery for store credit only. Please email nurhausca@gmail.com with your order number to begin. Sale items are final sale and non-refundable.' },
       { q: 'How is my store credit issued?', a: 'Once your returned item is received and inspected, store credit is issued within 5–7 business days and sent to you by email as a code to use at checkout.' },
       { q: 'Can I exchange for a different size?', a: 'At this time, we do not offer exchanges on any purchases. We kindly encourage you to review product details, sizing, and descriptions carefully before placing your order. We appreciate your understanding and cooperation with our exchange policy. Your satisfaction is important to us, and we will do our best to assist you with any questions or concerns. Please feel free to contact us if you need any further assistance.' },
     ],

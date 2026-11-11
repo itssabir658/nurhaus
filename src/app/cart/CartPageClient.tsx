@@ -28,6 +28,7 @@ export default function CartPageClient({
   // Savings come from each line's Shopify compare-at price; the subtotal is
   // already the reduced amount Shopify will charge.
   const savings = isLive ? getCartSavings(lines) : 0;
+  const hasSaleItems = lines.some((l) => getMarkdown(l.price, l.compareAtPrice));
 
   const handleCheckout = () => {
     if (!cart?.checkoutUrl) return;
@@ -125,7 +126,10 @@ export default function CartPageClient({
                               )}
                             </div>
                           </div>
-                          {item.size && <p className="text-xs text-muted tracking-wide mb-5">Size {item.size}</p>}
+                          {item.size && <p className={`text-xs text-muted tracking-wide ${getMarkdown(item.price, item.compareAtPrice) ? 'mb-1' : 'mb-5'}`}>Size {item.size}</p>}
+                          {getMarkdown(item.price, item.compareAtPrice) && (
+                            <p className="text-[0.625rem] tracking-[0.18em] uppercase text-accent mb-5">Final sale</p>
+                          )}
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4 border border-hairline">
                               <button disabled={isMutating} onClick={() => updateItem(item.id, Math.max(1, item.quantity - 1))} className="w-9 h-9 flex items-center justify-center text-sm hover:bg-secondary/30 transition-colors disabled:opacity-40" aria-label="Decrease quantity">−</button>
@@ -184,6 +188,12 @@ export default function CartPageClient({
                   {savings > 0 && campaign && (
                     <p className="text-xs text-smoke mt-3">
                       Sale pricing is already included in your subtotal{campaign.showDeadline ? <>. Sale ends {campaign.copy.deadlineShort}</> : null}.
+                    </p>
+                  )}
+                  {hasSaleItems && (
+                    <p className="text-xs text-ink mt-3">
+                      Sale items are final sale and non-refundable.{' '}
+                      <Link href="/shipping" className="underline underline-offset-2 text-smoke hover:text-ink transition-colors">Refund policy</Link>
                     </p>
                   )}
                 </div>

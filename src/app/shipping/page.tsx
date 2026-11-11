@@ -97,7 +97,7 @@ export default function ShippingPage() {
                 <strong className="text-ink font-medium">Shipping Costs:</strong> Please be aware that shipping charges for exchanges are covered by the customer.
               </li>
               <li className="text-smoke text-sm leading-relaxed">
-                <strong className="text-ink font-medium">Sale Items:</strong> Any items marked as &ldquo;Sale&rdquo; are final sale and are not eligible for exchange.
+                <strong className="text-ink font-medium">Sale Items:</strong> Any items marked as &ldquo;Sale&rdquo; are final sale and are not eligible for refund or exchange.
               </li>
             </motion.ul>
             <motion.h3
@@ -135,7 +135,7 @@ export default function ShippingPage() {
               className="text-smoke text-sm leading-relaxed"
               variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              Items marked as &ldquo;Sale&rdquo; are final sale.
+              Items marked as &ldquo;Sale&rdquo; are final sale and non-refundable. They are not eligible for a refund, store credit or exchange.
             </motion.p>
           </section>
 

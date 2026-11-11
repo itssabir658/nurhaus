@@ -27,6 +27,7 @@ export default function CartDrawer({ open, onClose, suggestions = [] }: CartDraw
   const shippingProgress = Math.min((subtotal / SHIPPING_THRESHOLD) * 100, 100);
   const { campaign, isLive } = useCampaign();
   const savings = isLive ? getCartSavings(lines) : 0;
+  const hasSaleItems = lines.some((l) => getMarkdown(l.price, l.compareAtPrice));
 
   // While the sale runs and the cart is short of free shipping, suggest up to
   // two in-stock sale pieces that aren't already in the cart.
@@ -134,6 +135,9 @@ export default function CartDrawer({ open, onClose, suggestions = [] }: CartDraw
                         <div>
                           <p className="font-display text-base leading-tight mb-1">{item.productTitle}</p>
                           {item.size && <p className="text-xs text-smoke">Size: {item.size}</p>}
+                          {getMarkdown(item.price, item.compareAtPrice) && (
+                            <p className="text-[0.625rem] tracking-[0.18em] uppercase text-accent mt-1">Final sale</p>
+                          )}
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3 border border-hairline">
@@ -208,10 +212,13 @@ export default function CartDrawer({ open, onClose, suggestions = [] }: CartDraw
                     <span className="text-accent font-medium">−{formatMoney(savings)}</span>
                   </div>
                 )}
-                <div className="flex justify-between items-baseline mb-6">
+                <div className={`flex justify-between items-baseline ${hasSaleItems ? 'mb-2' : 'mb-6'}`}>
                   <span className="text-sm text-smoke">Subtotal</span>
                   <span className="font-display text-2xl">${subtotal.toLocaleString()}</span>
                 </div>
+                {hasSaleItems && (
+                  <p className="text-xs text-smoke mb-6">Sale items are final sale and non-refundable.</p>
+                )}
                 <Link
                   href="/cart"
                   onClick={onClose}
