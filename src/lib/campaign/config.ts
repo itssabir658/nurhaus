@@ -119,5 +119,9 @@ export const FALL_SEASON_2026: Campaign = {
   },
 };
 
-/** The campaign currently configured to run, or null for the normal storefront. */
-export const ACTIVE_CAMPAIGN: Campaign | null = FALL_SEASON_2026;
+/**
+ * The campaign currently configured to run, or null for the normal storefront.
+ * The Fall Season Sale ended early (prices restored in Shopify); its config is
+ * kept above so a future sale can reuse it.
+ */
+export const ACTIVE_CAMPAIGN: Campaign | null = null;
